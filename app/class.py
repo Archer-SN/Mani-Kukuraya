@@ -44,8 +44,13 @@ class Cart:
     pass
 
 # TODO: foshforce
-class Payment:
-    pass
+class Payment :
+    def __init__(self, amount : float, currency : str) :
+        self.__amount = amount        
+        self.__currency =  currency        
+        self.__        
+        self.__        
+
 
 class QRPayment(Payment):
     pass
