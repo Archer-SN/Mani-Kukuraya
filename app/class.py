@@ -43,7 +43,6 @@ class SelectedFood:
 class Cart:
     pass
 
-
 # TODO: foshforce
 class Payment:
     pass
@@ -59,7 +58,6 @@ class DeliveryOption:
 
 class Order:
     pass
-
 
 # TODO: Create classes to simulate the app
 def create_instance():

@@ -10,3 +10,6 @@ git push origin master
 
 # To update code from friends
 git pull origin master
+
+# Run program with
+uvicorn main:app --reload-dir
