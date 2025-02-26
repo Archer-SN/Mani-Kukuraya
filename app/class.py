@@ -1,3 +1,4 @@
+# TODO: kaka
 class App:
     pass
 
@@ -10,7 +11,8 @@ class Promotion:
 class Location:
     pass
 
-class Order:
+# TODO: guer
+class UserOrder:
     pass
 
 class Review:
@@ -22,6 +24,7 @@ class Restaurant:
 class RestaurantCollection:
     pass
 
+# TODO: palm
 class Food:
     pass
 
@@ -40,6 +43,8 @@ class SelectedFood:
 class Cart:
     pass
 
+
+# TODO: foshforce
 class Payment:
     pass
 
@@ -56,5 +61,6 @@ class Order:
     pass
 
 
+# TODO: Create classes to simulate the app
 def create_instance():
     pass
