@@ -84,7 +84,8 @@ def view_order():
 
 @app.post("/order")
 def create_order():
-    order = Order()
+    order = Order(user_kaka, kfc_cart, kaka_location, saver_delivery, cash_payment, kfc_promotion)
+    print(order)
 
 @app.get("/confirm")
 def view_order_confirmation():

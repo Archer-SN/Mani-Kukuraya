@@ -1,59 +1,81 @@
-import datetime
+from datetime import datetime 
+
 # TODO: kaka
 class App:
-    def __init__(self, users, restaurants):
-        self.users = users
-        self.restaurants = restaurants
+    def __init__(self, users, restaurants, foods):
+        self.__users = users
+        self.__restaurants = restaurants
+        self.__foods = foods
 
+    def find_user(self):
+        pass
+    
+    def find_restaurant(self):
+        pass
+
+    def find_food(self):
+        pass
+    
 class User:
     def __init__(self, user_id, name, username, password, carts, locations, user_order_history, promotions, reviews):
-        self.user_id = user_id
-        self.name = name
-        self.username = username
-        self.password = password
-        self.carts = carts
-        self.locations = locations
-        self.user_order_history = user_order_history
-        self.promotions = promotions
-        self.reviews = reviews
+        self.__user_id = user_id
+        self.__name = name
+        self.__username = username
+        self.__password = password
+        self.__carts = carts
+        self.__locations = locations
+        self.__user_order_history = user_order_history
+        self.__promotions = promotions
+        self.__reviews = reviews
 
-class Promotion:
-    def __init__(self, name, restaurant, promotion_code):
-        self.name = name
-        self.restaurant = restaurant
-        self.promotion_code = promotion_code
+    def login(self):
+        pass
+    
+    def register(self):
+        pass
+    
+    def logout(self):
+        pass
 
-class Location:
-    def __init__(self, phone_number, location_name, address, note):
-        self.phone_number = phone_number
-        self.location_name = location_name
-        self.address = address
-        self.note = note
+    def edit_profile(self):
+        pass
 
-class User:
-    def __init(self, user_id, name, username, password, carts, locations, user_order_history, promotions, reviews):
+    def edit_password(self):
         pass
 
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
-        pass
+        self.__name = name
+        self.__restaurant = restaurant
+        self.__promotion_code = promotion_code
 
 class Location:
     def __init__(self, phone_number, location_name, address, note):
-        pass
+        self.__phone_number = phone_number
+        self.__location_name = location_name
+        self.__address = address
+        self.__note = note
 
-# TODO: guer
 class UserOrder:
-    pass
+    def __init__(self, id, status, restaurant, foods):
+        self.__id = id
+        self.__status = status
+        self.__restaurant = restaurant
+        self.__foods = foods
 
 class Review:
-    pass
+    def __init__(self, score, user, comment, stars):
+        self.__score = score
+        self.__user = user
+        self.__comment = comment
+        self.__stars = stars
 
 class Restaurant:
-    pass
-
-class RestaurantCollection:
-    pass
+    def __init__(self, name, menu, score, reviews):
+        self.__name = name
+        self.__menu = menu
+        self.__score = score
+        self.__reviews = reviews
 
 # TODO: palm
 class Food:
@@ -96,47 +118,46 @@ class SelectedFood:
 
 class Cart:
     def __init__(self, cart_id, restaurant_id, selected_food_id):
-        self.__cart_id = card_id
+        self.__cart_id = cart_id
         self.__restaurant_id = restaurant_id
         self.__selected_food_id = selected_food_id
         self.__price = 0.00
-        self.status = 'open'
+        self.__status = 'open'
 
 # TODO: foshforce
-class Payment :
-    def __init__(self, amount : float, currency = "THB") :
-        self.__amount = amount # จำนวนเงินที่ต้องชำระ      
-        self.__currency =  currency # สกุลเงิน       
-        self.__status = False        
-        self.__timestamp = datetime.now() #เวลาการทำรายการ  
-
+class Payment:
+    def __init__(self, amount: float, currency="THB"):
+        self.__amount = amount
+        self.__currency = currency
+        self.__status = False
+        self.__timestamp = datetime.now()
 
 class QRPayment(Payment):
-    def __init__(self, amount, currency = "THB", qr_code_data = "", reference_number = "" ):
+    def __init__(self, amount, currency="THB", qr_code_data="", reference_number=""):
         super().__init__(amount, currency)
-        self.__qr_code_data = qr_code_data # ข้อมูล QRCODE สำหรับชำระเงิน
-        self.__reference_number = reference_number # หมายเลขอ้างอิงการทำรายการ
+        self.__qr_code_data = qr_code_data
+        self.__reference_number = reference_number
 
-    def pay() :
+    def pay(self):
         pass
 
 class CashPayment(Payment):
-    def __init__(self, amount, currency, received_amount = 0):
+    def __init__(self, amount, currency, received_amount=0):
         super().__init__(amount, currency)
         self.__received_amount = received_amount
         self.__change = 0
 
-    def pay() :
+    def pay(self):
         pass
 
 class DeliveryOption:
-    def __init__(self,name , estimate_time, price):
+    def __init__(self, name, estimate_time, price):
         self.__name = name
         self.__estimate_time = estimate_time
         self.__price = price
 
 class Order:
-    def __init__(self, user : User, cart : Cart, location : Location, deliveryoption : DeliveryOption, payment_method : Payment, selected_promotion : Promotion) :
+    def __init__(self, user: User, cart: Cart, location: Location, deliveryoption: DeliveryOption, payment_method: Payment, selected_promotion: Promotion):
         self.__user = user
         self.__cart = cart
         self.__location = location
@@ -144,19 +165,40 @@ class Order:
         self.__payment_method = payment_method
         self.__selected_promotion = selected_promotion
 
-    def select_location() :
+    def select_location(self, new_location):
+        self.__location = new_location
+
+    def select_payment(self, new_payment):
+        self.__payment = new_payment
+
+    def select_delivery_option(self, new_delivery_option):
+        self.__delivery_option = new_delivery_option
+
+    def calculate_price(self):
         pass
 
-    def select_payment() :
+    def create_user_order(self):
         pass
-
-    def select_delivery_option() :
-        pass
-
-    def calculate_price() :
-        pass
-
-
-# TODO: Create classes to simulate the app
+    
+# TODO: Create instances to simulate the app
 def create_instance():
     pass
+
+user_kaka = User("1", "Kaka", "kaka", "1234", [], [], [], [], [])
+user_guer = User("2", "Guer", "guer", "1234", [], [], [], [], [])
+
+home = Location("02-222-2222", "Home", "123/456", "Near the park")
+work = Location("02-333-3333", "Work", "789/101", "Near the school")
+kfc_promotion = Promotion("Discount", "KFC", "KFC123")
+# kfc = Restaurant("1", "KFC", "Fastfood", "02-111-1111", "123/456", "Near the park")
+kfc_chicken = Food("1", "Chicken", "Fried chicken", 100, "Main course")
+kfc_chicken_option = FoodOption("1", "Sauce", 1, "1")
+kfc_chicken_option_choice = OptionChoice("1", "Ketchup", "1", 0)
+kfc_chicken_comment = FoodComment("1", "1", "1", 5, "Delicious")
+kfc_chicken_selected = SelectedFood("1", "1", "1", "1", 2)
+kfc_cart = Cart("1", "1", "1")
+
+# mcd = Restaurant("2", "McDonald", "Fastfood", "02-222-2222", "789/101", "Near the school")
+
+saver_delivery = DeliveryOption("Saver", 30, 30)
+cash_payment = CashPayment(100, "baht")
