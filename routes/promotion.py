@@ -33,7 +33,7 @@ def view_promotion():
                                 P(f"#Code {offer['code']}"),
                             )
                         ),
-                        A("Use Now", href="#", cls="contrast button"),
+                        A("Use Now", hx_post="/promotion", cls="contrast button"),
                         cls="grid"
                     ),
                     cls="card"
@@ -42,3 +42,7 @@ def view_promotion():
             ]
         )
     )
+
+@app.post("/promotion")
+def use_promotion():
+    return Redirect("/order")

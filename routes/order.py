@@ -15,15 +15,20 @@ def view_order():
     delivery_options = Card(
         H4("ตัวเลือกการจัดส่ง"),
         P("ระยะห่างประมาณ: 2.1 กม."),
-        Form(
-            Div(
-                Label(Input(type="radio", name="delivery", value="priority"), " Priority < 25 นาที - 32 บาท"),
-                Label(Input(type="radio", name="delivery", value="standard"), " Standard 25 นาที - 32 บาท"),
-                Label(Input(type="radio", name="delivery", value="saver", checked=True), " Saver 35 นาที - ฟรี"),
-                cls="radio-group"
-            ),
-            cls="grid-item"
-        )
+        Div(
+            Label(Input(type="radio", name="delivery", value="priority", 
+                        hx_post="/update-delivery", hx_target="#delivery-summary"), 
+                  " Priority < 25 นาที - 32 บาท"),
+            Label(Input(type="radio", name="delivery", value="standard", 
+                        hx_post="/update-delivery", hx_target="#delivery-summary"), 
+                  " Standard 25 นาที - 32 บาท"),
+            Label(Input(type="radio", name="delivery", value="saver", checked=True, 
+                        hx_post="/update-delivery", hx_target="#delivery-summary"), 
+                  " Saver 35 นาที - ฟรี"),
+            cls="radio-group"
+        ),
+        Div(P("Selected: Saver (35 นาที - ฟรี)"), id="delivery-summary"),  # Display selection dynamically
+        cls="grid-item"
     )
 
     order_summary = Card(
@@ -41,23 +46,36 @@ def view_order():
 
     payment_methods = Card(
         H4("รายละเอียดการชำระเงิน"),
-        Label(Input(type="radio", name="payment", value="qr"), Lucide("qr-code"), " สแกน QR Code"),
-        Label(Input(type="radio", name="payment", value="cash", checked=True), Lucide("banknote"), " เงินสด"),
+        Div(
+            Label(Input(type="radio", name="payment", value="qr", 
+                        hx_post="/update-payment", hx_target="#payment-summary"), 
+                  Lucide("qr-code"), " สแกน QR Code"),
+            Label(Input(type="radio", name="payment", value="cash", checked=True, 
+                        hx_post="/update-payment", hx_target="#payment-summary"), 
+                  Lucide("banknote"), " เงินสด"),
+            cls="radio-group"
+        ),
+        Div( P("Selected: เงินสด"), id="payment-summary"),  # Display selection dynamically
         cls="grid-item"
     )
 
     offers = Card(
         H4("Offers"),
         P("ใช้ส่วนลดหรือใส่รหัสโปรโมชั่น"),
+        Div(id="offers-list", hx_get="/offers", hx_trigger="load"),  # Fetch offers dynamically
         cls="grid-item"
     )
 
-    summary = Form(
-        Card(
-            Button("สั่งซื้อ", type="submit", style="background-color:#FF6240; color:white; font-size:1.2rem; padding: 10px; width: 100%;"),
-            cls="grid-item"
+    summary = Card(
+        Button(
+            "สั่งซื้อ",
+            cls="contrast button",
+            style="background-color:#FF6240; color:white; font-size:1.2rem; padding: 10px; width: 100%;",
+            hx_post="/order",
+            hx_target="#order-status"
         ),
-        action="/order", method="post"
+        Div(id="order-status"),  # Display order confirmation dynamically
+        cls="grid-item"
     )
 
     return Container(
@@ -78,7 +96,7 @@ def view_order():
 
 @app.post("/order")
 def create_order():
-    order = Order(user_kaka, kfc_cart, kaka_location, saver_delivery, cash_payment, kfc_promotion)
+    order = Order(user_kaka, kfc_cart, home, saver_delivery, cash_payment, kfc_promotion)
     print(order)
     return Redirect("/order-confirmation")
 
