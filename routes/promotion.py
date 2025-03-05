@@ -3,7 +3,7 @@ from models import *
 from fasthtml.common import *
 from lucide_fasthtml import Lucide
 
-@app.get("/")
+@app.get("/promotion")
 def view_promotion():
     offers = [
         {

@@ -62,7 +62,7 @@ def view_order():
     offers = Card(
         H4("Offers"),
         P("ใช้ส่วนลดหรือใส่รหัสโปรโมชั่น"),
-        Div(id="offers-list", hx_get="/offers", hx_trigger="load"),  # Fetch offers dynamically
+        Div(id="offers-list", hx_get="/promotion", hx_trigger="load"),  # Fetch offers dynamically
         cls="grid-item"
     )
 
