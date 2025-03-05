@@ -1,5 +1,7 @@
 from app import app
-from models import models
+from models import *
+from fasthtml.common import *
+
 
 @app.get("/order")
 def order_view():
