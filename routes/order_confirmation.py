@@ -1,10 +1,10 @@
 from app import app
 from models import *
 from fasthtml.common import *
+from lucide_fasthtml import Lucide
 
 
-
-@app.get("/confirm")
+@app.get("/order_confirmation")
 def view_order_confirmation():
     progress_bar = Div(
         Div(style="background-color: #4CAF50; width: 30%; height: 10px; border-radius: 5px;"),
@@ -27,12 +27,12 @@ def view_order_confirmation():
     )
 
     location_section = Card(
-        svgs.location_dot.solid.width(10),
+        Lucide("map-pin-house"),
         Div(
             P(B("ตึก ECC ฉลองกรุง 1 เฟส 5"), style="margin: 0;"),
             P("ฉลองกรุง แขวงลำปลาทิว เขตลาดกระบัง กรุงเทพมหานคร", cls="text-muted"),
         ),
-        svgs.chevron_right.solid.width(10),
+        Lucide("cooking-pot"),
         style="display: flex; align-items: center; justify-content: space-between; padding: 15px;"
     )
 
@@ -55,7 +55,7 @@ def view_order_confirmation():
     )
 
     return Container(
-        Button(svgs.chevron_left.solid, style="border: none; background: none; font-size: 1.5rem;", onclick="window.history.back()"),
+        Button(Lucide("cooking-pot"), style="border: none; background: none; font-size: 1.5rem;", onclick="window.history.back()"),
         tracking_section,
         location_section,
         order_summary,
