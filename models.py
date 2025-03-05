@@ -1,7 +1,6 @@
 from datetime import datetime 
 
-# TODO: kaka
-class App:
+class Controller:
     def __init__(self, users, restaurants, foods):
         self.__users = users
         self.__restaurants = restaurants
@@ -77,7 +76,6 @@ class Restaurant:
         self.__score = score
         self.__reviews = reviews
 
-# TODO: palm
 class Food:
     def __init__(self, food_id, name, description, price, category):
         self.__food_id = food_id
@@ -124,7 +122,6 @@ class Cart:
         self.__price = 0.00
         self.__status = 'open'
 
-# TODO: foshforce
 class Payment:
     def __init__(self, amount: float, currency="THB"):
         self.__amount = amount
@@ -180,7 +177,6 @@ class Order:
     def create_user_order(self):
         pass
     
-# TODO: Create instances to simulate the app
 def create_instance():
     pass
 
