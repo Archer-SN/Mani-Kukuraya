@@ -2,7 +2,7 @@ from app import *
 from models import *
 from fasthtml.common import *
 
-@app.get("/address")
+@app.get("/edit-address")
 def address_view():
     form = Form(
         Label("ชื่อ-นามสกุล"),
@@ -24,27 +24,26 @@ def address_view():
         Input(id="extra_info", name="extra_info", required=False, placeholder="รายละเอียดเพิ่มเติม",hx_target="#extra_info", hx_trigger="blur"),
         
         Button("บันทึก", type="submit", style="border: none; background-color: #ff5722; color: white;",
-               hx_post="/submit-address", hx_target="#form-msg"),
+               hx_post="/update-address", hx_target="#form-msg"),
 
         Div(id="form-msg")
     )
 
 
     return Titled(
-        "เพิ่มที่อยู่ใหม่",
+        "เเก้ไขที่อยู่ใหม่",
         Div(
-            A("⬅ กลับ", href ="/selectedFood", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+            AX("⬅ กลับ", "/", "body", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
             style="position: absolute; top: 10px; left: 10px;"
-    
         ),
         form
     )
 
-@app.post("/submit-address")
-def submit_address(full_name: str, phone: str, location: str, street: str, unit: str = "", extra_info: str = ""):
+
+@app.post("/update-address")
+def update_address(full_name: str, phone: str, location: str, street: str, unit: str = "", extra_info: str = ""):
     print(f"ข้อมูลที่ได้รับ: {full_name}, {phone}, {location}, {street}, {unit}, {extra_info}")  
 
     if not full_name or not phone or not location or not street:
         return Span("กรุณากรอกข้อมูลให้ครบถ้วน", cls="error")
-    return Response(headers={"HX-Redirect": "/address"})
-
+    return Response(headers={"HX-Redirect": "/selectedFood"})
