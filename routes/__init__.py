@@ -14,6 +14,7 @@ from . import qrcode_payment
 from . import edit_address
 from . import SelectedFood
 from . import food
+from . import profile
 
 from . import promotion
 

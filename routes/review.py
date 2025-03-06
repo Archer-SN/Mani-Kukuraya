@@ -1,4 +1,5 @@
 from app import app
+from models import *
 from fasthtml.common import *
 
 # ✅ เก็บรีวิวที่ผู้ใช้ส่งมา
