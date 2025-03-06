@@ -3,34 +3,40 @@ from models import *
 from fasthtml.common import *
 
 
-@app.get("/")
+@app.get("/review")
 def CollectReview():
-    return Titled(
-        "Review Page",
-        Style("body { background-color: white; }"),  # ตั้งค่า Background เป็นสีขาว
-
-        Container(
-            # Card ที่ 1 - แสดงการจัดการ Text และ Border
-            Div(
-                Form(
-                    Label("Comment:"),
-                    Input(type="text", style="margin: 10px; width: 50%;height:100px ; font-size: 20px;"""),
-                    style="border: 3px solid #2196f3; border-radius: 10px; margin: 10px; width: 80%; height: 100%;"
-                ),
-                # style="""
-                #     border: 3px solid #2196f3;
-                #     border-radius: 10px;
-                #     margin: 10px;
-                #     width: 80%;
-                #     height: 100%;
-                # """
+    return Container(
+        H1("Review Page"),
+        Card(
+            Img(
+                src="https://static.thairath.co.th/media/dFQROr7oWzulq5Fa6rHIRiYHCRigP4Gyivh7rgX5F5HqUmbf9L4SQODbALPtARByTGY.webp",
+                alt="Food Image",
+                style="width: 200px; height: auto; border-radius: 8px; display: block; margin: 0 auto;"
             ),
-            Div(# สร้างปุ่มเพื่อเข้าไปยังหน้าเพิ่มรีวิว
-                Button("Submit", style="margin: 10px 0px;"),
-                style="margin: 10px 0px;",
+            H3("Your Food"),
+            style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); padding: 20px; text-align: center;"
+        ),
+        Div(
+            Label(
+                "Comment:",
+                Input(
+                    type="text", 
+                    id="comment",
+                    name="comment", 
+                    placeholder="Type your comment here...",
+                    style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-top: 5px;"
+                )
             ),
+            Button(
+                "Submit", 
+                type="submit",
+                hx_post="/submitreview", hx_target="#comment",
+                style="margin-top: 10px; padding: 10px 20px; border: none; background-color: orange; color: white; cursor: pointer;"
+            ),
+            style="margin-top: 20px;"
         )
     )
-
-
-
+@app.post("/submitreview", methods=["POST"])
+def SubmitReview(comment: str):
+    print(f"ข้อมูลที่ได้รับ: {comment}")  
+    return Response(headers={"HX-Redirect": "/review"})
