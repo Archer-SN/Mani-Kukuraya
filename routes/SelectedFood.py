@@ -97,20 +97,15 @@ def update_quantity(quantity: int = 1, action: str = "increase"):
     if action == "increase":
         new_quantity = quantity + 1
     elif action == "decrease":
-        new_quantity = max(1, quantity) 
+        new_quantity = max(1, quantity-1) 
     else:
         new_quantity = quantity  
 
     return str(new_quantity)  
 
 
-# เพิ่มสินค้าลงตะกร้า
+
 @app.post("/add-to-cart")
 def add_to_cart():
     return Span("เพิ่มสินค้าลงตะกร้าแล้ว", cls="success")
 
-@app.get("/validate-field")
-def post(field: str, value: str):
-    if not value.strip():  # ถ้าเว้นว่าง
-        return Span("กรุณากรอกข้อมูลให้ครบถ้วน", cls="error")
-    return ""  # ถ้าไม่มีปัญหา ให้ส่งค่าเป็นค่าว่าง (ลบข้อความแจ้งเตือนออก)
