@@ -1,7 +1,6 @@
 from datetime import datetime 
 
-# TODO: kaka
-class App:
+class Controller:
     def __init__(self, users, restaurants, foods):
         self.__users = users
         self.__restaurants = restaurants
@@ -77,7 +76,6 @@ class Restaurant:
         self.__score = score
         self.__reviews = reviews
 
-# TODO: palm
 class Food:
     def __init__(self, food_id, name, description, price, category):
         self.__food_id = food_id
@@ -124,7 +122,6 @@ class Cart:
         self.__price = 0.00
         self.__status = 'open'
 
-# TODO: foshforce
 class Payment:
     def __init__(self, amount: float, currency="THB"):
         self.__amount = amount
@@ -180,9 +177,50 @@ class Order:
     def create_user_order(self):
         pass
     
-# TODO: Create instances to simulate the app
-def create_instance():
-    pass
+
+user1 = User("1", "Alice", "alice123", "password", [], [], [], [], [])
+user2 = User("2", "Bob", "bob123", "password", [], [], [], [], [])
+
+location1 = Location("1234567890", "Home", "123 Main St", "Near the park")
+location2 = Location("0987654321", "Office", "456 Elm St", "Near the office")
+
+promotion1 = Promotion("10% Off", "Pizza Place", "PIZZA10")
+promotion2 = Promotion("Free Delivery", "Burger Joint", "BURGERFREE")
+
+review1 = Review(5, user1, "Great food!", 5)
+review2 = Review(4, user2, "Good service.", 4)
+
+food1 = Food("1", "Pizza", "Cheese Pizza", 9.99, "Main Course")
+food2 = Food("2", "Burger", "Beef Burger", 7.99, "Main Course")
+
+food_option1 = FoodOption("1", "Size", 1, "1")
+food_option2 = FoodOption("2", "Toppings", 3, "1")
+
+option_choice1 = OptionChoice("1", "Small", "1", 0)
+option_choice2 = OptionChoice("2", "Medium", "2", 1)
+option_choice3 = OptionChoice("3", "Large", "3", 2)
+
+food_comment1 = FoodComment("1", "1", "1", 5, "Delicious!")
+food_comment2 = FoodComment("2", "2", "2", 4, "Tasty!")
+
+selected_food1 = SelectedFood("1", "1", "1", "1", 2)
+selected_food2 = SelectedFood("2", "2", "2", "2", 1)
+
+cart1 = Cart("1", "1", "1")
+cart2 = Cart("2", "2", "2")
+
+restaurant1 = Restaurant("Pizza Place", [food1], 4.5, [review1])
+restaurant2 = Restaurant("Burger Joint", [food2], 4.0, [review2])
+
+delivery_option1 = DeliveryOption("Standard", 30, 5.00)
+delivery_option2 = DeliveryOption("Express", 15, 10.00)
+
+payment1 = CashPayment(20.00, "USD", 25.00)
+payment2 = QRPayment(15.00, "USD", "QR12345", "REF12345")
+
+order1 = Order(user1, cart1, location1, delivery_option1, payment1, promotion1)
+order2 = Order(user2, cart2, location2, delivery_option2, payment2, promotion2)
+
 
 user_kaka = User("1", "Kaka", "kaka", "1234", [], [], [], [], [])
 user_guer = User("2", "Guer", "guer", "1234", [], [], [], [], [])
