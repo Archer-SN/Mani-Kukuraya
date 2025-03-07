@@ -19,7 +19,7 @@ def view_promotion():
         Div(back_button, style="flex: 0 0 auto;"),  # ลูกศรย้อนกลับอยู่ทางซ้าย
         Div(
             A("Home", href="/home", style="margin-right: 20px;"),
-            A("Favorites", href="/favorite/1", style="margin-right: 20px;"),
+            A("Favorites", href="/favorite", style="margin-right: 20px;"),
             A("Promotions", href="/promotion", style="margin-right: 20px;"),
             A("Carts", href="/cart", style="margin-right: 20px;"),
             style="display: flex; justify-content: center; align-items: center; flex-grow: 1;"
@@ -63,5 +63,5 @@ def view_promotion():
 def use_promotion():
     if user.get_current_order() != None:
         return Redirect("/order")
-    return Redirect("/restaurant")
+    return Redirect("/restaurant/")
 

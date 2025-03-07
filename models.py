@@ -34,7 +34,6 @@ class Controller:
             if restaurant.get_restaurant_id() == str(restaurant_id):
                 return restaurant
 
-
     def find_food(self):
         pass
     def get_catagories(self):
@@ -51,13 +50,8 @@ class User:
         self.__username = username
         self.__password = password
         self.__carts = carts
-<<<<<<< HEAD
         self.__locations = locations
         self.__user_order_history = user_order_history
-=======
-        self.__locations = []
-        self.__user_order_history = []
->>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__promotions = promotions
         self.__reviews = reviews
         self.__current_order = None
@@ -101,8 +95,6 @@ class User:
         return "Error: Object only"
         
     def get_locations(self):
-        if not self.__locations:
-            return "No Locations Save"
         return  self.__locations
     
     def get_location_by_id(self, location_id):
@@ -138,6 +130,12 @@ class User:
 
     def send_recentorder(self):
         return self.__user_order_history
+
+    def add_cart(self, new_cart):
+        self.__carts.append(new_cart)
+
+    def get_carts(self):
+        return self.__carts
 
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
@@ -209,13 +207,8 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
-<<<<<<< HEAD
-    def __init__(self, name, menu, score, reviews, restaurant_image):
-        self.__restaurant_id = uuid.uuid4().hex
-=======
-    def __init__(self, name="", menu=[], description="", score=0, reviews=[], restaurant_image="", restaurant_id=uuid.uuid4()):
+    def __init__(self, name, menu, score, reviews, restaurant_image, description="", restaurant_id=uuid.uuid4().hex):
         self.__restaurant_id = restaurant_id
->>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__name = name
         self.__menu = menu
         self.__description = description
@@ -340,15 +333,20 @@ class SelectedFood:
         self.__choice = choice
         self.__quantity = quantity
 
-    def calculate_price():
-        return 
+    def get_quantity(self):
+        return self.__quantity
+    
+    def get_name(self):
+        return self.__food.get_name()
+
+    def calculate_price(self):
+        total_price = self.__food.get_price()
+
+
+        return total_price * self.__quantity
 
 class Cart:
-<<<<<<< HEAD
     def __init__(self, cart_id, restaurant : Restaurant, selected_foods):
-=======
-    def __init__(self, cart_id, restaurants, selected_foods,restaurant_id):
->>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__cart_id = cart_id
         self.__restaurant = restaurant
         self.__selected_foods = selected_foods
@@ -362,6 +360,9 @@ class Cart:
 
     def delete_from_cart(self, food):
         self.__selected_foods.remove(food)
+
+    def get_cart_items(self):
+        return self.__selected_foods
 
     def calculate_price(self):
         total_price = 0
@@ -648,9 +649,8 @@ print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
 # Create a cart for the user
 cart = Cart(
     cart_id=uuid.uuid4(),
-    restaurants=[kfc_restaurant],
+    restaurant=kfc_restaurant,
     selected_foods=[],
-    restaurant_id=kfc_restaurant.get_restaurant_id()
 )
 
 # Add food to the cart
@@ -665,9 +665,26 @@ selected_food = SelectedFood(
 cart.add_to_cart(selected_food)
 
 # Add the cart to the user's carts
-user._User__carts.append(cart)
-
+user.add_cart(cart)
 # Print the cart details
 print(f"User {user.get_user_id()} has the following items in their cart:")
 for food in cart.get_foods():
     print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
+
+# Create a location for the user
+location = Location(
+    full_name="John Doe",
+    phone_number="1234567890",
+    address="123 Main St",
+    street="Main St",
+    unit="Apt 1",
+    extra_information="Near the park"
+)
+
+# Add the location to the user's locations
+user.add_location(location)
+
+# Print the user's locations
+print(f"User {user.get_user_id()} has the following locations:")
+for loc in user.get_locations():
+    print(f"- {loc.full_name}, {loc.address}, {loc.street}, {loc.unit}, {loc.extra_information}")
