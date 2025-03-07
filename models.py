@@ -3,9 +3,10 @@ from fasthtml.common import *
 
 
 class Controller:
-    def __init__(self, users, restaurants, foods):
+    def __init__(self, users, restaurants, foods,):
         self.__users = users
         self.__restaurants = restaurants
+        self.__catagories = []
         self.__foods = foods
 
     def get_user_by_id(self, user_id):
@@ -22,6 +23,12 @@ class Controller:
         for restaurant in self.__restaurants:
             if restaurant.get_restaurant_id() == restaurant_id:
                 return restaurant
+
+
+    def find_food(self):
+        pass
+    def Howmanycatagory(self):
+        return len(self.__catagories)
 
     
 class User:
@@ -148,7 +155,10 @@ class Food:
         self.__description = description 
         self.__price = price     
         self.__category = category
+
         self.__food_image = food_image
+    
+
 
 class FoodOption:
     def __init__(self, option_name, choices, max_selection):

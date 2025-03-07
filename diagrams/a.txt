@@ -1,0 +1,171 @@
+classDiagram
+
+class App {
+    - users
+    - restaurants
+    - foods
+    + find_food()
+    + find_restaurant()
+    + find_food()
+}
+
+class RestaurantCollection {
+    - type
+    - restaurants
+}
+
+class Restaurant {
+    - name
+    - menu
+    - score
+    - reviews
+    + get_restaurant_share()
+}
+
+class User {
+    - carts
+    - saved_locations
+    - order_history
+    - promotions
+    + login()
+    + register()
+    + logout()
+    + edit_profile()
+    + edit_password()
+    + add_location()
+    + add_payment()
+    + add_favorite_restaurant()
+    + delete_favorite_restaurant()
+    + use_promotion()
+    + search_promotion()
+    + share_restaurant()
+}
+
+
+class Food {
+    - options
+    - type
+}
+
+class FoodOption {
+    - option_name
+    - choices
+    - max_selection
+}
+
+class OptionChoice {
+    - option
+    - choice_name
+    - price
+}
+
+class FoodComment {
+    - comment
+}
+
+class SelectedFood {
+    - food
+    - selected_choices
+    + select_option()
+    + calculate_price()
+
+}
+
+class Cart {
+    - restaurant
+    - foods
+    + add_to_cart()
+    + delete_food()
+    + edit_cart()
+    + calculate_price()
+}
+
+class Review {
+    - score
+    - comment
+}
+
+class Promotion {
+    - name
+    - restaurant
+    - promotion_code
+}
+
+class Payment {
+    + pay()
+}
+
+class QRPayment {
+    + pay()
+}
+
+class CashPayment {
+    + pay()
+}
+
+class Location {
+    - location_name
+    - address
+    - note
+}
+
+class DeliveryOption {
+    - name
+    - estimated_time
+    - price
+}
+
+class Summary {
+    - user
+    - cart
+    - location
+    - delivery_option
+    - payment_method
+    - selected_promotion
+    + select_location()
+    + select_payment()
+    + select_delivery_option()
+    + calculate_price()
+}
+
+class Order {
+    - id
+    - status
+    - restaurant
+    - foods
+}
+
+App *-- User
+App *-- Restaurant
+App *-- Food
+
+User o-- Payment
+User o-- Order
+
+FoodOption <-- Food
+OptionChoice -- FoodOption
+FoodComment <-- Food
+Food <-- SelectedFood
+
+
+
+Review <-- Restaurant
+Review -- User
+
+Restaurant <-- RestaurantCollection
+
+Promotion <-- User
+Location <-- User
+DeliveryOption <-- Order
+
+Payment <|-- CashPayment
+Payment <|-- QRPayment
+
+Restaurant <-- Cart
+Cart *-- Food
+Cart <-- User
+
+Cart <-- Summary
+Location <-- Summary
+Payment <-- Summary
+User <-- Summary
