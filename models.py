@@ -8,6 +8,7 @@ class Controller:
         self.__restaurants = restaurants
         self.__catagories = [["This is test","https://example.com/image2.jpg"]]
         self.__foods = foods
+        self.__recommended_food = [["อาหารไม่สะอาด","https://static.thairath.co.th/media/B6FtNKtgSqRqbnNsbKFRA9Hw1ddaiN8vczDH5awGUi4JQ7XTjwF2YTlnGfAZTGUAcQDXv.webp"],["อาหารสะอาด","https://hdmall.co.th/blog/wp-content/uploads/2024/03/11-%E0%B8%AD%E0%B8%B2%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%AA%E0%B8%B8%E0%B8%82%E0%B8%A0%E0%B8%B2%E0%B8%9E-%E0%B8%AD%E0%B8%A2%E0%B8%B2%E0%B8%81%E0%B8%81%E0%B8%B4%E0%B8%99%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%AA%E0%B8%B8%E0%B8%82%E0%B8%A0%E0%B8%B2%E0%B8%9E-%E0%B9%80%E0%B8%A3%E0%B8%B4%E0%B9%88%E0%B8%A1%E0%B8%95%E0%B9%89%E0%B8%99%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%AD%E0%B8%B0%E0%B9%84%E0%B8%A3%E0%B8%94%E0%B8%B5.jpg.webp"]]
 
     def add_restaurant(self, restaurant):
         self.__restaurants.append(restaurant)
@@ -36,8 +37,10 @@ class Controller:
 
     def find_food(self):
         pass
-    def get_numbers_catagories(self):
+    def get_catagories(self):
         return self.__catagories
+    def get_recommended_food(self):
+        return self.__recommended_food
         
 
     
@@ -49,7 +52,7 @@ class User:
         self.__password = password
         self.__carts = carts
         self.__locations = []
-        self.__user_order_history = user_order_history
+        self.__user_order_history = []
         self.__promotions = promotions
         self.__reviews = reviews
         self.__current_order = None
@@ -89,11 +92,16 @@ class User:
         else :
             return "Error Object only"
 
+
     def get_current_order(self):
         return self.__current_order
 
     def set_current_order(self, new_order):
         self.__current_order = new_order
+
+
+    def send_recentorder(self):
+        return self.__user_order_history
 
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
@@ -203,9 +211,6 @@ class Restaurant:
                 return restaurant.get_restaurant_id()
         return None
 
-    @classmethod
-    def list_restaurants(cls):
-        return cls._instances
 
     def get_food(self, food_name):
         for food in self.__menu:
@@ -380,6 +385,7 @@ kfc_restaurant = Restaurant(
     restaurant_id="1",
     name="KFC",
     menu=[],
+    description="Fast food, Burgers, American",
     score=4.5,
     reviews=[],
     restaurant_image="https://images.unsplash.com/photo-1612170153139-6f881ff067e0?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D"
@@ -394,6 +400,7 @@ kfc_promotion = Promotion(
 dairy_queen_restaurant = Restaurant(
     name="Dairy Queen",
     menu=[],
+    description="Fast food, Burgers, American",
     score=4.2,
     reviews=[],
     restaurant_image="https://s3-ap-southeast-1.amazonaws.com/cdn.dairyqueenthailand.com/images/1670569171.png"
@@ -409,6 +416,7 @@ mc_donald_restaurant = Restaurant(
     restaurant_id="5",
     name="McDonald's",
     menu=[],
+    description="Fast food, Burgers, American",
     score=4.3,
     reviews=[],
     restaurant_image="https://www.shutterstock.com/image-photo/ayutthayathailand-march-7-2018-view-260nw-1181606473.jpg"
@@ -419,6 +427,8 @@ mcd_promotion = Promotion(
     restaurant=mc_donald_restaurant,
     promotion_code="MCD2023",
 )
+
+
 
 user.add_promotion(dq_promotion)
 user.add_promotion(mcd_promotion)
@@ -531,3 +541,10 @@ user._User__carts.append(cart)
 print(f"User {user.get_user_id()} has the following items in their cart:")
 for food in cart.get_foods():
     print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
+
+restaurant_data = [
+    {"name": "ไข่ขนป้า - ลาดกระบัง 46", "description": "อาหารตามสั่ง, ผัดไทย, ส้มตำ", "price": 299, "rating": 4.8, "distance": "5.7 km", "image": "egg.jpeg"},
+]
+
+
+restaurants = [Restaurant.from_data(data) for data in restaurant_data]
