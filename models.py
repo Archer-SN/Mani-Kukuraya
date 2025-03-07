@@ -211,10 +211,7 @@ class Restaurant:
                 return restaurant.get_restaurant_id()
         return None
 
-<<<<<<< HEAD
-=======
 
->>>>>>> refs/remotes/origin/master
     def get_food(self, food_name):
         for food in self.__menu:
             if food.get_name() == food_name:
@@ -388,11 +385,7 @@ kfc_restaurant = Restaurant(
     restaurant_id="1",
     name="KFC",
     menu=[],
-<<<<<<< HEAD
     description="Fast-food chain known for its buckets of fried chicken, plus wings & sides.",
-=======
-    description="Fast food, Burgers, American",
->>>>>>> refs/remotes/origin/master
     score=4.5,
     reviews=[],
     restaurant_image="https://images.unsplash.com/photo-1612170153139-6f881ff067e0?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D"
@@ -407,11 +400,7 @@ kfc_promotion = Promotion(
 dairy_queen_restaurant = Restaurant(
     name="Dairy Queen",
     menu=[],
-<<<<<<< HEAD
     description="Chain of soft-serve ice cream & fast-food restaurants.",
-=======
-    description="Fast food, Burgers, American",
->>>>>>> refs/remotes/origin/master
     score=4.2,
     reviews=[],
     restaurant_image="https://s3-ap-southeast-1.amazonaws.com/cdn.dairyqueenthailand.com/images/1670569171.png"
@@ -427,11 +416,7 @@ mc_donald_restaurant = Restaurant(
     restaurant_id="5",
     name="McDonald's",
     menu=[],
-<<<<<<< HEAD
     description="Fast food chain known for its burgers, fries & shakes.",
-=======
-    description="Fast food, Burgers, American",
->>>>>>> refs/remotes/origin/master
     score=4.3,
     reviews=[],
     restaurant_image="https://www.shutterstock.com/image-photo/ayutthayathailand-march-7-2018-view-260nw-1181606473.jpg"
@@ -454,9 +439,6 @@ Controller = Controller(
     users=[user],
     restaurants=[],
     foods=[]
-<<<<<<< HEAD
-)
-=======
 )
 
 # Create foods for each restaurant
@@ -566,4 +548,3 @@ restaurant_data = [
 
 
 restaurants = [Restaurant.from_data(data) for data in restaurant_data]
->>>>>>> refs/remotes/origin/master

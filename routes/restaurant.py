@@ -2,16 +2,6 @@ from app import *
 from models import *
 from fasthtml.common import *
 
-# Sample food data
-restaurant_data = [
-    {"name": "ไข่ขนป้า - ลาดกระบัง 46", "description": "อาหารตามสั่ง, ผัดไทย, ส้มตำ", "price": 299, "rating": 4.8, "distance": "5.7 km", "image": "egg.jpeg"},
-]
-food_data = [
-    {"name": "กระเพราหมูสับ", "description": "อาหารตามสั่ง", "price": 59, "rating": None, "distance": None, "image": "a.jpg"},
-    {"name": "กระเพราหมูสับ", "description": "อาหารตามสั่ง", "price": 59, "rating": None, "distance": None, "image": "a.jpg"},
-    {"name": "กระเพราหมูสับ", "description": "อาหารตามสั่ง", "price": 59, "rating": None, "distance": None, "image": "a.jpg"}
-]
-
 @app.get("/restaurant/{id:str}")
 def restaurant_view(id: str):
     restaurant = Controller.get_restaurant_by_id(id)
@@ -33,8 +23,14 @@ def restaurant_view(id: str):
         style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 2px solid orange; padding: 20px;",  # Added border, padding, and centered content
         cls="main-food-item-card"
     )
-    print("KUY FORD:")
-    print(food_list)
+
+    # Adding an image button at the top (as requested)
+    img_button = A(
+        Img(src="/static/love.jpeg", alt="Clickable Button", style="width: 50px; height: 50px; border-radius: 10px; margin-right: 150px; margin-top: 20px;"),
+        href="/restaurant/1",  # Define the action when the image is clicked
+        style="position: absolute; top: 10px; right: 10px;"  # Position the image button at the top-right corner of the container
+    )
+
     # Add "For You" section with "+" button to the right for other food items
     for food in restaurant.get_menu():
         food_item = Div(
@@ -80,6 +76,7 @@ def restaurant_view(id: str):
     # Combine all parts into one container
     page_content = Container(
         main_food_card,  # Display main food card with border around it
+        img_button,  # Display the image button
         for_you_section,  # Display the "For You" section with search input and button
         *food_list  # Display other food items with "+" button
     )
