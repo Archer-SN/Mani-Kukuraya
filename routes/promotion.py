@@ -40,5 +40,5 @@ def view_promotion():
 def use_promotion():
     if user.get_current_order() != None:
         return Redirect("/order")
-    return Redirect("/food")
+    return Redirect("/restaurant")
 

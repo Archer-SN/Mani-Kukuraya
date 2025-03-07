@@ -6,7 +6,7 @@ class Controller:
     def __init__(self, users, restaurants, foods):
         self.__users = users
         self.__restaurants = restaurants
-        self.__catagories = [["This is test","https://example.com/image2.jpg"],["This is test2","https://example.com/image2.jpg"],["This is test3","https://example.com/image2.jpg"],["This is test4","https://example.com/image2.jpg"],["This is test5","https://example.com/image2.jpg"],["This is test6","https://example.com/image2.jpg"],["This is test7","https://example.com/image2.jpg"],["This is test8","https://example.com/image2.jpg"],["This is test9","https://example.com/image2.jpg"],["This is test10","https://example.com/image"]]
+        self.__catagories = [["This is test","https://example.com/image2.jpg"]]
         self.__foods = foods
 
     def get_user_by_id(self, user_id):
@@ -19,10 +19,10 @@ class Controller:
             if food.get_food_id() == food_id:
                 return food
     
-    def get_restaurant_by_id(self):
+    def get_restaurant_by_id(self, restaurant_id):
         for restaurant in self.__restaurants:
             if restaurant.get_restaurant_id() == restaurant_id:
-                return restaurants
+                return restaurant
 
 
     def find_food(self):
@@ -147,52 +147,18 @@ class Review:
         self.__comment = comment
         self.__stars = stars
 
-import uuid
-
 class Restaurant:
-    def __init__(self, name, menu, score, reviews, restaurant_image):
-        self.__restaurant_id = uuid.uuid4()
+    def __init__(self, name, menu, score, reviews, restaurant_image, description="", id=uuid.uuid4()):
+        self.__restaurant_id = id
         self.__name = name
         self.__menu = menu
         self.__score = score
         self.__reviews = reviews
         self.__restaurant_image = restaurant_image
+        self.__description = description
 
     def get_restaurant_id(self):
-        return str(self.__restaurant_id)
-
-    def get_name(self):
-        return self.__name
-
-    def get_menu(self):
-        return self.__menu
-
-    def get_score(self):
-        return self.__score
-
-    def get_reviews(self):
-        return self.__reviews
-
-    def get_restaurant_image(self):
-        return self.__restaurant_image
-
-    @classmethod
-    def from_data(cls, data):
-            return cls(
-                name=data["name"],
-                menu=data.get("menu", []),
-                score=data.get("score", 0),
-                reviews=data.get("reviews", []),
-                restaurant_image=data.get("image", "")
-            )
-
-    @staticmethod
-    def find_restaurant_id_by_name(restaurants, restaurant_name):
-        for restaurant in restaurants:
-            if restaurant.get_name() == restaurant_name:
-                return restaurant.get_restaurant_id()
-        return None
-
+        return self.__restaurant_id
 
     def get_food(self, food_name):
         for food in self.__menu:
@@ -202,50 +168,39 @@ class Restaurant:
     def get_image(self):
         return self.__restaurant_image
 
+    def get_description(self):
+        return self.__description
+    
+    def get_name(self):
+        return self.__name
+
+    def get_score(self):
+        return self.__score
+
 
 class Food:
-    def __init__(self, name, description, price, category, food_image):
-        self.__food_id = uuid.uuid4()
+    def __init__(self, food_id, name, description, price, category, food_image):
+        self.__food_id = food_id
         self.__name = name    
         self.__description = description 
         self.__price = price     
         self.__category = category
         self.__food_image = food_image
     
-    def get_food_id(self):
-        return str(self.__food_id)
-
     def get_name(self):
         return self.__name
-
-    def get_description(self):
-        return self.__description
 
     def get_price(self):
         return self.__price
 
-    def get_category(self):
-        return self.__category
-
-    def get_food_image(self):
-        return self.__food_image
-
+    def get_description(self):
+        return
 
 class FoodOption:
     def __init__(self, option_name, choices, max_selection):
         self.__option_name = option_name
         self.__choices = choices
         self.__max_selection = max_selection
-
-    def get_option_name(self):
-        return self.__option_name
-
-    def get_choices(self):
-        return self.__choices
-
-    def get_max_selection(self):
-        return self.__max_selection
-
 
 class OptionChoice:
     def __init__(self, option, choice, choices_value, price):
@@ -255,61 +210,25 @@ class OptionChoice:
         self.__price = price
 
 
-    def get_choice(self):
-        return self.__choice
-
-    def get_option(self):
-        return self.__option
-
-
-class SelectedFoodOption:
-    def __init__(self, option, selected_choices=None):
-        if selected_choices is None:
-            selected_choices = []
+class SelectedFoodOption():
+    def __init__(self, option, selected_choices=[]):
         self.__option = option
         self.__selected_choices = selected_choices
 
-    def select_choice(self, choice):
-        if len(self.__selected_choices) < self.__option.get_max_selection():
-            self.__selected_choices.append(choice)
-        else:
-            raise ValueError(f"Cannot select more than {self.__option.get_max_selection()} choices for {self.__option.get_option_name()}")
-
-    def get_selected_choices(self):
-        return self.__selected_choices
+    def select_choice(self):
+        pass
 
 
 class SelectedFood:
-    def __init__(self, food, selected_options, quantity, comment_text=""):
-        self.__selected_food_id = uuid.uuid4()
+    def __init__(self, selected_food_id, food, option, choice, quantity):
+        self.__selected_food_id = selected_food_id
         self.__food = food
-        self.__selected_options = selected_options
+        self.__option = option
+        self.__choice = choice
         self.__quantity = quantity
-        self.__comment_text = comment_text
 
-    def get_selected_food_id(self):
-        return str(self.__selected_food_id)
-
-    def get_food(self):
-        return self.__food
-
-    def get_selected_options(self):
-        return self.__selected_options
-
-    def get_quantity(self):
-        return self.__quantity
-
-    def get_comment_text(self):
-        return self.__comment_text
-
-    def calculate_price(self):
-        total_price = self.__food.get_price() * self.__quantity
-
-        for selected_option in self.__selected_options:
-            for choice in selected_option.get_selected_choices():
-                total_price += choice.get_price()
-
-        return total_price
+    def calculate_price():
+        return 
 
 class Cart:
     def __init__(self, cart_id, restaurants, selected_foods,restaurant_id):
@@ -404,6 +323,7 @@ user = User(
 )
 
 kfc_restaurant = Restaurant(
+    id=1,
     name="KFC",
     menu=[],
     score=4.5,
@@ -432,6 +352,7 @@ dq_promotion = Promotion(
 )
 
 mc_donald_restaurant = Restaurant(
+    id=5,
     name="McDonald's",
     menu=[],
     score=4.3,
@@ -455,8 +376,96 @@ Controller = Controller(
     restaurants=[],
     foods=[]
 )
-restaurant_data = [
-    {"name": "ไข่ขนป้า - ลาดกระบัง 46", "description": "อาหารตามสั่ง, ผัดไทย, ส้มตำ", "price": 299, "rating": 4.8, "distance": "5.7 km", "image": "egg.jpeg"},
-]
 
-restaurants = [Restaurant.from_data(data) for data in restaurant_data]
+# Create foods for each restaurant
+kfc_food1 = Food(
+    food_id=1,
+    name="Fried Chicken",
+    description="Crispy fried chicken",
+    price=5.99,
+    category="Main Course",
+    food_image="https://example.com/fried_chicken.jpg"
+)
+
+kfc_food2 = Food(
+    food_id=2,
+    name="Chicken Burger",
+    description="Delicious chicken burger",
+    price=4.99,
+    category="Main Course",
+    food_image="https://example.com/chicken_burger.jpg"
+)
+
+dq_food1 = Food(
+    food_id=3,
+    name="Blizzard",
+    description="Ice cream with mix-ins",
+    price=3.99,
+    category="Dessert",
+    food_image="https://example.com/blizzard.jpg"
+)
+
+dq_food2 = Food(
+    food_id=4,
+    name="Sundae",
+    description="Ice cream sundae",
+    price=2.99,
+    category="Dessert",
+    food_image="https://example.com/sundae.jpg"
+)
+
+mcd_food1 = Food(
+    food_id=5,
+    name="Big Mac",
+    description="Classic Big Mac burger",
+    price=5.49,
+    category="Main Course",
+    food_image="https://example.com/big_mac.jpg"
+)
+
+mcd_food2 = Food(
+    food_id=6,
+    name="French Fries",
+    description="Crispy french fries",
+    price=2.49,
+    category="Side",
+    food_image="https://example.com/french_fries.jpg"
+)
+
+# Add foods to the restaurants' menus
+kfc_restaurant._Restaurant__menu.extend([kfc_food1, kfc_food2])
+dairy_queen_restaurant._Restaurant__menu.extend([dq_food1, dq_food2])
+mc_donald_restaurant._Restaurant__menu.extend([mcd_food1, mcd_food2])
+
+# Add restaurants to the controller
+Controller._Controller__restaurants.extend([kfc_restaurant, dairy_queen_restaurant, mc_donald_restaurant])
+
+# Add foods to the controller
+Controller._Controller__foods.extend([kfc_food1, kfc_food2, dq_food1, dq_food2, mcd_food1, mcd_food2])
+
+# Create a cart for the user
+cart = Cart(
+    cart_id=uuid.uuid4(),
+    restaurants=[kfc_restaurant],
+    selected_foods=[],
+    restaurant_id=kfc_restaurant.get_restaurant_id()
+)
+
+# Add food to the cart
+selected_food = SelectedFood(
+    selected_food_id=uuid.uuid4(),
+    food=kfc_food1,
+    option=None,
+    choice=None,
+    quantity=2
+)
+
+cart.add_to_cart(selected_food)
+
+# Add the cart to the user's carts
+user._User__carts.append(cart)
+
+# Print the cart details
+print(f"User {user.get_user_id()} has the following items in their cart:")
+for food in cart.get_foods():
+    print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")

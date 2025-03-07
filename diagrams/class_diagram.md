@@ -18,12 +18,16 @@ class Restaurant {
     - score
     - reviews
     - restaurant_image
+    - description
     + get_restaurant_id()
     + get_restaurant_share()
     + get_food(food_name)
     + get_image()
     + get_score()
     + get_reviews()
+    + get_description()
+    + get_name()
+    + get_score()
 }
 
 class User {
@@ -61,6 +65,8 @@ class Food {
     - price
     - food_image
     + get_name()
+    + get_price()
+    + get_description()
 }
 
 class FoodOption {
