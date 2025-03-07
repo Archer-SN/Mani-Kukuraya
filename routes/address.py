@@ -33,7 +33,7 @@ def address_view():
     return Titled(
         "เพิ่มที่อยู่ใหม่",
         Div(
-            A("⬅ กลับ", href ="/selectedFood", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+            A("⬅ กลับ", href ="/profile", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
             style="position: absolute; top: 10px; left: 10px;"
     
         ),
