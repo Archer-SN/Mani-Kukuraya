@@ -31,7 +31,7 @@ class User:
         self.__username = username
         self.__password = password
         self.__carts = carts
-        self.__locations = locations
+        self.__locations = []
         self.__user_order_history = user_order_history
         self.__promotions = promotions
         self.__reviews = reviews
@@ -62,6 +62,12 @@ class User:
     def use_promotion(self, promotion):
         self.__promotions.remove(promotion)
 
+    def add_location(self, location) :
+        if isinstance(location, Location) :
+            self.__locations.append(location)
+        else :
+            return "Error Object only"
+
 class Promotion:
     def __init__(self, name, restaurant, promotion_code, image):
         self.__name = name
@@ -72,11 +78,36 @@ class Promotion:
         return ""
 
 class Location:
-    def __init__(self, phone_number, location_name, address, note):
+    def __init__(self, phone_number, address,unit, extra_information) :
         self.__phone_number = phone_number
-        self.__location_name = location_name
         self.__address = address
-        self.__note = note
+        self.__unit = unit
+        self.__extra_information = extra_information
+
+    @property
+    def phone_number(self) :
+        return self.__phone_number
+    
+    @property
+    def address(self) :
+        return self.__address
+    
+    @property
+    def unit(self) :
+        return self.__unit
+    
+    @property 
+    def note(self) :
+        return self.__note
+    
+    def __str__(self):
+        return f"{self.__phone_number} {self.__address} {self.__unit} {self.__extra_information}"
+    
+    def to_list (self) :
+        return [self.__phone_number, self.__address, self.__unit , self.__extra_information]
+    
+
+
 
 class UserOrder:
     def __init__(self, id, status, restaurant, foods):
