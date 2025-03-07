@@ -12,8 +12,8 @@ food_data = [
     {"name": "กระเพราหมูสับ", "description": "อาหารตามสั่ง", "price": 59, "rating": None, "distance": None, "image": "a.jpg"}
 ]
 
-@app.get("/restaurant/{id:int}")
-def get(id: int):
+@app.get("/restaurant/{id:str}")
+def get(id: str):
     restaurant = Controller.get_restaurant_by_id(id)
     # Container to hold all food items
     food_list = restaurant.get_menu()

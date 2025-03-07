@@ -28,6 +28,7 @@ class Restaurant {
     + get_description()
     + get_name()
     + get_score()
+    + get_menu()
 }
 
 class User {
@@ -67,6 +68,7 @@ class Food {
     + get_name()
     + get_price()
     + get_description()
+    + get_image()
 }
 
 class FoodOption {

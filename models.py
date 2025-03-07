@@ -9,6 +9,15 @@ class Controller:
         self.__catagories = [["This is test","https://example.com/image2.jpg"]]
         self.__foods = foods
 
+    def add_restaurant(self, restaurant):
+        self.__restaurants.append(restaurant)
+
+    def add_user(self, user):
+        self.__users.append(user)
+
+    def add_food(self, food):
+        self.__foods.append(food)
+
     def get_user_by_id(self, user_id):
         for user in self.__users:
             if user.get_user_id() == user_id:
@@ -21,7 +30,7 @@ class Controller:
     
     def get_restaurant_by_id(self, restaurant_id):
         for restaurant in self.__restaurants:
-            if restaurant.get_restaurant_id() == restaurant_id:
+            if restaurant.get_restaurant_id() == str(restaurant_id):
                 return restaurant
 
 
@@ -33,7 +42,7 @@ class Controller:
 
     
 class User:
-    def __init__(self, user_id, name, username, password, carts=[], locations=[], user_order_history=[], promotions=[], reviews=[]):
+    def __init__(self, user_id: str, name, username, password, carts=[], locations=[], user_order_history=[], promotions=[], reviews=[]):
         self.__user_id = user_id
         self.__name = name
         self.__username = username
@@ -177,6 +186,11 @@ class Restaurant:
     def get_score(self):
         return self.__score
 
+    def get_menu(self):
+        return self.__menu
+
+    def add_food(self, food):
+        self.__menu.append(food)
 
 class Food:
     def __init__(self, food_id, name, description, price, category, food_image):
@@ -195,6 +209,9 @@ class Food:
 
     def get_description(self):
         return
+
+    def get_image(self):
+        return self.__food_image
 
 class FoodOption:
     def __init__(self, option_name, choices, max_selection):
@@ -238,13 +255,13 @@ class Cart:
         self.__status = 'open'
 
     def get_foods(self):
-        return self.__foods
+        return self.__selected_foods
 
     def add_to_cart(self, food):
-        self.__foods.append(food)
+        self.__selected_foods.append(food)
 
     def delete_from_cart(self, food):
-        self.__foods.remove(food)
+        self.__selected_foods.remove(food)
 
     def calculate_price(self):
         total_price = 0
@@ -309,9 +326,8 @@ class Order:
     def create_user_order(self):
         pass
 
-
 user = User(
-    user_id=1,
+    user_id="1",
     name="Yokphon ",
     username="foshforce",
     password="password123",
@@ -323,7 +339,7 @@ user = User(
 )
 
 kfc_restaurant = Restaurant(
-    id=1,
+    id="1",
     name="KFC",
     menu=[],
     score=4.5,
@@ -352,7 +368,7 @@ dq_promotion = Promotion(
 )
 
 mc_donald_restaurant = Restaurant(
-    id=5,
+    id="5",
     name="McDonald's",
     menu=[],
     score=4.3,
@@ -379,7 +395,7 @@ Controller = Controller(
 
 # Create foods for each restaurant
 kfc_food1 = Food(
-    food_id=1,
+    food_id="1",
     name="Fried Chicken",
     description="Crispy fried chicken",
     price=5.99,
@@ -388,7 +404,7 @@ kfc_food1 = Food(
 )
 
 kfc_food2 = Food(
-    food_id=2,
+    food_id="2",
     name="Chicken Burger",
     description="Delicious chicken burger",
     price=4.99,
@@ -397,7 +413,7 @@ kfc_food2 = Food(
 )
 
 dq_food1 = Food(
-    food_id=3,
+    food_id="3",
     name="Blizzard",
     description="Ice cream with mix-ins",
     price=3.99,
@@ -406,7 +422,7 @@ dq_food1 = Food(
 )
 
 dq_food2 = Food(
-    food_id=4,
+    food_id="4",
     name="Sundae",
     description="Ice cream sundae",
     price=2.99,
@@ -415,7 +431,7 @@ dq_food2 = Food(
 )
 
 mcd_food1 = Food(
-    food_id=5,
+    food_id="5",
     name="Big Mac",
     description="Classic Big Mac burger",
     price=5.49,
@@ -424,7 +440,7 @@ mcd_food1 = Food(
 )
 
 mcd_food2 = Food(
-    food_id=6,
+    food_id="6",
     name="French Fries",
     description="Crispy french fries",
     price=2.49,
@@ -432,16 +448,24 @@ mcd_food2 = Food(
     food_image="https://example.com/french_fries.jpg"
 )
 
-# Add foods to the restaurants' menus
-kfc_restaurant._Restaurant__menu.extend([kfc_food1, kfc_food2])
-dairy_queen_restaurant._Restaurant__menu.extend([dq_food1, dq_food2])
-mc_donald_restaurant._Restaurant__menu.extend([mcd_food1, mcd_food2])
+# Add foods to each restaurant
+kfc_restaurant.add_food(kfc_food1)
+kfc_restaurant.add_food(kfc_food2)
+
+dairy_queen_restaurant.add_food(dq_food1)
+dairy_queen_restaurant.add_food(dq_food2)
+
+mc_donald_restaurant.add_food(mcd_food1)
+mc_donald_restaurant.add_food(mcd_food2)
 
 # Add restaurants to the controller
-Controller._Controller__restaurants.extend([kfc_restaurant, dairy_queen_restaurant, mc_donald_restaurant])
+Controller.add_restaurant(kfc_restaurant)
+Controller.add_restaurant(dairy_queen_restaurant)
+Controller.add_restaurant(mc_donald_restaurant)
 
-# Add foods to the controller
-Controller._Controller__foods.extend([kfc_food1, kfc_food2, dq_food1, dq_food2, mcd_food1, mcd_food2])
+# Get KFC restaurant from the controller
+kfc_restaurant_from_controller = Controller.get_restaurant_by_id(1)
+print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
 
 # Create a cart for the user
 cart = Cart(
