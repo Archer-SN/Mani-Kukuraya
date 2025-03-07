@@ -6,7 +6,7 @@ from lucide_fasthtml import Lucide
 
 @app.get("/order")
 def view_order():
-    order = Order(user, )
+    
     
     location = Card(
         P(B("ตึก ECC ลองกรุง 1 เฟส 5"), style="margin: 0;"),
@@ -98,7 +98,6 @@ def view_order():
 
 @app.post("/order")
 def create_order():
-    order = Order(user_kaka, kfc_cart, home, saver_delivery, cash_payment, kfc_promotion)
-    print(order)
+    
     return Redirect("/order_confirmation")
 
