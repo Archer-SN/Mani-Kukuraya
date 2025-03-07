@@ -1,5 +1,5 @@
 
-```mermaid
+<!-- ```mermaid -->
 classDiagram
 
 class Controller {
@@ -18,8 +18,12 @@ class Restaurant {
     - score
     - reviews
     - restaurant_image
+    + get_restaurant_id()
     + get_restaurant_share()
     + get_food(food_name)
+    + get_image()
+    + get_score()
+    + get_reviews()
 }
 
 class User {
@@ -48,9 +52,14 @@ class User {
 
 
 class Food {
+    - food_id
+    - name
     - options
-    - type
+    - category
+    - description
+    - price
     - food_image
+    + get_name()
 }
 
 class FoodOption {
@@ -75,6 +84,7 @@ class SelectedFood {
     - food
     - requirement
     - selected_options
+    - comment
     + select_option()
     + calculate_price()
 
@@ -94,6 +104,9 @@ class Promotion {
     - name
     - restaurant
     - promotion_code
+    + get_image()
+    + get_promotion_code()
+    + get_name()
 }
 
 class Payment {

@@ -8,7 +8,7 @@ def ShowHomepage():
     catagory_element = [
         A(
             Img(src="catagory[img]",alt="catagory[name]",style="width:100%;height:100%;"
-                ,herf="catagory[herf]",style="display:block; text-align:center;"),
+                ,href="catagory[herf]"),
         )
         for category in catagories
     ]

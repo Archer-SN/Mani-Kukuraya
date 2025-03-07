@@ -87,6 +87,9 @@ class Promotion:
     def get_name(self):
         return self.__name
 
+    def get_image(self):
+        return self.__restaurant.get_image()
+
     def get_promotion_code(self):
         return self.__promotion_code
 
@@ -148,6 +151,15 @@ class Restaurant:
     def get_restaurant_id(self):
         return self.__restaurant_id
 
+    def get_food(self, food_name):
+        for food in self.__menu:
+            if food.get_name() == food_name:
+                return food
+
+    def get_image(self):
+        return self.__restaurant_image
+
+
 class Food:
     def __init__(self, food_id, name, description, price, category, food_image):
         self.__food_id = food_id
@@ -173,13 +185,6 @@ class OptionChoice:
         self.__choices_value = choices_value
         self.__price = price
 
-class FoodComment:
-    def __init__(self, comment_id, food, user, rating, comment_text):
-        self.__comment_id = comment_id
-        self.__food = food
-        self.__user = user
-        self.__rating = rating
-        self.__comment_text = comment_text
 
 class SelectedFoodOption():
     def __init__(self, option, selected_choices=[]):

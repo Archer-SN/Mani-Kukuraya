@@ -18,12 +18,12 @@ def view_promotion():
             *[
                 Article(
                     Div(
-                        Img(src=promotion["image"], cls="avatar"),
+                        Img(src=promotion.get_image(), cls="avatar"),
                         Div(
                             Span("Just for you", cls="badge"),
                             Hgroup(
-                                H3(promotion["title"]),
-                                P(f"#Code {promotion['code']}"),
+                                H3(promotion.get_name()),
+                                P(f"#Code {promotion.get_promotion_code()}"),
                             )
                         ),
                         A("Use Now", hx_post="/promotion", cls="contrast button"),
