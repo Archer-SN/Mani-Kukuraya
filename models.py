@@ -34,7 +34,6 @@ class Controller:
             if restaurant.get_restaurant_id() == str(restaurant_id):
                 return restaurant
 
-
     def find_food(self):
         pass
     def get_catagories(self):
@@ -45,16 +44,22 @@ class Controller:
 
     
 class User:
-    def __init__(self, user_id: str, name, username, password, carts=[], locations=[], user_order_history=[], promotions=[], reviews=[]):
+    def __init__(self, user_id: str, name, username, password, carts=[], locations=[], user_order_history=[], promotions=[], reviews=[], favorites=[]):
         self.__user_id = user_id
         self.__name = name
         self.__username = username
         self.__password = password
         self.__carts = carts
+<<<<<<< HEAD
         self.__locations = []
         self.__user_order_history = []
+=======
+        self.__locations = locations
+        self.__user_order_history = user_order_history
+>>>>>>> 393260a21d6a0e6945094c96816235aeccaa05d3
         self.__promotions = promotions
         self.__reviews = reviews
+        self.__favorites = favorites
         self.__current_order = None
 
     def set_username(self, new_username):
@@ -119,6 +124,8 @@ class User:
     def password (self) :
         return self.__password
 
+    def get_locations(self):
+        return self.__locations
 
     def get_current_order(self):
         return self.__current_order
@@ -129,6 +136,17 @@ class User:
 
     def send_recentorder(self):
         return self.__user_order_history
+
+    def add_cart(self, new_cart):
+        self.__carts.append(new_cart)
+
+    def get_carts(self):
+        return self.__carts
+    def add_favorite(self, restaurant):
+        self.__favorites.append(restaurant)
+
+    def remove_favorite(self, restaurant):
+        self.__favorites.remove(restaurant)
 
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
@@ -208,7 +226,11 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
+<<<<<<< HEAD
     def __init__(self, name="", menu=[], description="", score=0, reviews=[], restaurant_image="", restaurant_id=uuid.uuid4()):
+=======
+    def __init__(self, name, menu, score, reviews, restaurant_image, description="", restaurant_id=uuid.uuid4().hex):
+>>>>>>> 393260a21d6a0e6945094c96816235aeccaa05d3
         self.__restaurant_id = restaurant_id
         self.__name = name
         self.__menu = menu
@@ -334,11 +356,24 @@ class SelectedFood:
         self.__choice = choice
         self.__quantity = quantity
 
-    def calculate_price():
-        return 
+    def get_quantity(self):
+        return self.__quantity
+    
+    def get_name(self):
+        return self.__food.get_name()
+
+    def calculate_price(self):
+        total_price = self.__food.get_price()
+
+
+        return total_price * self.__quantity
 
 class Cart:
+<<<<<<< HEAD
     def __init__(self, cart_id, restaurants, selected_foods,restaurant):
+=======
+    def __init__(self, cart_id, restaurant : Restaurant, selected_foods):
+>>>>>>> 393260a21d6a0e6945094c96816235aeccaa05d3
         self.__cart_id = cart_id
         self.__restaurant = restaurant
         self.__selected_foods = selected_foods
@@ -352,6 +387,9 @@ class Cart:
 
     def delete_from_cart(self, food):
         self.__selected_foods.remove(food)
+
+    def get_cart_items(self):
+        return self.__selected_foods
 
     def calculate_price(self):
         total_price = 0
@@ -415,10 +453,17 @@ class Order:
         pass
 
 user = User(
+<<<<<<< HEAD
     user_id= 67010751 ,
     name="Yokphon Ninbarun",
     username="ForceFord",
     password="911",
+=======
+    user_id="1",
+    name="Yokphon ",
+    username="foshforce",
+    password="password123",
+>>>>>>> 393260a21d6a0e6945094c96816235aeccaa05d3
     carts=[],
     locations=[],
     user_order_history=[],
@@ -480,7 +525,7 @@ user.add_promotion(mcd_promotion)
 
 user.add_promotion(kfc_promotion)
 
-Controller = Controller(
+controller = Controller(
     users=[user],
     restaurants=[],
     foods=[]
@@ -552,9 +597,9 @@ mc_donald_restaurant.add_food(mcd_food1)
 mc_donald_restaurant.add_food(mcd_food2)
 
 # Add restaurants to the controller
-Controller.add_restaurant(kfc_restaurant)
-Controller.add_restaurant(dairy_queen_restaurant)
-Controller.add_restaurant(mc_donald_restaurant)
+controller.add_restaurant(kfc_restaurant)
+controller.add_restaurant(dairy_queen_restaurant)
+controller.add_restaurant(mc_donald_restaurant)
 
 # Create food options for Dairy Queen ice cream
 dq_option_toppings = FoodOption(
@@ -632,16 +677,24 @@ dq_food1.selected_options = dq_food1_options
 dq_food2.selected_options = dq_food2_options
 
 # Get KFC restaurant from the controller
-kfc_restaurant_from_controller = Controller.get_restaurant_by_id(1)
+kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
 print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
 
 # Create a cart for the user
+<<<<<<< HEAD
 # cart = Cart(
 #     cart_id=uuid.uuid4(),
 #     restaurants=[kfc_restaurant],
 #     selected_foods=[],
 #     restaurants=kfc_restaurant
 # )
+=======
+cart = Cart(
+    cart_id=uuid.uuid4(),
+    restaurant=kfc_restaurant,
+    selected_foods=[],
+)
+>>>>>>> 393260a21d6a0e6945094c96816235aeccaa05d3
 
 # Add food to the cart
 # selected_food = SelectedFood(
@@ -654,6 +707,7 @@ print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
 
 # cart.add_to_cart(selected_food)
 
+<<<<<<< HEAD
 # # Add the cart to the user's carts
 # user._User__carts.append(cart)
 
@@ -661,3 +715,29 @@ print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
 # print(f"User {user.get_user_id()} has the following items in their cart:")
 # for food in cart.get_foods():
 #     print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
+=======
+# Add the cart to the user's carts
+user.add_cart(cart)
+# Print the cart details
+print(f"User {user.get_user_id()} has the following items in their cart:")
+for food in cart.get_foods():
+    print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
+
+# Create a location for the user
+location = Location(
+    full_name="John Doe",
+    phone_number="1234567890",
+    address="123 Main St",
+    street="Main St",
+    unit="Apt 1",
+    extra_information="Near the park"
+)
+
+# Add the location to the user's locations
+user.add_location(location)
+
+# Print the user's locations
+print(f"User {user.get_user_id()} has the following locations:")
+for loc in user.get_locations():
+    print(f"- {loc.full_name}, {loc.address}, {loc.street}, {loc.unit}, {loc.extra_information}")
+>>>>>>> 393260a21d6a0e6945094c96816235aeccaa05d3

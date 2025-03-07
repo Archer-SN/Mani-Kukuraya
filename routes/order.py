@@ -6,11 +6,9 @@ from lucide_fasthtml import Lucide
 
 @app.get("/order")
 def view_order():
-    
-    
+    loc = user.get_locations()[0]
     location = Card(
-        P(B("ตึก ECC ลองกรุง 1 เฟส 5"), style="margin: 0;"),
-        P("ลองกรุง แขวงลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร", cls="text-muted"),
+        f"- {loc.full_name}, {loc.address}, {loc.street}, {loc.unit}, {loc.extra_information}",
         cls="grid-item"
     )
 
@@ -32,17 +30,21 @@ def view_order():
         Div(P("Selected: Saver (35 นาที - ฟรี)"), id="delivery-summary"),  # Display selection dynamically
         cls="grid-item"
     )
+    cart = user.get_carts()[0]
+    cart_items = cart.get_cart_items()
+    order_summary_items = [
+        P(f"{item.get_quantity()}x {item.get_name()}", B(f"{item.calculate_price()} บาท"))
+        for item in cart_items
+    ]
 
     order_summary = Card(
         H4("สรุปคำสั่งซื้อ"),
-        P("1x กระเพราหมูสับ", B("99 บาท")),
-        P(Small("ไม่เผ็ด • พิเศษ • เพิ่มขนม")),
+        *order_summary_items,
         cls="grid-item"
     )
-
     total_cost = Card(
         H4("รวมทั้งหมด"),
-        P(B("113 บาท"), style="font-size:1.5rem; color:#FF6240;"),
+        P(B(cart.calculate_price(), " บาท"), style="font-size:1.5rem; color:#FF6240;"),
         cls="grid-item"
     )
 
