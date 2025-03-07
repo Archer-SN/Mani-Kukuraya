@@ -37,7 +37,7 @@ class Controller:
 
     def find_food(self):
         pass
-    def get_numbers_catagories(self):
+    def get_catagories(self):
         return self.__catagories
     def get_recommended_food(self):
         return self.__recommended_food
@@ -91,8 +91,18 @@ class User:
             self.__locations.append(location)
         else :
             return "Error Object only"
+
+
+    def get_current_order(self):
+        return self.__current_order
+
+    def set_current_order(self, new_order):
+        self.__current_order = new_order
+
+
     def send_recentorder(self):
         return self.__user_order_history
+
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
         self.__name = name
@@ -201,9 +211,6 @@ class Restaurant:
                 return restaurant.get_restaurant_id()
         return None
 
-    @classmethod
-    def list_restaurants(cls):
-        return cls._instances
 
     def get_food(self, food_name):
         for food in self.__menu:
@@ -378,6 +385,7 @@ kfc_restaurant = Restaurant(
     id="1",
     name="KFC",
     menu=[],
+    description="Fast food, Burgers, American",
     score=4.5,
     reviews=[],
     restaurant_image="https://images.unsplash.com/photo-1612170153139-6f881ff067e0?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D"
@@ -392,6 +400,7 @@ kfc_promotion = Promotion(
 dairy_queen_restaurant = Restaurant(
     name="Dairy Queen",
     menu=[],
+    description="Fast food, Burgers, American",
     score=4.2,
     reviews=[],
     restaurant_image="https://s3-ap-southeast-1.amazonaws.com/cdn.dairyqueenthailand.com/images/1670569171.png"
@@ -407,6 +416,7 @@ mc_donald_restaurant = Restaurant(
     id="5",
     name="McDonald's",
     menu=[],
+    description="Fast food, Burgers, American",
     score=4.3,
     reviews=[],
     restaurant_image="https://www.shutterstock.com/image-photo/ayutthayathailand-march-7-2018-view-260nw-1181606473.jpg"
@@ -417,6 +427,8 @@ mcd_promotion = Promotion(
     restaurant=mc_donald_restaurant,
     promotion_code="MCD2023",
 )
+
+
 
 user.add_promotion(dq_promotion)
 user.add_promotion(mcd_promotion)

@@ -74,7 +74,7 @@ def ShowHomepage():
     # ]
 
     
-    #Recommended food
+    # Recommended food
     recommended_food = Controller.get_recommended_food()
     recommended_food_element = [
         Div(
@@ -97,7 +97,7 @@ def ShowHomepage():
     return Container(
         navbar,  # Add the navigation bar at the top
         Div(
-            search_bar_element
+        search_bar_element
         ),
         Div(
 
