@@ -24,13 +24,12 @@ class Controller:
             if restaurant.get_restaurant_id() == restaurant_id:
                 return restaurant
 
-<<<<<<< HEAD
-=======
+
     def find_food(self):
         pass
     def Howmanycatagory(self):
         return len(self.__catagories)
->>>>>>> c053bdd (Homepage test)
+
     
 class User:
     def __init__(self, user_id, name, username, password, carts=[], locations=[], user_order_history=[], promotions=[], reviews=[]):
@@ -150,11 +149,10 @@ class Food:
         self.__description = description 
         self.__price = price     
         self.__category = category
-<<<<<<< HEAD
+
         self.__food_image = food_image
-=======
     
->>>>>>> c053bdd (Homepage test)
+
 
 class FoodOption:
     def __init__(self, option, choice, max_selection, food):
