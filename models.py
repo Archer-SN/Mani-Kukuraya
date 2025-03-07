@@ -157,8 +157,8 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
-    def __init__(self, name, menu, description, score, reviews, restaurant_image):
-        self.__restaurant_id = uuid.uuid4()
+    def __init__(self, name="", menu=[], description="", score=0, reviews=[], restaurant_image="", restaurant_id=uuid.uuid4()):
+        self.__restaurant_id = restaurant_id
         self.__name = name
         self.__menu = menu
         self.__description = description
@@ -377,7 +377,7 @@ user = User(
 )
 
 kfc_restaurant = Restaurant(
-    id="1",
+    restaurant_id="1",
     name="KFC",
     menu=[],
     score=4.5,
@@ -406,7 +406,7 @@ dq_promotion = Promotion(
 )
 
 mc_donald_restaurant = Restaurant(
-    id="5",
+    restaurant_id="5",
     name="McDonald's",
     menu=[],
     score=4.3,

@@ -15,6 +15,7 @@ food_data = [
 @app.get("/restaurant/{id:str}")
 def get(id: str):
     restaurant = Controller.get_restaurant_by_id(id)
+    print("Nigga" + restaurant.get_name())
     # Container to hold all food items
     food_list = restaurant.get_menu()
 
