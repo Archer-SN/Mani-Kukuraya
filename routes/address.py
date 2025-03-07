@@ -42,9 +42,11 @@ def address_view():
 
 @app.post("/submit-address")
 def submit_address(full_name: str, phone: str, location: str, street: str, unit: str = "", extra_info: str = ""):
-    print(f"ข้อมูลที่ได้รับ: {full_name}, {phone}, {location}, {street}, {unit}, {extra_info}")  
 
     if not full_name or not phone or not location or not street:
         return Span("กรุณากรอกข้อมูลให้ครบถ้วน", cls="error")
-    return Response(headers={"HX-Redirect": "/address"})
+    else :
+        print(user.add_location(Location(full_name, phone, location, street, unit, extra_info)))
+    
+    return Response(headers={"HX-Redirect": "/locations"})
 

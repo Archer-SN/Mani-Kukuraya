@@ -51,8 +51,13 @@ class User:
         self.__username = username
         self.__password = password
         self.__carts = carts
+<<<<<<< HEAD
+        self.__locations = locations
+        self.__user_order_history = user_order_history
+=======
         self.__locations = []
         self.__user_order_history = []
+>>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__promotions = promotions
         self.__reviews = reviews
         self.__current_order = None
@@ -60,12 +65,15 @@ class User:
     def set_username(self, new_username):
         self.__username = new_username
 
+    def set_name(self, new_name) :
+        self.__name = new_name
+
     def set_password(self, new_password: int):
         self.__password = new_password
 
     def get_user_id(self):
         return self.__user_id
-
+    
     def get_promotions(self):
         return self.__promotions
 
@@ -86,11 +94,37 @@ class User:
     def use_promotion(self, promotion):
         self.__promotions.remove(promotion)
 
-    def add_location(self, location) :
-        if isinstance(location, Location) :
-            self.__locations.append(location)
-        else :
-            return "Error Object only"
+    def add_location(self, location):
+        if isinstance(location, Location): 
+            self.__locations.append(location) 
+            return "Add Location Success"
+        return "Error: Object only"
+        
+    def get_locations(self):
+        if not self.__locations:
+            return "No Locations Save"
+        return  self.__locations
+    
+    def get_location_by_id(self, location_id):
+        for location in self.__locations:
+            print("1")
+            print(location.id)
+            print("2")
+            print(location_id)
+            if location.id == location_id:
+                return location
+    
+    @classmethod
+    def get_current_user(cls):
+        return cls.onlyuser
+    
+    @property
+    def name(self):
+        return self.__name
+    
+    @property
+    def password (self) :
+        return self.__password
 
     def get_locations(self):
         return self.__locations
@@ -121,34 +155,42 @@ class Promotion:
         return self.__promotion_code
 
 class Location:
-    def __init__(self, phone_number, address,unit, extra_information) :
+    def __init__(self, full_name="", phone_number="", address="",street="",unit="", extra_information="") :
+        self.__id = uuid.uuid4().hex
+        self.__full_name = full_name
         self.__phone_number = phone_number
         self.__address = address
+        self.__street = street
         self.__unit = unit
         self.__extra_information = extra_information
 
     @property
-    def phone_number(self) :
-        return self.__phone_number
-    
+    def id(self):
+        return self.__id     
+
     @property
-    def address(self) :
+    def full_name(self):
+        return self.__full_name
+
+    @property
+    def phone_number(self):
+        return self.__phone_number
+
+    @property
+    def address(self):
         return self.__address
     
     @property
-    def unit(self) :
+    def street(self):
+        return self.__street
+
+    @property
+    def unit(self):
         return self.__unit
-    
-    @property 
-    def note(self) :
-        return self.__note
-    
-    def __str__(self):
-        return f"{self.__phone_number} {self.__address} {self.__unit} {self.__extra_information}"
-    
-    def to_list (self) :
-        return [self.__phone_number, self.__address, self.__unit , self.__extra_information]
-    
+
+    @property
+    def extra_information(self):  
+        return self.__extra_information
 
 
 
@@ -167,8 +209,13 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
+<<<<<<< HEAD
+    def __init__(self, name, menu, score, reviews, restaurant_image):
+        self.__restaurant_id = uuid.uuid4().hex
+=======
     def __init__(self, name="", menu=[], description="", score=0, reviews=[], restaurant_image="", restaurant_id=uuid.uuid4()):
         self.__restaurant_id = restaurant_id
+>>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__name = name
         self.__menu = menu
         self.__description = description
@@ -297,9 +344,13 @@ class SelectedFood:
         return 
 
 class Cart:
+<<<<<<< HEAD
+    def __init__(self, cart_id, restaurant : Restaurant, selected_foods):
+=======
     def __init__(self, cart_id, restaurants, selected_foods,restaurant_id):
+>>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__cart_id = cart_id
-        self.__restaurant_id = restaurant_id
+        self.__restaurant = restaurant
         self.__selected_foods = selected_foods
         self.__status = 'open'
 
@@ -317,8 +368,6 @@ class Cart:
         for selected_food in self.__selected_foods:
             total_price += selected_food.calculate_price()
         return total_price
-    
-
 
 class Payment:
     def __init__(self, amount: float, currency="THB"):
