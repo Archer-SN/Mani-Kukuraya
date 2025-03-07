@@ -251,7 +251,7 @@ class Food:
         return self.__price
 
     def get_description(self):
-        return
+        return self.__description
 
     def get_image(self):
         return self.__food_image

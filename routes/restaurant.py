@@ -13,11 +13,10 @@ food_data = [
 ]
 
 @app.get("/restaurant/{id:str}")
-def get(id: str):
+def restaurant_view(id: str):
     restaurant = Controller.get_restaurant_by_id(id)
-    print("Nigga" + restaurant.get_name())
     # Container to hold all food items
-    food_list = restaurant.get_menu()
+    food_list = []
 
     # Add main food item card at the top (with border for "ไข่ขนป้า")
     main_food_card = Div(
@@ -34,12 +33,13 @@ def get(id: str):
         style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 2px solid orange; padding: 20px;",  # Added border, padding, and centered content
         cls="main-food-item-card"
     )
-
+    print("KUY FORD:")
+    print(food_list)
     # Add "For You" section with "+" button to the right for other food items
-    for food in food_list:
+    for food in restaurant.get_menu():
         food_item = Div(
             Div(
-                Img(src=food.get_image(), alt="Food Image", style="width: 150px; height: 110px; margin-right: 20px; margin-left: 40px; border-radius: 10px;"),
+                Img(src=f"{food.get_image()}", alt="Food Image", style="width: 150px; height: 110px; margin-right: 20px; margin-left: 40px; border-radius: 10px;"),
                 style="flex-shrink: 0; display: inline-block;"
             ),
             Div(
