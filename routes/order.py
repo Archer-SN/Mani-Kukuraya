@@ -9,8 +9,7 @@ def view_order():
     
     
     location = Card(
-        P(B("ตึก ECC ลองกรุง 1 เฟส 5"), style="margin: 0;"),
-        P("ลองกรุง แขวงลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร", cls="text-muted"),
+        user.get_locations(),
         cls="grid-item"
     )
 
@@ -98,7 +97,6 @@ def view_order():
 
 @app.post("/order")
 def create_order():
-    order = Order(user_kaka, kfc_cart, home, saver_delivery, cash_payment, kfc_promotion)
-    print(order)
+    
     return Redirect("/order_confirmation")
 

@@ -51,8 +51,13 @@ class User:
         self.__username = username
         self.__password = password
         self.__carts = carts
+<<<<<<< HEAD
+        self.__locations = locations
+        self.__user_order_history = user_order_history
+=======
         self.__locations = []
         self.__user_order_history = []
+>>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__promotions = promotions
         self.__reviews = reviews
         self.__favorites = favorites
@@ -61,12 +66,15 @@ class User:
     def set_username(self, new_username):
         self.__username = new_username
 
+    def set_name(self, new_name) :
+        self.__name = new_name
+
     def set_password(self, new_password: int):
         self.__password = new_password
 
     def get_user_id(self):
         return self.__user_id
-
+    
     def get_promotions(self):
         return self.__promotions
 
@@ -87,12 +95,40 @@ class User:
     def use_promotion(self, promotion):
         self.__promotions.remove(promotion)
 
-    def add_location(self, location) :
-        if isinstance(location, Location) :
-            self.__locations.append(location)
-        else :
-            return "Error Object only"
+    def add_location(self, location):
+        if isinstance(location, Location): 
+            self.__locations.append(location) 
+            return "Add Location Success"
+        return "Error: Object only"
+        
+    def get_locations(self):
+        if not self.__locations:
+            return "No Locations Save"
+        return  self.__locations
+    
+    def get_location_by_id(self, location_id):
+        for location in self.__locations:
+            print("1")
+            print(location.id)
+            print("2")
+            print(location_id)
+            if location.id == location_id:
+                return location
+    
+    @classmethod
+    def get_current_user(cls):
+        return cls.onlyuser
+    
+    @property
+    def name(self):
+        return self.__name
+    
+    @property
+    def password (self) :
+        return self.__password
 
+    def get_locations(self):
+        return self.__locations
 
     def get_current_order(self):
         return self.__current_order
@@ -126,34 +162,42 @@ class Promotion:
         return self.__promotion_code
 
 class Location:
-    def __init__(self, phone_number, address,unit, extra_information) :
+    def __init__(self, full_name="", phone_number="", address="",street="",unit="", extra_information="") :
+        self.__id = uuid.uuid4().hex
+        self.__full_name = full_name
         self.__phone_number = phone_number
         self.__address = address
+        self.__street = street
         self.__unit = unit
         self.__extra_information = extra_information
 
     @property
-    def phone_number(self) :
-        return self.__phone_number
-    
+    def id(self):
+        return self.__id     
+
     @property
-    def address(self) :
+    def full_name(self):
+        return self.__full_name
+
+    @property
+    def phone_number(self):
+        return self.__phone_number
+
+    @property
+    def address(self):
         return self.__address
     
     @property
-    def unit(self) :
+    def street(self):
+        return self.__street
+
+    @property
+    def unit(self):
         return self.__unit
-    
-    @property 
-    def note(self) :
-        return self.__note
-    
-    def __str__(self):
-        return f"{self.__phone_number} {self.__address} {self.__unit} {self.__extra_information}"
-    
-    def to_list (self) :
-        return [self.__phone_number, self.__address, self.__unit , self.__extra_information]
-    
+
+    @property
+    def extra_information(self):  
+        return self.__extra_information
 
 
 
@@ -172,8 +216,13 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
+<<<<<<< HEAD
+    def __init__(self, name, menu, score, reviews, restaurant_image):
+        self.__restaurant_id = uuid.uuid4().hex
+=======
     def __init__(self, name="", menu=[], description="", score=0, reviews=[], restaurant_image="", restaurant_id=uuid.uuid4()):
         self.__restaurant_id = restaurant_id
+>>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__name = name
         self.__menu = menu
         self.__description = description
@@ -269,6 +318,10 @@ class FoodOption:
         self.__choices = choices
         self.__max_selection = max_selection
 
+    def add_choice(self, choice):
+        self.__choices.append(choice)
+
+
 class OptionChoice:
     def __init__(self, option, choice, choices_value, price):
         self.__option = option
@@ -298,9 +351,13 @@ class SelectedFood:
         return 
 
 class Cart:
+<<<<<<< HEAD
+    def __init__(self, cart_id, restaurant : Restaurant, selected_foods):
+=======
     def __init__(self, cart_id, restaurants, selected_foods,restaurant_id):
+>>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__cart_id = cart_id
-        self.__restaurant_id = restaurant_id
+        self.__restaurant = restaurant
         self.__selected_foods = selected_foods
         self.__status = 'open'
 
@@ -318,8 +375,6 @@ class Cart:
         for selected_food in self.__selected_foods:
             total_price += selected_food.calculate_price()
         return total_price
-    
-
 
 class Payment:
     def __init__(self, amount: float, currency="THB"):
@@ -518,6 +573,81 @@ controller.add_restaurant(kfc_restaurant)
 controller.add_restaurant(dairy_queen_restaurant)
 controller.add_restaurant(mc_donald_restaurant)
 
+# Create food options for Dairy Queen ice cream
+dq_option_toppings = FoodOption(
+    option_name="Toppings",
+    choices=[],
+    max_selection=3
+)
+
+dq_option_size = FoodOption(
+    option_name="Size",
+    choices=[],
+    max_selection=1
+)
+
+# Create food choices for Dairy Queen ice cream
+dq_food_choice1 = OptionChoice(
+    option=dq_option_toppings,
+    choice="Chocolate Chips",
+    choices_value="Chocolate Chips",
+    price=0.5
+)
+
+dq_food_choice2 = OptionChoice(
+    option=dq_option_toppings,
+    choice="Sprinkles",
+    choices_value="Sprinkles",
+    price=0.5
+)
+
+dq_food_choice3 = OptionChoice(
+    option=dq_option_toppings,
+    choice="Oreo Crumbs",
+    choices_value="Oreo Crumbs",
+    price=0.5
+)
+
+dq_food_choice4 = OptionChoice(
+    option=dq_option_size,
+    choice="Small",
+    choices_value="Small",
+    price=0.0
+)
+
+dq_food_choice5 = OptionChoice(
+    option=dq_option_size,
+    choice="Medium",
+    choices_value="Medium",
+    price=1.0
+)
+
+dq_food_choice6 = OptionChoice(
+    option=dq_option_size,
+    choice="Large",
+    choices_value="Large",
+    price=1.5
+)
+
+# Add choices to options
+dq_option_toppings._FoodOption__choices.extend([dq_food_choice1, dq_food_choice2, dq_food_choice3])
+dq_option_size._FoodOption__choices.extend([dq_food_choice4, dq_food_choice5, dq_food_choice6])
+
+# Add options to Dairy Queen foods
+dq_food1_options = [
+    SelectedFoodOption(option=dq_option_toppings, selected_choices=[dq_food_choice1, dq_food_choice3]),
+    SelectedFoodOption(option=dq_option_size, selected_choices=[dq_food_choice5])
+]
+
+dq_food2_options = [
+    SelectedFoodOption(option=dq_option_toppings, selected_choices=[dq_food_choice2]),
+    SelectedFoodOption(option=dq_option_size, selected_choices=[dq_food_choice4])
+]
+
+# Add selected food options to Dairy Queen foods
+dq_food1.selected_options = dq_food1_options
+dq_food2.selected_options = dq_food2_options
+
 # Get KFC restaurant from the controller
 kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
 print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
@@ -548,10 +678,3 @@ user._User__carts.append(cart)
 print(f"User {user.get_user_id()} has the following items in their cart:")
 for food in cart.get_foods():
     print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
-
-restaurant_data = [
-    {"name": "ไข่ขนป้า - ลาดกระบัง 46", "description": "อาหารตามสั่ง, ผัดไทย, ส้มตำ", "price": 299, "rating": 4.8, "distance": "5.7 km", "image": "egg.jpeg"},
-]
-
-
-restaurants = [Restaurant.from_data(data) for data in restaurant_data]
