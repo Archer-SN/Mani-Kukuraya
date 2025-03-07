@@ -157,13 +157,8 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
-<<<<<<< HEAD
-    def __init__(self, name, menu, score, reviews, restaurant_image, description="", id=uuid.uuid4()):
-        self.__restaurant_id = id
-=======
     def __init__(self, name, menu, description, score, reviews, restaurant_image):
         self.__restaurant_id = uuid.uuid4()
->>>>>>> 50bcd308fd49f2e76af05e460fe70c4fef0defed
         self.__name = name
         self.__menu = menu
         self.__description = description
@@ -173,9 +168,6 @@ class Restaurant:
         self.__description = description
 
     def get_restaurant_id(self):
-<<<<<<< HEAD
-        return self.__restaurant_id
-=======
         return str(self.__restaurant_id)
 
     def get_name(self):
@@ -214,7 +206,6 @@ class Restaurant:
     @classmethod
     def list_restaurants(cls):
         return cls._instances
->>>>>>> 50bcd308fd49f2e76af05e460fe70c4fef0defed
 
     def get_food(self, food_name):
         for food in self.__menu:
@@ -440,7 +431,6 @@ Controller = Controller(
     foods=[]
 )
 
-<<<<<<< HEAD
 # Create foods for each restaurant
 kfc_food1 = Food(
     food_id="1",
@@ -541,10 +531,3 @@ user._User__carts.append(cart)
 print(f"User {user.get_user_id()} has the following items in their cart:")
 for food in cart.get_foods():
     print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
-=======
-for data in restaurant_data:
-    Restaurant.from_data(data)
-
-restaurant_list = Restaurant.list_restaurants()
-print([restaurant.get_name() for restaurant in restaurant_list])
->>>>>>> 50bcd308fd49f2e76af05e460fe70c4fef0defed

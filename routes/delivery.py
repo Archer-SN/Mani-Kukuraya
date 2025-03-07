@@ -5,5 +5,5 @@ from lucide_fasthtml import Lucide
 
 @app.post()
 def update_delivery():
-    order.delivery = 
+    order.delivery = ""
     pass
