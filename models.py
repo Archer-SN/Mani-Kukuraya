@@ -6,7 +6,7 @@ class Controller:
     def __init__(self, users, restaurants, foods,):
         self.__users = users
         self.__restaurants = restaurants
-        self.__catagories = []
+        self.__catagories = [["a","https://www.shutterstock.com/shutterstock/photos/2119143728/display_1500/stock-vector-homepage-illustration-vector-app-homepage-illustration-vector-homepage-logo-homepage-2119143728.jpg"]]
         self.__foods = foods
 
     def get_user_by_id(self, user_id):
@@ -27,8 +27,9 @@ class Controller:
 
     def find_food(self):
         pass
-    def Howmanycatagory(self):
-        return len(self.__catagories)
+    def get_numbers_catagories(self):
+        return self.__catagories
+        
 
     
 class User:
