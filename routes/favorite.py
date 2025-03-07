@@ -1,15 +1,11 @@
 from app import *
-from models import Controller  # Ensure this correctly imports Controller
+from models import *  # Ensure this correctly imports Controller
 from fasthtml.common import *
 
 @app.get("/favorite/{id:str}")
-def favorite_view(id: str):
+def favorite_view(id:str):
     # Fetch restaurant by id
-    restaurant = Controller.get_restaurant_by_id(id)
-    
-    # If restaurant is not found, return an error page or redirect
-    if not restaurant:
-        return Response("Restaurant not found", status_code=404)
+    restaurant = controller.get_restaurant_by_id(id)
 
     # Container to hold all food items
     food_list = []
@@ -17,7 +13,7 @@ def favorite_view(id: str):
     for food in restaurant.get_menu():
         food_item = Div(
             Div(
-                Img(src=f"{restaurant.get_image()}", alt="Food Image", style="width: 150px; height: 110px; margin-right: 20px; margin-left: 40px; border-radius: 10px;"),
+                Img(src=f"/static/{restaurant.get_image()}", alt="Food Image", style="width: 150px; height: 110px; margin-right: 20px; margin-left: 40px; border-radius: 10px;"),
                 style="flex-shrink: 0; display: inline-block;"
             ),
             Div(
@@ -41,7 +37,7 @@ def favorite_view(id: str):
         Div(back_button, style="flex: 0 0 auto;"),  
         Div(
             A("Home", href="/home", style="margin-right: 20px;"),
-            A("Favorites", href="/favorite", style="margin-right: 20px;"),
+            A("Favorites", href="/favorite/1", style="margin-right: 20px;"),
             A("Promotions", href="/promotion", style="margin-right: 20px;"),
             A("Carts", href="/cart", style="margin-right: 20px;"),
             style="display: flex; justify-content: center; align-items: center; flex-grow: 1;"
