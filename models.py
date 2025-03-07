@@ -262,6 +262,10 @@ class FoodOption:
         self.__choices = choices
         self.__max_selection = max_selection
 
+    def add_choice(self, choice):
+        self.__choices.append(choice)
+
+
 class OptionChoice:
     def __init__(self, option, choice, choices_value, price):
         self.__option = option
@@ -511,6 +515,81 @@ Controller.add_restaurant(kfc_restaurant)
 Controller.add_restaurant(dairy_queen_restaurant)
 Controller.add_restaurant(mc_donald_restaurant)
 
+# Create food options for Dairy Queen ice cream
+dq_option_toppings = FoodOption(
+    option_name="Toppings",
+    choices=[],
+    max_selection=3
+)
+
+dq_option_size = FoodOption(
+    option_name="Size",
+    choices=[],
+    max_selection=1
+)
+
+# Create food choices for Dairy Queen ice cream
+dq_food_choice1 = OptionChoice(
+    option=dq_option_toppings,
+    choice="Chocolate Chips",
+    choices_value="Chocolate Chips",
+    price=0.5
+)
+
+dq_food_choice2 = OptionChoice(
+    option=dq_option_toppings,
+    choice="Sprinkles",
+    choices_value="Sprinkles",
+    price=0.5
+)
+
+dq_food_choice3 = OptionChoice(
+    option=dq_option_toppings,
+    choice="Oreo Crumbs",
+    choices_value="Oreo Crumbs",
+    price=0.5
+)
+
+dq_food_choice4 = OptionChoice(
+    option=dq_option_size,
+    choice="Small",
+    choices_value="Small",
+    price=0.0
+)
+
+dq_food_choice5 = OptionChoice(
+    option=dq_option_size,
+    choice="Medium",
+    choices_value="Medium",
+    price=1.0
+)
+
+dq_food_choice6 = OptionChoice(
+    option=dq_option_size,
+    choice="Large",
+    choices_value="Large",
+    price=1.5
+)
+
+# Add choices to options
+dq_option_toppings._FoodOption__choices.extend([dq_food_choice1, dq_food_choice2, dq_food_choice3])
+dq_option_size._FoodOption__choices.extend([dq_food_choice4, dq_food_choice5, dq_food_choice6])
+
+# Add options to Dairy Queen foods
+dq_food1_options = [
+    SelectedFoodOption(option=dq_option_toppings, selected_choices=[dq_food_choice1, dq_food_choice3]),
+    SelectedFoodOption(option=dq_option_size, selected_choices=[dq_food_choice5])
+]
+
+dq_food2_options = [
+    SelectedFoodOption(option=dq_option_toppings, selected_choices=[dq_food_choice2]),
+    SelectedFoodOption(option=dq_option_size, selected_choices=[dq_food_choice4])
+]
+
+# Add selected food options to Dairy Queen foods
+dq_food1.selected_options = dq_food1_options
+dq_food2.selected_options = dq_food2_options
+
 # Get KFC restaurant from the controller
 kfc_restaurant_from_controller = Controller.get_restaurant_by_id(1)
 print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
@@ -541,10 +620,3 @@ user._User__carts.append(cart)
 print(f"User {user.get_user_id()} has the following items in their cart:")
 for food in cart.get_foods():
     print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
-
-restaurant_data = [
-    {"name": "ไข่ขนป้า - ลาดกระบัง 46", "description": "อาหารตามสั่ง, ผัดไทย, ส้มตำ", "price": 299, "rating": 4.8, "distance": "5.7 km", "image": "egg.jpeg"},
-]
-
-
-restaurants = [Restaurant.from_data(data) for data in restaurant_data]
