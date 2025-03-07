@@ -20,9 +20,12 @@ def ShowHomepage():
         )
         for category in catagories
     ]
+
     
     # Promotion element
-    numbers_promotion = 10
+
+    numbers_promotion = 35
+
     promotion_element = Card(
         H3("โปรโมชั่น", style="text-align:left;"),
         Div(
@@ -44,27 +47,83 @@ def ShowHomepage():
         method="get",
         style="position: absolute; top: 20px; right: 20px; width: 300px; height: 40px; display: flex;"
     )
+
     
     # Navbar with links to different pages
     navbar = Div(
         A("Home", href="/home", style="margin-right: 20px;"),
+
         A("Favorites", href="/favorite", style="margin-right: 20px;"),
         A("Promotions", href="/promotion", style="margin-right: 20px;"),
         A("Carts", href="/cart", style="margin-right: 20px;"),
+
+        A("Categories", href="/categories", style="margin-right: 20px;"),
+        A("Promotions", href="/promotion", style="margin-right: 20px;"),
+
         style="text-align:center; margin-top: 10px;"
     )
+
+    # recent_order = Controller.get_recent_order()
+    # recent_order_element = [
+    #     Card(
+    #         Img(src=order["image"], style="width:100%;height:50%;"),
+    #         P(order["name"], style="text-align:center;"),
+    #         style="text-align:center; margin: 10px;"
+    #     )
+    #     for order in recent_order
+    # ]
+
+    
+    # Recommended food
+    recommended_food = Controller.get_recommended_food()
+    recommended_food_element = [
+        Div(
+            Img(src=food[1], style="width:300px;height:200px;"),
+            P(food[0]),
+            style="text-align:left; margin: 10px;"
+        )
+        for food in recommended_food
+    ]
+
+    #recommended restaurant
+    # recommended_restaurant = Controller.get_recommended_restaurant()
+    # recommended_food_element = [
+
+    # ]
+
+
 
     # Return the entire page with navbar, search, categories, and promotions
     return Container(
         navbar,  # Add the navigation bar at the top
         Div(
-            search_bar_element
+        search_bar_element
         ),
         Div(
-            *catagory_element,
-            style="display:flex;flex-wrap:wrap;justify-content:space-around;margin-top:40px;"
+
+            H2("หมวดหมู่", style="width: 100%; text-align: left; margin-top: 20px;"),
+            Div(
+                *catagory_element,
+                style="display:flex;flex-direction:row;justify-content:space-around;margin-top:40px;"
+            ),
         ),
         promotion_element,
+        Div(
+            H2("อาหารแนะนำ", style="width: 100%; text-align: left; margin-bottom: 20px;"),  # Custom style for H2
+            Div(
+                *recommended_food_element,
+                style="display:flex;flex-direction;justify-content:flex-start;"
+            ),
+            style="margin-top:30px;"
+        ),
+
+
+        # Div(
+        #     H2("อาหารล่าสุด"),
+        #     *recent_order_element,
+        #     style="display:flex;flex-wrap:wrap;justify-content:space-around;margin-top:200px;"
+        # ),
+
         style="text-align:center;"
     )
 
