@@ -255,3 +255,16 @@ class Order:
 
     def create_user_order(self):
         pass
+
+
+user = User(
+    user_id=1,
+    name="Yokphon ",
+    username="foshforce",
+    password="password123",
+    carts=[],
+    locations=[],
+    user_order_history=[],
+    promotions=[],
+    reviews=[]
+)
