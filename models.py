@@ -50,8 +50,8 @@ class User:
         self.__username = username
         self.__password = password
         self.__carts = carts
-        self.__locations = locations
-        self.__user_order_history = user_order_history
+        self.__locations = []
+        self.__user_order_history = []
         self.__promotions = promotions
         self.__reviews = reviews
         self.__favorites = favorites
@@ -195,6 +195,14 @@ class Location:
     @property
     def extra_information(self):  
         return self.__extra_information
+    
+    def edit_location(self,full_name, phone, address,street, unit, extra_info) :
+        self.__full_name = full_name
+        self.__phone_number = phone
+        self.__address = address
+        self.__street = street 
+        self.__unit = unit
+        self.__extra_information = extra_info
 
 
 
@@ -213,7 +221,15 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
+<<<<<<< HEAD
     def __init__(self, name="", menu=[], description="", score=0, reviews=[], restaurant_image="", restaurant_id=uuid.uuid4().hex):
+=======
+<<<<<<< HEAD
+    def __init__(self, name="", menu=[], description="", score=0, reviews=[], restaurant_image="", restaurant_id=uuid.uuid4()):
+=======
+    def __init__(self, name, menu, score, reviews, restaurant_image, description="", restaurant_id=uuid.uuid4().hex):
+>>>>>>> 393260a21d6a0e6945094c96816235aeccaa05d3
+>>>>>>> refs/remotes/origin/master
         self.__restaurant_id = restaurant_id
         self.__name = name
         self.__menu = menu
@@ -352,7 +368,11 @@ class SelectedFood:
         return total_price * self.__quantity
 
 class Cart:
+<<<<<<< HEAD
+    def __init__(self, cart_id, restaurants, selected_foods,restaurant):
+=======
     def __init__(self, cart_id, restaurant : Restaurant, selected_foods):
+>>>>>>> 393260a21d6a0e6945094c96816235aeccaa05d3
         self.__cart_id = cart_id
         self.__restaurant = restaurant
         self.__selected_foods = selected_foods
@@ -432,10 +452,17 @@ class Order:
         pass
 
 user = User(
+<<<<<<< HEAD
+    user_id= 67010751 ,
+    name="Yokphon Ninbarun",
+    username="ForceFord",
+    password="911",
+=======
     user_id="1",
     name="Yokphon ",
     username="foshforce",
     password="password123",
+>>>>>>> 393260a21d6a0e6945094c96816235aeccaa05d3
     carts=[],
     locations=[],
     user_order_history=[],
@@ -654,23 +681,41 @@ kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
 print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
 
 # Create a cart for the user
+<<<<<<< HEAD
+# cart = Cart(
+#     cart_id=uuid.uuid4(),
+#     restaurants=[kfc_restaurant],
+#     selected_foods=[],
+#     restaurants=kfc_restaurant
+# )
+=======
 cart = Cart(
     cart_id=uuid.uuid4(),
     restaurant=kfc_restaurant,
     selected_foods=[],
 )
+>>>>>>> 393260a21d6a0e6945094c96816235aeccaa05d3
 
 # Add food to the cart
-selected_food = SelectedFood(
-    selected_food_id=uuid.uuid4(),
-    food=kfc_food1,
-    option=None,
-    choice=None,
-    quantity=2
-)
+# selected_food = SelectedFood(
+#     selected_food_id=uuid.uuid4(),
+#     food=kfc_food1,
+#     option=None,
+#     choice=None,
+#     quantity=2
+# )
 
-cart.add_to_cart(selected_food)
+# cart.add_to_cart(selected_food)
 
+<<<<<<< HEAD
+# # Add the cart to the user's carts
+# user._User__carts.append(cart)
+
+# # Print the cart details
+# print(f"User {user.get_user_id()} has the following items in their cart:")
+# for food in cart.get_foods():
+#     print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
+=======
 # Add the cart to the user's carts
 user.add_cart(cart)
 # Print the cart details
@@ -695,3 +740,4 @@ user.add_location(location)
 print(f"User {user.get_user_id()} has the following locations:")
 for loc in user.get_locations():
     print(f"- {loc.full_name}, {loc.address}, {loc.street}, {loc.unit}, {loc.extra_information}")
+>>>>>>> 393260a21d6a0e6945094c96816235aeccaa05d3

@@ -5,7 +5,11 @@ from fasthtml.common import *
 @app.get("/home")
 def ShowHomepage():
     # Categories from the controller
+<<<<<<< HEAD
     categories = controller.get_numbers_categories()
+=======
+    catagories = controller.get_numbers_categories()
+>>>>>>> refs/remotes/origin/master
     
     # Create category elements (using A and Div to structure the categories)
     category_element = [

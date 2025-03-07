@@ -1,4 +1,3 @@
-from . import login
 from . import review
 from . import address
 from . import edit_address
@@ -6,7 +5,6 @@ from . import order
 from . import order_confirmation
 from . import SelectedFood
 from . import restaurant
-
 from . import promotion
 from . import qrcode_payment
 from . import profile
