@@ -78,7 +78,7 @@ def get():
     return Titled(
         "",
         Div(
-            A("⬅ กลับ", href ="/food", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+            A("⬅ กลับ", href ="/restaurant/1", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
             style="position: absolute; top: 10px; left: 10px;"
     
         ),

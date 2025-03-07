@@ -1,10 +1,11 @@
 from app import *
 from models import *
 from fasthtml.common import *
+from lucide_fasthtml import Lucide
 
 @app.get("/restaurant/{id:str}")
 def restaurant_view(id: str):
-    restaurant = Controller.get_restaurant_by_id(id)
+    restaurant = controller.get_restaurant_by_id(id)
     # Container to hold all food items
     food_list = []
 
@@ -26,9 +27,10 @@ def restaurant_view(id: str):
 
     # Adding an image button at the top (as requested)
     img_button = A(
-        Img(src="/static/love.jpeg", alt="Clickable Button", style="width: 50px; height: 50px; border-radius: 10px; margin-right: 150px; margin-top: 20px;"),
-        href="/restaurant/1",  # Define the action when the image is clicked
-        style="position: absolute; top: 10px; right: 10px;"  # Position the image button at the top-right corner of the container
+        Lucide("heart", 24, color="black"),
+        hx_post="/favorite/1",  # Define the action when the image is clicked
+        style="position: absolute; top: 10px; right: 10px;",  # Position the image button at the top-right corner of the container
+        hx_target="this"
     )
 
     # Add "For You" section with "+" button to the right for other food items
@@ -88,7 +90,7 @@ def send_input(search_query: str):
     # Print the text entered in the input box to the terminal
     print(f"User input: {search_query}")
     # Returning a response to clear the input (simulating the 'disappear' functionality)
-    return RedirectResponse("/food", status_code=303)
+    return RedirectResponse("/restaurant/1", status_code=303)
 
 # Make the `log_input` function asynchronous
 @app.post("/log_input")
@@ -103,3 +105,37 @@ async def log_input(request: Request):
     
     # Return a simple redirect or empty response to the user
     return Response(headers={"HX-Redirect": "/selectedFood"})
+
+@app.post("/favorite/{id}")
+def add_favorite(id: int):
+    # Add restaurant to favorites
+    user.add_favorite(id)
+    
+    # Print the current list of favorites after adding
+    print("Favorites after adding:", user.get_favorites())  # Assuming `get_favorites` is a method in `user` that returns the list of favorites
+    
+    # Return a red heart icon and set it for removal
+    return A(
+        Lucide("heart", 24, color="red"),
+        hx_delete=f"/favorite/{id}",  # Use DELETE request to remove it when clicked
+        style="position: absolute; top: 10px; right: 10px;",  # Position the image button at the top-right corner of the container
+        hx_target="this",  # Update this element when the action is performed
+        hx_swap="outerHTML"  # Swap the entire element with the response (so it changes the icon to red)
+    )
+
+@app.delete("/favorite/{id}")
+def remove_favorite(id: int):
+    # Remove restaurant from favorites
+    user.remove_favorite(controller.get_restaurant_by_id(id))
+    
+    # Print the current list of favorites after removing
+    print("Favorites after removing:", user.get_favorites())  # Assuming `get_favorites` is a method in `user` that returns the list of favorites
+    
+    # Return a black heart icon and set it for addition
+    return A(
+        Lucide("heart", 24, color="black"),
+        hx_post=f"/favorite/{id}",  # Use POST request to add it back when clicked
+        style="position: absolute; top: 10px; right: 10px;",  # Position the image button at the top-right corner of the container
+        hx_target="this",  # Update this element when the action is performed
+        hx_swap="outerHTML"  # Swap the entire element with the response (so it changes the icon to black)
+    )

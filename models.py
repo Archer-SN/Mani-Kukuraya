@@ -45,7 +45,7 @@ class Controller:
 
     
 class User:
-    def __init__(self, user_id: str, name, username, password, carts=[], locations=[], user_order_history=[], promotions=[], reviews=[]):
+    def __init__(self, user_id: str, name, username, password, carts=[], locations=[], user_order_history=[], promotions=[], reviews=[], favorites=[]):
         self.__user_id = user_id
         self.__name = name
         self.__username = username
@@ -55,6 +55,7 @@ class User:
         self.__user_order_history = []
         self.__promotions = promotions
         self.__reviews = reviews
+        self.__favorites = favorites
         self.__current_order = None
 
     def set_username(self, new_username):
@@ -102,6 +103,12 @@ class User:
 
     def send_recentorder(self):
         return self.__user_order_history
+
+    def add_favorite(self, restaurant):
+        self.__favorites.append(restaurant)
+
+    def remove_favorite(self, restaurant):
+        self.__favorites.remove(restaurant)
 
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
@@ -435,7 +442,7 @@ user.add_promotion(mcd_promotion)
 
 user.add_promotion(kfc_promotion)
 
-Controller = Controller(
+controller = Controller(
     users=[user],
     restaurants=[],
     foods=[]
@@ -507,12 +514,12 @@ mc_donald_restaurant.add_food(mcd_food1)
 mc_donald_restaurant.add_food(mcd_food2)
 
 # Add restaurants to the controller
-Controller.add_restaurant(kfc_restaurant)
-Controller.add_restaurant(dairy_queen_restaurant)
-Controller.add_restaurant(mc_donald_restaurant)
+controller.add_restaurant(kfc_restaurant)
+controller.add_restaurant(dairy_queen_restaurant)
+controller.add_restaurant(mc_donald_restaurant)
 
 # Get KFC restaurant from the controller
-kfc_restaurant_from_controller = Controller.get_restaurant_by_id(1)
+kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
 print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
 
 # Create a cart for the user
