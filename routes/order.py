@@ -9,8 +9,7 @@ def view_order():
     
     
     location = Card(
-        P(B("ตึก ECC ลองกรุง 1 เฟส 5"), style="margin: 0;"),
-        P("ลองกรุง แขวงลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร", cls="text-muted"),
+        user.get_locations(),
         cls="grid-item"
     )
 

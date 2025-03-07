@@ -92,6 +92,8 @@ class User:
         else :
             return "Error Object only"
 
+    def get_locations(self):
+        return self.__locations
 
     def get_current_order(self):
         return self.__current_order
