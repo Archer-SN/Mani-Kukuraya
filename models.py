@@ -51,13 +51,8 @@ class User:
         self.__username = username
         self.__password = password
         self.__carts = carts
-<<<<<<< HEAD
         self.__locations = locations
         self.__user_order_history = user_order_history
-=======
-        self.__locations = []
-        self.__user_order_history = []
->>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__promotions = promotions
         self.__reviews = reviews
         self.__favorites = favorites
@@ -216,13 +211,8 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
-<<<<<<< HEAD
-    def __init__(self, name, menu, score, reviews, restaurant_image):
-        self.__restaurant_id = uuid.uuid4().hex
-=======
-    def __init__(self, name="", menu=[], description="", score=0, reviews=[], restaurant_image="", restaurant_id=uuid.uuid4()):
+    def __init__(self, name="", menu=[], description="", score=0, reviews=[], restaurant_image="", restaurant_id=uuid.uuid4().hex):
         self.__restaurant_id = restaurant_id
->>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__name = name
         self.__menu = menu
         self.__description = description
@@ -351,11 +341,7 @@ class SelectedFood:
         return 
 
 class Cart:
-<<<<<<< HEAD
     def __init__(self, cart_id, restaurant : Restaurant, selected_foods):
-=======
-    def __init__(self, cart_id, restaurants, selected_foods,restaurant_id):
->>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__cart_id = cart_id
         self.__restaurant = restaurant
         self.__selected_foods = selected_foods
@@ -655,7 +641,7 @@ print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
 # Create a cart for the user
 cart = Cart(
     cart_id=uuid.uuid4(),
-    restaurants=[kfc_restaurant],
+    restaurant=kfc_restaurant,
     selected_foods=[],
     restaurant_id=kfc_restaurant.get_restaurant_id()
 )
