@@ -6,7 +6,7 @@ from lucide_fasthtml import Lucide
 
 @app.get("/order")
 def view_order():
-    order = Order(user, )
+    
     
     location = Card(
         P(B("ตึก ECC ลองกรุง 1 เฟส 5"), style="margin: 0;"),

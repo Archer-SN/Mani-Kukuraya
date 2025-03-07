@@ -36,6 +36,7 @@ class User {
     - UserOrder_history
     - promotions
     - reviews
+    - current_order
     + set_username(new_username)
     + set_password(new_password)
     + get_user_id(user_id)

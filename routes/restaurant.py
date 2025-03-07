@@ -12,8 +12,8 @@ food_data = [
     {"name": "กระเพราหมูสับ", "description": "อาหารตามสั่ง", "price": 59, "rating": None, "distance": None, "image": "a.jpg"}
 ]
 
-@app.get("/food")
-def get():
+@app.get("/restaurant/{id:int}")
+def get(id: int):
     # Container to hold all food items
     food_list = []
 

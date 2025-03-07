@@ -38,5 +38,7 @@ def view_promotion():
 
 @app.post("/promotion")
 def use_promotion():
-    return Redirect("/order")
+    if user.get_current_order() != None:
+        return Redirect("/order")
+    return Redirect("/food")
 
