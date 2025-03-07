@@ -5,14 +5,7 @@ from lucide_fasthtml import Lucide
 
 @app.get("/promotion")
 def view_promotion():
-    offers = [
-        {
-            "title": "[ร้านก๋วยเตี๋ยวโกจิน] ส่วนลดราคา 150 บาท เมื่อซื้อครบ 100 บาท",
-            "code": "07510943",
-            "image": "/static/noodle.jpg",
-        }
-    ] * 5  # Repeat the offer 5 times
-
+    promotions = user.get_promotions()
     return Container(
         Section(
             H1("Available Offers", cls="text-center"),
@@ -25,12 +18,12 @@ def view_promotion():
             *[
                 Article(
                     Div(
-                        Img(src=offer["image"], cls="avatar"),
+                        Img(src=promotion["image"], cls="avatar"),
                         Div(
                             Span("Just for you", cls="badge"),
                             Hgroup(
-                                H3(offer["title"]),
-                                P(f"#Code {offer['code']}"),
+                                H3(promotion["title"]),
+                                P(f"#Code {promotion['code']}"),
                             )
                         ),
                         A("Use Now", hx_post="/promotion", cls="contrast button"),
@@ -38,7 +31,7 @@ def view_promotion():
                     ),
                     cls="card"
                 )
-                for offer in offers
+                for promotion in promotions
             ]
         )
     )
@@ -46,3 +39,4 @@ def view_promotion():
 @app.post("/promotion")
 def use_promotion():
     return Redirect("/order")
+

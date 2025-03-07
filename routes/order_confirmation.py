@@ -13,7 +13,7 @@ def view_order_confirmation():
 
     progress_images = Div(
         Img(src="/static/chef.png", style="position: absolute; left: 27%; top: -40px; width: 40px;"),
-        Img(src="/static/delivery.png", style="position: absolute; left: 65%; top: -40px; width: 40px;"),
+        Img(src="/static/driver.png", style="position: absolute; left: 65%; top: -40px; width: 40px;"),
         Img(src="/static/home.png", style="position: absolute; left: 93%; top: -40px; width: 40px;"),
         style="position: relative; height: 40px; width: 100%;"
     )
@@ -37,8 +37,8 @@ def view_order_confirmation():
     )
 
     order_summary = Card(
-        H4("1x กระเพราหมูสับ", B("99 บาท")),
-        P(Small("ไข่ดาว • พิเศษ • เผ็ดมาก")),
+        H4("1x กระเพราหมูสับ", B(" 99 บาท")),
+        Ul(Li("ไข่ดาว"), Li("พิเศษ"), Li("เผ็ดมาก")),
         P(A("แก้ไข", href="/edit-order", cls="text-danger")),
         style="padding: 15px;"
     )
