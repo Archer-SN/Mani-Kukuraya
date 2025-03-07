@@ -1,6 +1,6 @@
 from datetime import datetime 
 from fasthtml.common import *
-
+import uuid
 
 class Controller:
     def __init__(self, users, restaurants, foods):
@@ -43,6 +43,7 @@ class User:
         self.__user_order_history = user_order_history
         self.__promotions = promotions
         self.__reviews = reviews
+        self.__current_order = None
 
     def set_username(self, new_username):
         self.__username = new_username
@@ -79,8 +80,14 @@ class User:
         else :
             return "Error Object only"
 
+    def get_current_order(self):
+        return self.__current_order
+
+    def set_current_order(self, new_order):
+        self.__current_order = new_order
+
 class Promotion:
-    def __init__(self, name, restaurant, promotion_code, image):
+    def __init__(self, name, restaurant, promotion_code):
         self.__name = name
         self.__restaurant = restaurant
         self.__promotion_code = promotion_code
@@ -127,8 +134,8 @@ class Location:
 
 
 class UserOrder:
-    def __init__(self, id, status, restaurant, foods):
-        self.__id = id
+    def __init__(self, status, restaurant, foods):
+        self.__id = uuid.uuid4()
         self.__status = status
         self.__restaurant = restaurant
         self.__foods = foods
@@ -142,7 +149,7 @@ class Review:
 
 class Restaurant:
     def __init__(self, name, menu, score, reviews, restaurant_image):
-        self.__restaurant_id = UUID(hex=None, bytes=None, bytes_le=None, fields=None, int=None, version=None)
+        self.__restaurant_id = uuid.uuid4()
         self.__name = name
         self.__menu = menu
         self.__score = score
@@ -299,12 +306,50 @@ user = User(
     reviews=[]
 )
 
+kfc_restaurant = Restaurant(
+    name="KFC",
+    menu=[],
+    score=4.5,
+    reviews=[],
+    restaurant_image="https://images.unsplash.com/photo-1612170153139-6f881ff067e0?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D"
+)
+
 kfc_promotion = Promotion(
     name="KFC Discount",
-    restaurant="KFC",
+    restaurant=kfc_restaurant,
     promotion_code="KFC2023",
-    image="kfc_promo.jpg"
 )
+
+dairy_queen_restaurant = Restaurant(
+    name="Dairy Queen",
+    menu=[],
+    score=4.2,
+    reviews=[],
+    restaurant_image="https://s3-ap-southeast-1.amazonaws.com/cdn.dairyqueenthailand.com/images/1670569171.png"
+)
+
+dq_promotion = Promotion(
+    name="Dairy Queen Discount",
+    restaurant=dairy_queen_restaurant,
+    promotion_code="DQ2023",
+)
+
+mc_donald_restaurant = Restaurant(
+    name="McDonald's",
+    menu=[],
+    score=4.3,
+    reviews=[],
+    restaurant_image="https://www.shutterstock.com/image-photo/ayutthayathailand-march-7-2018-view-260nw-1181606473.jpg"
+)
+
+mcd_promotion = Promotion(
+    name="McDonald's Discount",
+    restaurant=mc_donald_restaurant,
+    promotion_code="MCD2023",
+)
+
+user.add_promotion(dq_promotion)
+user.add_promotion(mcd_promotion)
 
 user.add_promotion(kfc_promotion)
 

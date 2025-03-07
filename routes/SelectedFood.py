@@ -61,9 +61,9 @@ def get():
 
         # ปุ่มเพิ่ม-ลดจำนวนสินค้า
         Div(
-            Button("-", type="button", id="decrease", hx_post="/update-quantity", hx_target="#quantity", hx_vals='{"action":"decrease"}'),
+            Button("-", type="button", id="decrease", hx_post="/update-quantity", hx_target="#quantity", hx_vals='{"value": -1}'),
             Span("1", id="quantity", style="font-size: 28px; font-weight: bold; position: relative; top: -5px; margin: 0 20px;"),
-            Button("+", type="button", id="increase", hx_post="/update-quantity", hx_target="#quantity", hx_vals='{"action":"increase"}'),
+            Button("+", type="button", id="increase", hx_post="/update-quantity", hx_target="#quantity", hx_vals='{"value": +1}'),
             style="display: flex; justify-content: center; align-items: center; margin: 10px 0;"
         ),
 
@@ -87,20 +87,8 @@ def get():
 
 
 @app.post("/update-quantity")
-def update_quantity(quantity: int = 1, action: str = "increase"):
-    """ ฟังก์ชันอัปเดตจำนวนสินค้า """
-    try:
-        quantity = int(quantity) 
-    except ValueError:
-        quantity = 1 
-
-    if action == "increase":
-        new_quantity = quantity + 1
-    elif action == "decrease":
-        new_quantity = max(1, quantity-1) 
-    else:
-        new_quantity = quantity  
-
+def update_quantity(value: int):
+    selected_food = ""
     return str(new_quantity)  
 
 
