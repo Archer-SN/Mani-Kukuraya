@@ -1,22 +1,38 @@
 from datetime import datetime 
+from fasthtml.common import *
+
 
 class Controller:
-    def __init__(self, users, restaurants, foods):
+    def __init__(self, users, restaurants, foods,):
         self.__users = users
         self.__restaurants = restaurants
+        self.__catagories = []
         self.__foods = foods
 
-    def find_user(self):
-        pass
+    def get_user_by_id(self, user_id):
+        for user in self.__users:
+            if user.get_user_id() == user_id:
+                return user
+        
+    def get_food_by_id(self, food_id):
+        for food in self.__foods:
+            if food.get_food_id() == food_id:
+                return food
     
-    def find_restaurant(self):
-        pass
+    def get_restaurant_by_id(self):
+        for restaurant in self.__restaurants:
+            if restaurant.get_restaurant_id() == restaurant_id:
+                return restaurant
+
 
     def find_food(self):
         pass
+    def Howmanycatagory(self):
+        return len(self.__catagories)
+
     
 class User:
-    def __init__(self, user_id, name, username, password, carts, locations, user_order_history, promotions, reviews):
+    def __init__(self, user_id, name, username, password, carts=[], locations=[], user_order_history=[], promotions=[], reviews=[]):
         self.__user_id = user_id
         self.__name = name
         self.__username = username
@@ -27,20 +43,34 @@ class User:
         self.__promotions = promotions
         self.__reviews = reviews
 
-    def login(self):
-        pass
-    
-    def register(self):
-        pass
-    
-    def logout(self):
-        pass
+    def set_username(self, new_username):
+        self.__username = new_username
 
-    def edit_profile(self):
-        pass
+    def set_password(self, new_password: int):
+        self.__password = new_password
 
-    def edit_password(self):
-        pass
+    def get_user_id(self):
+        return self.__user_id
+
+    def get_promotions(self):
+        return self.__promotions
+
+    def add_location(self, new_location):
+        self.__locations.append(new_location)
+
+    def add_payment(self, new_payment_method):
+        self.__payment = new_payment_method
+
+    def add_promotion(self, promotion):
+        self.__promotions.append(promotion)
+
+    def get_promotion(self, promotion_code):
+        for promotion in self.__promotions:
+            if promotion.get_promotion_code() == promotion_code:
+                return promotion
+
+    def use_promotion(self, promotion):
+        self.__promotions.remove(promotion)
 
     def add_location(self, location) :
         if isinstance(location, Location) :
@@ -49,10 +79,16 @@ class User:
             return "Error Object only"
 
 class Promotion:
-    def __init__(self, name, restaurant, promotion_code):
+    def __init__(self, name, restaurant, promotion_code, image):
         self.__name = name
         self.__restaurant = restaurant
         self.__promotion_code = promotion_code
+
+    def get_name(self):
+        return self.__name
+
+    def get_promotion_code(self):
+        return self.__promotion_code
 
 class Location:
     def __init__(self, phone_number, address,unit, extra_information) :
@@ -101,26 +137,34 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
-    def __init__(self, name, menu, score, reviews):
+    def __init__(self, name, menu, score, reviews, restaurant_image):
+        self.__restaurant_id = UUID(hex=None, bytes=None, bytes_le=None, fields=None, int=None, version=None)
         self.__name = name
         self.__menu = menu
         self.__score = score
         self.__reviews = reviews
+        self.__restaurant_image = restaurant_image
+
+    def get_restaurant_id(self):
+        return self.__restaurant_id
 
 class Food:
-    def __init__(self, food_id, name, description, price, category):
+    def __init__(self, food_id, name, description, price, category, food_image):
         self.__food_id = food_id
         self.__name = name    
         self.__description = description 
         self.__price = price     
         self.__category = category
 
+        self.__food_image = food_image
+    
+
+
 class FoodOption:
-    def __init__(self, option, choice, max_selection, food_id):
-        self.__option = option
-        self.__choice = choice
+    def __init__(self, option_name, choices, max_selection):
+        self.__option_name = option_name
+        self.__choices = choices
         self.__max_selection = max_selection
-        self.__food_id = food_id
 
 class OptionChoice:
     def __init__(self, option, choice, choices_value, price):
@@ -130,28 +174,56 @@ class OptionChoice:
         self.__price = price
 
 class FoodComment:
-    def __init__(self, comment_id, food_id, user_id, rating, comment_text):
+    def __init__(self, comment_id, food, user, rating, comment_text):
         self.__comment_id = comment_id
-        self.__food_id = food_id
-        self.__user_id = user_id
+        self.__food = food
+        self.__user = user
         self.__rating = rating
         self.__comment_text = comment_text
 
+class SelectedFoodOption():
+    def __init__(self, option, selected_choices=[]):
+        self.__option = option
+        self.__selected_choices = selected_choices
+
+    def select_choice(self):
+        pass
+
+
 class SelectedFood:
-    def __init__(self, selected_food_id, food_id, option, choice, quantity):
+    def __init__(self, selected_food_id, food, option, choice, quantity):
         self.__selected_food_id = selected_food_id
-        self.__food_id = food_id
+        self.__food = food
         self.__option = option
         self.__choice = choice
         self.__quantity = quantity
 
+    def calculate_price():
+        return 
+
 class Cart:
-    def __init__(self, cart_id, restaurant_id, selected_food_id):
+    def __init__(self, cart_id, restaurants, selected_foods):
         self.__cart_id = cart_id
         self.__restaurant_id = restaurant_id
-        self.__selected_food_id = selected_food_id
-        self.__price = 0.00
+        self.__selected_foods = selected_foods
         self.__status = 'open'
+
+    def get_foods(self):
+        return self.__foods
+
+    def add_to_cart(self, food):
+        self.__foods.append(food)
+
+    def delete_from_cart(self, food):
+        self.__foods.remove(food)
+
+    def calculate_price(self):
+        total_price = 0
+        for selected_food in self.__selected_foods:
+            total_price += selected_food.calculate_price()
+        return total_price
+    
+
 
 class Payment:
     def __init__(self, amount: float, currency="THB"):
@@ -203,71 +275,29 @@ class Order:
         self.__delivery_option = new_delivery_option
 
     def calculate_price(self):
-        pass
+        self.__cart.calculate_price()
 
     def create_user_order(self):
         pass
-    
-
-user1 = User("1", "Alice", "alice123", "password", [], [], [], [], [])
-user2 = User("2", "Bob", "bob123", "password", [], [], [], [], [])
-
-location1 = Location("1234567890", "Home", "123 Main St", "Near the park")
-location2 = Location("0987654321", "Office", "456 Elm St", "Near the office")
-
-promotion1 = Promotion("10% Off", "Pizza Place", "PIZZA10")
-promotion2 = Promotion("Free Delivery", "Burger Joint", "BURGERFREE")
-
-review1 = Review(5, user1, "Great food!", 5)
-review2 = Review(4, user2, "Good service.", 4)
-
-food1 = Food("1", "Pizza", "Cheese Pizza", 9.99, "Main Course")
-food2 = Food("2", "Burger", "Beef Burger", 7.99, "Main Course")
-
-food_option1 = FoodOption("1", "Size", 1, "1")
-food_option2 = FoodOption("2", "Toppings", 3, "1")
-
-option_choice1 = OptionChoice("1", "Small", "1", 0)
-option_choice2 = OptionChoice("2", "Medium", "2", 1)
-option_choice3 = OptionChoice("3", "Large", "3", 2)
-
-food_comment1 = FoodComment("1", "1", "1", 5, "Delicious!")
-food_comment2 = FoodComment("2", "2", "2", 4, "Tasty!")
-
-selected_food1 = SelectedFood("1", "1", "1", "1", 2)
-selected_food2 = SelectedFood("2", "2", "2", "2", 1)
-
-cart1 = Cart("1", "1", "1")
-cart2 = Cart("2", "2", "2")
-
-restaurant1 = Restaurant("Pizza Place", [food1], 4.5, [review1])
-restaurant2 = Restaurant("Burger Joint", [food2], 4.0, [review2])
-
-delivery_option1 = DeliveryOption("Standard", 30, 5.00)
-delivery_option2 = DeliveryOption("Express", 15, 10.00)
-
-payment1 = CashPayment(20.00, "USD", 25.00)
-payment2 = QRPayment(15.00, "USD", "QR12345", "REF12345")
-
-order1 = Order(user1, cart1, location1, delivery_option1, payment1, promotion1)
-order2 = Order(user2, cart2, location2, delivery_option2, payment2, promotion2)
 
 
-user_kaka = User("1", "Kaka", "kaka", "1234", [], [], [], [], [])
-user_guer = User("2", "Guer", "guer", "1234", [], [], [], [], [])
+user = User(
+    user_id=1,
+    name="Yokphon ",
+    username="foshforce",
+    password="password123",
+    carts=[],
+    locations=[],
+    user_order_history=[],
+    promotions=[],
+    reviews=[]
+)
 
-home = Location("02-222-2222", "Home", "123/456", "Near the park")
-work = Location("02-333-3333", "Work", "789/101", "Near the school")
-kfc_promotion = Promotion("Discount", "KFC", "KFC123")
-# kfc = Restaurant("1", "KFC", "Fastfood", "02-111-1111", "123/456", "Near the park")
-kfc_chicken = Food("1", "Chicken", "Fried chicken", 100, "Main course")
-kfc_chicken_option = FoodOption("1", "Sauce", 1, "1")
-kfc_chicken_option_choice = OptionChoice("1", "Ketchup", "1", 0)
-kfc_chicken_comment = FoodComment("1", "1", "1", 5, "Delicious")
-kfc_chicken_selected = SelectedFood("1", "1", "1", "1", 2)
-kfc_cart = Cart("1", "1", "1")
+kfc_promotion = Promotion(
+    name="KFC Discount",
+    restaurant="KFC",
+    promotion_code="KFC2023",
+    image="kfc_promo.jpg"
+)
 
-# mcd = Restaurant("2", "McDonald", "Fastfood", "02-222-2222", "789/101", "Near the school")
-
-saver_delivery = DeliveryOption("Saver", 30, 30)
-cash_payment = CashPayment(100, "baht")
+user.add_promotion(kfc_promotion)

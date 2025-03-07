@@ -33,7 +33,7 @@ def address_view():
     return Titled(
         "เเก้ไขที่อยู่ใหม่",
         Div(
-            AX("⬅ กลับ", "/", "body", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+            A("⬅ กลับ", href="/profile", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
             style="position: absolute; top: 10px; left: 10px;"
         ),
         form
@@ -46,4 +46,4 @@ def update_address(full_name: str, phone: str, location: str, street: str, unit:
 
     if not full_name or not phone or not location or not street:
         return Span("กรุณากรอกข้อมูลให้ครบถ้วน", cls="error")
-    return Response(headers={"HX-Redirect": "/selectedFood"})
+    return Response(headers={"HX-Redirect": "/profile"})

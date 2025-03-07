@@ -1,0 +1,9 @@
+from app import app
+from models import *
+from fasthtml.common import *
+from lucide_fasthtml import Lucide
+
+@app.post()
+def update_delivery():
+    order.delivery = 
+    pass
