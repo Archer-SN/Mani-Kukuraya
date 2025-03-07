@@ -92,19 +92,27 @@ def send_input(search_query: str):
     # Returning a response to clear the input (simulating the 'disappear' functionality)
     return RedirectResponse("/restaurant/1", status_code=303)
 
-# Make the `log_input` function asynchronous
-@app.post("/log_input")
-async def log_input(request: Request):
-    # Retrieve the form data from the request
-    form_data = await request.form()
-    food_name = form_data.get("food_name")
-    restaurant_name = form_data.get("restaurant_name")
+@app.post("/search_food")
+def search_food(search_query: str):
+    print(f"Received search query: {search_query}")  # Debugging step
+
+    # Fetch the restaurant data
+    restaurant = controller.get_restaurant_by_id('1')  # Adjust this dynamically if needed
     
-    # Log the captured information to the terminal
-    print(f"Food Name: {food_name} from Restaurant: {restaurant_name}")  # This will print to the terminal
+    # Check if the query matches any food name
+    found = False
+    for food in restaurant.get_menu():
+        print(f"Checking food item: {food.get_name()}")  # Debugging step
+        if search_query.lower().strip() == food.get_name().lower().strip():
+            found = True
+            print(f"Found: {food.get_name()}")  # Print "found"
+            break  # Stop checking after first match
     
-    # Return a simple redirect or empty response to the user
-    return Response(headers={"HX-Redirect": "/selectedFood"})
+    if not found:
+        print("No match found.")  # Print "No match found" when no match exists
+
+    # Redirect back to the restaurant page
+    return RedirectResponse(f"/restaurant/{restaurant.get_id()}", status_code=303)
 
 @app.post("/favorite/{id}")
 def add_favorite(id: int):
@@ -139,3 +147,4 @@ def remove_favorite(id: int):
         hx_target="this",  # Update this element when the action is performed
         hx_swap="outerHTML"  # Swap the entire element with the response (so it changes the icon to black)
     )
+

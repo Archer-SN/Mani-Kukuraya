@@ -213,11 +213,7 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
-<<<<<<< HEAD
     def __init__(self, name="", menu=[], description="", score=0, reviews=[], restaurant_image="", restaurant_id=uuid.uuid4().hex):
-=======
-    def __init__(self, name, menu, score, reviews, restaurant_image, description="", restaurant_id=uuid.uuid4().hex):
->>>>>>> refs/remotes/origin/master
         self.__restaurant_id = restaurant_id
         self.__name = name
         self.__menu = menu
@@ -464,6 +460,7 @@ kfc_promotion = Promotion(
 )
 
 dairy_queen_restaurant = Restaurant(
+    restaurant_id="3",
     name="Dairy Queen",
     menu=[],
     description="Chain of soft-serve ice cream & fast-food restaurants.",

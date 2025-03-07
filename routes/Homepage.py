@@ -5,10 +5,10 @@ from fasthtml.common import *
 @app.get("/home")
 def ShowHomepage():
     # Categories from the controller
-    catagories = Controller.get_numbers_catagories()
+    categories = controller.get_numbers_categories()
     
     # Create category elements (using A and Div to structure the categories)
-    catagory_element = [
+    category_element = [
         A(
             Div(
                 Img(src=category[1], style="width:100%;height:50%;"),
@@ -18,7 +18,7 @@ def ShowHomepage():
             href=f"/category/{category[0]}",  # Navigate to a category-specific page
             style="display:block; text-align:center; margin: 10px;"
         )
-        for category in catagories
+        for category in categories
     ]
 
     
@@ -103,7 +103,7 @@ def ShowHomepage():
 
             H2("หมวดหมู่", style="width: 100%; text-align: left; margin-top: 20px;"),
             Div(
-                *catagory_element,
+                *category_element,
                 style="display:flex;flex-direction:row;justify-content:space-around;margin-top:40px;"
             ),
         ),
