@@ -7,12 +7,12 @@ def ShowHomepage():
     catagories = Controller.get_numbers_catagories()
     catagory_element = [
         A(
-<<<<<<< HEAD
-            Img(src="catagory[img]",alt="catagory[name]",style="width:100%;height:100%;"
-                ,href="catagory[herf]"),
-=======
-            Img(src=category[1],alt=category[0],style="width:5%;height:40%;"),
->>>>>>> 8e98389cd44e815b94eb34f70724dbc503072dd4
+            Div(
+                Img(src=category[1], style="width:100%;height:50%;"),
+                P(category[0], style="text-align:center; margin-top: 10px;"),
+                style="text-align:center;"
+            ),
+            style="display:block; text-align:center; margin: 10px;"
         )
         for category in catagories
     ]
@@ -21,33 +21,53 @@ def ShowHomepage():
         H3("โปรโมชั่น",style="text-align:left;"),
         Div(
             *[
-                P("โปรโมชั่นที่ ",str(i+1),style="text-align:left;")
-                for i in range(numbers_promotion)
+                P(f"โปรโมชั่นที่คุณมี {numbers_promotion}",style="text-align:left;")
             ],
             style="text-align:left;"
         ),
-        style="width:30%;height:20%;"
+        style="width:30%;height:20%;margin-top:10px;"
 
     )
-    search_bar = Input("ค้นหาอาหาร",placeholder="ค้นหา",style="width:100%;height:100%;")
-    search_button = Button("ค้นหา",style="width:100%;height:100%;")
+    search_bar = Input(type="text",name = "query", placeholder="ค้นหาอาหาร", style="width: 80%; height: 100%; display: inline-block;margin-right:10px;")
+    search_button = Button("ค้นหา",type="submit", style="width: 30%; height: 100%; display: inline-block;")
     search_bar_element = Form(
         search_bar,
         search_button,
-        style="width:100%;height:100%;"
+        action="/search",
+        method="get",
+        style="position: absolute; top: 20px; right: 20px; width: 300px; height: 40px; display: flex;"
     )
 
     return Container(
-        H1("หน้าหลัก"),
-        Div(
-            *catagory_element,
-            style="display:flex;flex-wrap:wrap;justify-content:space-around;"
-        ),
         Div(
             search_bar_element
         ),
+        Div(
+            *catagory_element,
+            style="display:flex;flex-wrap:wrap;justify-content:space-around;margin-top:200px;"
+        ),
         promotion_element,
         
+        style="text-align:center;"
+    )
+@app.get("/search")
+def SearchResults(query: str):
+    # Implement your search logic here
+    search_results = Controller.search_food(query)
+    search_results_elements = [
+        Div(
+            P(result["name"], style="text-align:center;"),
+            Img(src=result["image"], style="width:100%;height:50%;"),
+            style="text-align:center; margin: 10px;"
+        )
+        for result in search_results
+    ]
+    return Container(
+        H1(f"ผลการค้นหาสำหรับ '{query}'"),
+        Div(
+            *search_results_elements,
+            style="display:flex;flex-wrap:wrap;justify-content:space-around;margin-top:20px;"
+        ),
         style="text-align:center;"
     )
     
