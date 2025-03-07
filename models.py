@@ -54,6 +54,9 @@ class User:
     def add_payment(self, new_payment_method):
         self.__payment = new_payment_method
 
+    def add_promotion(self, promotion):
+        self.__promotions.append(promotion)
+
     def get_promotion(self, promotion_code):
         for promotion in self.__promotions:
             if promotion.get_promotion_code() == promotion_code:
@@ -74,8 +77,11 @@ class Promotion:
         self.__restaurant = restaurant
         self.__promotion_code = promotion_code
 
+    def get_name(self):
+        return self.__name
+
     def get_promotion_code(self):
-        return ""
+        return self.__promotion_code
 
 class Location:
     def __init__(self, phone_number, address,unit, extra_information) :
@@ -145,11 +151,10 @@ class Food:
         self.__food_image = food_image
 
 class FoodOption:
-    def __init__(self, option, choice, max_selection, food):
-        self.__option = option
-        self.__choice = choice
+    def __init__(self, option_name, choices, max_selection):
+        self.__option_name = option_name
+        self.__choices = choices
         self.__max_selection = max_selection
-        self.__food = food
 
 class OptionChoice:
     def __init__(self, option, choice, choices_value, price):
@@ -165,6 +170,15 @@ class FoodComment:
         self.__user = user
         self.__rating = rating
         self.__comment_text = comment_text
+
+class SelectedFoodOption():
+    def __init__(self, option, selected_choices=[]):
+        self.__option = option
+        self.__selected_choices = selected_choices
+
+    def select_choice(self):
+        pass
+
 
 class SelectedFood:
     def __init__(self, selected_food_id, food, option, choice, quantity):
@@ -268,3 +282,12 @@ user = User(
     promotions=[],
     reviews=[]
 )
+
+kfc_promotion = Promotion(
+    name="KFC Discount",
+    restaurant="KFC",
+    promotion_code="KFC2023",
+    image="kfc_promo.jpg"
+)
+
+user.add_promotion(kfc_promotion)
