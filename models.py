@@ -3,10 +3,10 @@ from fasthtml.common import *
 
 
 class Controller:
-    def __init__(self, users, restaurants, foods,):
+    def __init__(self, users, restaurants, foods):
         self.__users = users
         self.__restaurants = restaurants
-        self.__catagories = [["a","https://www.shutterstock.com/shutterstock/photos/2119143728/display_1500/stock-vector-homepage-illustration-vector-app-homepage-illustration-vector-homepage-logo-homepage-2119143728.jpg"]]
+        self.__catagories = [["This is test","https://example.com/image2.jpg"]]
         self.__foods = foods
 
     def get_user_by_id(self, user_id):
@@ -203,7 +203,7 @@ class SelectedFood:
         return 
 
 class Cart:
-    def __init__(self, cart_id, restaurants, selected_foods):
+    def __init__(self, cart_id, restaurants, selected_foods,restaurant_id):
         self.__cart_id = cart_id
         self.__restaurant_id = restaurant_id
         self.__selected_foods = selected_foods
@@ -302,3 +302,9 @@ kfc_promotion = Promotion(
 )
 
 user.add_promotion(kfc_promotion)
+
+Controller = Controller(
+    users=[user],
+    restaurants=[],
+    foods=[]
+)

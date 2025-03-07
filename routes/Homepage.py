@@ -7,8 +7,7 @@ def ShowHomepage():
     catagories = Controller.get_numbers_catagories()
     catagory_element = [
         A(
-            Img(src=category["image"],alt=category["name"],style="width:100%;height:100%;"
-                ,herf="catagory[herf]",style="display:block; text-align:center;"),
+            Img(src=category[1],alt=category[0],style="width:5%;height:40%;"),
         )
         for category in catagories
     ]

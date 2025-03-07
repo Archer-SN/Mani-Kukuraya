@@ -12,4 +12,4 @@ myHeaders = [
 app = FastHTML(hdrs=myHeaders)
 
 # Mounting the static folder for accessing the menu.css
-app.mount("/static", StaticFiles(directory="Mani-Kukuraya/static"), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
