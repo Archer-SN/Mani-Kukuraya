@@ -195,10 +195,6 @@ class Restaurant:
                 return restaurant.get_restaurant_id()
         return None
 
-    @classmethod
-    def list_restaurants(cls):
-        return cls._instances
-
     def get_food(self, food_name):
         for food in self.__menu:
             if food.get_name() == food_name:
@@ -411,6 +407,7 @@ user = User(
 kfc_restaurant = Restaurant(
     name="KFC",
     menu=[],
+    description="Fast-food chain known for its buckets of fried chicken, plus wings & sides.",
     score=4.5,
     reviews=[],
     restaurant_image="https://images.unsplash.com/photo-1612170153139-6f881ff067e0?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D"
@@ -425,6 +422,7 @@ kfc_promotion = Promotion(
 dairy_queen_restaurant = Restaurant(
     name="Dairy Queen",
     menu=[],
+    description="Chain of soft-serve ice cream & fast-food restaurants.",
     score=4.2,
     reviews=[],
     restaurant_image="https://s3-ap-southeast-1.amazonaws.com/cdn.dairyqueenthailand.com/images/1670569171.png"
@@ -439,6 +437,7 @@ dq_promotion = Promotion(
 mc_donald_restaurant = Restaurant(
     name="McDonald's",
     menu=[],
+    description="Fast food chain known for its burgers, fries & shakes.",
     score=4.3,
     reviews=[],
     restaurant_image="https://www.shutterstock.com/image-photo/ayutthayathailand-march-7-2018-view-260nw-1181606473.jpg"
@@ -460,12 +459,3 @@ Controller = Controller(
     restaurants=[],
     foods=[]
 )
-restaurant_data = [
-    {"name": "ไข่ขนป้า - ลาดกระบัง 46", "description": "อาหารตามสั่ง, ผัดไทย, ส้มตำ", "price": 299, "rating": 4.8, "distance": "5.7 km", "image": "egg.jpeg"},
-]
-
-for data in restaurant_data:
-    Restaurant.from_data(data)
-
-restaurant_list = Restaurant.list_restaurants()
-print([restaurant.get_name() for restaurant in restaurant_list])
