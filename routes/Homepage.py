@@ -16,18 +16,26 @@ def ShowHomepage():
         )
         for category in catagories
     ]
-    # numbers_promotion = numbers_promotion_from_controller
-    # promotion_element = Card(
-    #     H3("โปรโมชั่น{numbers_promotion}",style="text-align:center;"),
-    #     style="width:100%;height:100%;"
-    # )
-    # search_bar = Input("text",placeholder="ค้นหา",style="width:100%;height:100%;")
-    # search_button = Button("ค้นหา",style="width:100%;height:100%;")
-    # search_bar_element = Form(
-    #     search_bar,
-    #     search_button,
-    #     style="width:100%;height:100%;"
-    # )
+    numbers_promotion = 10
+    promotion_element = Card(
+        H3("โปรโมชั่น",style="text-align:left;"),
+        Div(
+            *[
+                P("โปรโมชั่นที่ ",str(i+1),style="text-align:left;")
+                for i in range(numbers_promotion)
+            ],
+            style="text-align:left;"
+        ),
+        style="width:30%;height:20%;"
+
+    )
+    search_bar = Input("ค้นหาอาหาร",placeholder="ค้นหา",style="width:100%;height:100%;")
+    search_button = Button("ค้นหา",style="width:100%;height:100%;")
+    search_bar_element = Form(
+        search_bar,
+        search_button,
+        style="width:100%;height:100%;"
+    )
 
     return Container(
         H1("หน้าหลัก"),
@@ -35,9 +43,12 @@ def ShowHomepage():
             *catagory_element,
             style="display:flex;flex-wrap:wrap;justify-content:space-around;"
         ),
-        # promotion_element,
-        # search_bar_element,
-        # style="text-align:center;"
+        Div(
+            search_bar_element
+        ),
+        promotion_element,
+        
+        style="text-align:center;"
     )
     
         

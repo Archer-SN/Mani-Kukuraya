@@ -6,7 +6,7 @@ class Controller:
     def __init__(self, users, restaurants, foods):
         self.__users = users
         self.__restaurants = restaurants
-        self.__catagories = [["This is test","https://example.com/image2.jpg"]]
+        self.__catagories = [["This is test","https://example.com/image2.jpg"],["This is test2","https://example.com/image2.jpg"],["This is test3","https://example.com/image2.jpg"],["This is test4","https://example.com/image2.jpg"],["This is test5","https://example.com/image2.jpg"],["This is test6","https://example.com/image2.jpg"],["This is test7","https://example.com/image2.jpg"],["This is test8","https://example.com/image2.jpg"],["This is test9","https://example.com/image2.jpg"],["This is test10","https://example.com/image"]]
         self.__foods = foods
 
     def get_user_by_id(self, user_id):
