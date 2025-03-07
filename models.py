@@ -3,10 +3,10 @@ from fasthtml.common import *
 import uuid
 
 class Controller:
-    def __init__(self, users, restaurants, foods,):
+    def __init__(self, users, restaurants, foods):
         self.__users = users
         self.__restaurants = restaurants
-        self.__catagories = []
+        self.__catagories = [["This is test","https://example.com/image2.jpg"],["This is test2","https://example.com/image2.jpg"],["This is test3","https://example.com/image2.jpg"],["This is test4","https://example.com/image2.jpg"],["This is test5","https://example.com/image2.jpg"],["This is test6","https://example.com/image2.jpg"],["This is test7","https://example.com/image2.jpg"],["This is test8","https://example.com/image2.jpg"],["This is test9","https://example.com/image2.jpg"],["This is test10","https://example.com/image"]]
         self.__foods = foods
 
     def get_user_by_id(self, user_id):
@@ -27,8 +27,9 @@ class Controller:
 
     def find_food(self):
         pass
-    def Howmanycatagory(self):
-        return len(self.__catagories)
+    def get_numbers_catagories(self):
+        return self.__catagories
+        
 
     
 class User:
@@ -86,6 +87,9 @@ class Promotion:
 
     def get_name(self):
         return self.__name
+
+    def get_image(self):
+        return self.__restaurant.get_image()
 
     def get_promotion_code(self):
         return self.__promotion_code
@@ -180,11 +184,15 @@ def find_restaurant_id_by_name(restaurants, restaurant_name):
             return restaurant.get_restaurant_id()
     return None
 
-restaurant_data = [
-    {"name": "ไข่ขนป้า - ลาดกระบัง 46", "description": "อาหารตามสั่ง, ผัดไทย, ส้มตำ", "price": 299, "rating": 4.8, "distance": "5.7 km", "image": "egg.jpeg"},
-]
 
-restaurants = [Restaurant.from_data(data) for data in restaurant_data]
+    def get_food(self, food_name):
+        for food in self.__menu:
+            if food.get_name() == food_name:
+                return food
+
+    def get_image(self):
+        return self.__restaurant_image
+
 
 class Food:
     def __init__(self, name, description, price, category, food_image):
@@ -237,8 +245,6 @@ class OptionChoice:
         self.__choices_value = choices_value
         self.__price = price
 
-    def get_price(self):
-        return self.__price
 
     def get_choice(self):
         return self.__choice
@@ -297,7 +303,7 @@ class SelectedFood:
         return total_price
 
 class Cart:
-    def __init__(self, cart_id, restaurants, selected_foods):
+    def __init__(self, cart_id, restaurants, selected_foods,restaurant_id):
         self.__cart_id = cart_id
         self.__restaurant_id = restaurant_id
         self.__selected_foods = selected_foods
@@ -396,3 +402,14 @@ kfc_promotion = Promotion(
 )
 
 user.add_promotion(kfc_promotion)
+
+Controller = Controller(
+    users=[user],
+    restaurants=[],
+    foods=[]
+)
+restaurant_data = [
+    {"name": "ไข่ขนป้า - ลาดกระบัง 46", "description": "อาหารตามสั่ง, ผัดไทย, ส้มตำ", "price": 299, "rating": 4.8, "distance": "5.7 km", "image": "egg.jpeg"},
+]
+
+restaurants = [Restaurant.from_data(data) for data in restaurant_data]
