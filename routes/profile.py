@@ -15,12 +15,12 @@ def profile():
                 alt="Profile Picture",
                 style="width: 150px; height: auto; border-radius: 50%; display: block; margin: 0 auto;"
             ),
-            H4("สวัสดีคุณ John Doe",style="margin-top: 20px;"),
+            H4(f"สวัสดีคุณ {user.name}",style="margin-top: 20px;"),
             style="box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2); padding: 20px; text-align: center; margin-top:60px;"
         ),
         H2("ทั่วไป",style="margin-top: 20px;"),
-        Button("รายการโปรด", type="submit",onclick="window.location.href='/favorites';", style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;"),
+        Button("รายการโปรด", type="submit",onclick="window.location.href='/favorite';", style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;"),
         Button("วิธีการชำระเงิน", type="submit",onclick="window.location.href='/favorites';", style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;"),
-        Button("จัดการบัญชี", type="submit",onclick="window.location.href='/favorites';", style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;"),
-        Button("สถานที่ที่บันทึกไว้", type="submit",onclick="window.location.href='/favorites';", style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;"),
+        Button("จัดการบัญชี", type="submit",onclick="window.location.href='/account';", style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;"),
+        Button("สถานที่ที่บันทึกไว้", type="submit",onclick="window.location.href='/locations';", style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;"),
     )

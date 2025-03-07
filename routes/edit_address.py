@@ -1,49 +1,83 @@
-from app import *
+from app import app
 from models import *
 from fasthtml.common import *
 
-@app.get("/edit-address")
-def address_view():
-    form = Form(
-        Label("ชื่อ-นามสกุล"),
-        Input(id="full_name", name="full_name", required=True, placeholder="กรอกชื่อ-นามสกุล",hx_target="#full_name", hx_trigger="blur"),
+@app.get("/edit-address/{id}")
+def address_view(id: str):
+    location = user.get_location_by_id(id)
+    
+    if not location:
+        return Div("ไม่พบข้อมูลที่อยู่", cls="error")
 
-        Label("เบอร์โทรศัพท์มือถือ"),
-        Input(id="phone", name="phone", type="tel", required=True, placeholder="กรอกเบอร์โทรศัพท์",hx_target="#phone", hx_trigger="blur"),
-
-        Label("จังหวัด/เขต(อำเภอ)/รหัสไปรษณีย์/แขวง(ตำบล)"),
-        Input(id="location", name="location", required=True, placeholder="กรอกข้อมูลพื้นที่", hx_target="#location", hx_trigger="blur"),
-
-        Label("ถนน/ชื่ออาคาร"),
-        Input(id="street", name="street", required=True, placeholder="กรอกถนน/ชื่ออาคาร", hx_target="#street", hx_trigger="blur"),
-
-        Label("บ้านเลขที่/ชั้น"),
-        Input(id="unit", name="unit", required=False, placeholder="กรอกบ้านเลขที่/ชั้น", hx_target="#unit", hx_trigger="blur"),
-
-        Label("ข้อมูลเพิ่มเติม (ถ้ามี)"),
-        Input(id="extra_info", name="extra_info", required=False, placeholder="รายละเอียดเพิ่มเติม",hx_target="#extra_info", hx_trigger="blur"),
-        
-        Button("บันทึก", type="submit", style="border: none; background-color: #ff5722; color: white;",
-               hx_post="/update-address", hx_target="#form-msg"),
-
-        Div(id="form-msg")
-    )
-
-
-    return Titled(
-        "เเก้ไขที่อยู่ใหม่",
-        Div(
-            A("⬅ กลับ", href="/profile", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+    return Main(
+        Titled(
+            "แก้ไขที่อยู่",
+            Div(
+                A("⬅ กลับ", href ="/locations", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
             style="position: absolute; top: 10px; left: 10px;"
-        ),
-        form
+            ),
+            Section(
+                Div(
+                    Form(
+                        Label("ชื่อ-นามสกุล", For="full_name"),
+                        Input(id="full_name", name="full_name", required=True, value=location.full_name, placeholder="กรอกชื่อ-นามสกุล"),
+
+                        Label("เบอร์โทรศัพท์มือถือ", For="phone"),
+                        Input(id="phone", name="phone", type="tel", required=True, value=location.phone_number, placeholder="กรอกเบอร์โทรศัพท์"),
+
+                        Label("จังหวัด/เขต(อำเภอ)/รหัสไปรษณีย์/แขวง(ตำบล)", For="location"),
+                        Input(id="location", name="location", required=True, value=location.address, placeholder="กรอกข้อมูลพื้นที่"),
+
+                        Label("ถนน/ชื่ออาคาร", For="street"),
+                        Input(id="street", name="street", required=True, value=location.street, placeholder="กรอกถนน/ชื่ออาคาร"),
+
+                        Label("เลขที่ยูนิต/ชั้น", For="unit"),
+                        Input(id="unit", name="unit", value=location.unit or "-", placeholder="กรอกเลขที่ยูนิต/ชั้น"),
+
+                        Label("ข้อมูลที่อยู่เพิ่มเติม (ถ้ามี)", For="extra_info"),
+                        Input(id="extra_info", name="extra_info", value=location.extra_information or "", placeholder="รายละเอียดเพิ่มเติม"),
+
+                        Input(type="hidden", name="id", value=str(location.id)),
+
+                        Div(
+                            Button("บันทึกการแก้ไข", type="submit", cls="primary-button full-width",
+                                hx_post="/update-address", hx_target="#form-msg"),
+                            cls="button-container"
+                        ),
+
+                        Div(id="form-msg", cls="text-center"),
+                        cls="form-container"
+                    ),cls="container"
+
+                )
+            )
+        )
     )
 
 
 @app.post("/update-address")
-def update_address(full_name: str, phone: str, location: str, street: str, unit: str = "", extra_info: str = ""):
-    print(f"ข้อมูลที่ได้รับ: {full_name}, {phone}, {location}, {street}, {unit}, {extra_info}")  
+def update_address(request):
+    form_data = request.form() 
+    location_id = form_data.get("id", "").strip()  
 
-    if not full_name or not phone or not location or not street:
+    full_name = form_data.get("full_name", "").strip()
+    phone = form_data.get("phone", "").strip()
+    location = form_data.get("location", "").strip()
+    street = form_data.get("street", "").strip()
+    unit = form_data.get("unit", "").strip()
+    extra_info = form_data.get("extra_info", "").strip()
+
+    if not location_id or not full_name or not phone:
         return Span("กรุณากรอกข้อมูลให้ครบถ้วน", cls="error")
-    return Response(headers={"HX-Redirect": "/profile"})
+
+    for loc in user.get_locations():
+        if str(loc.id) == location_id:
+            loc.full_name = full_name
+            loc.phone_number = phone
+            loc.address = location
+            loc.street = street
+            loc.unit = unit
+            loc.extra_information = extra_info
+            return Response(headers={"HX-Redirect": "/locations"}) 
+
+    return Span("ไม่พบข้อมูลที่อยู่", cls="error")
