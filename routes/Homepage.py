@@ -48,8 +48,9 @@ def ShowHomepage():
     # Navbar with links to different pages
     navbar = Div(
         A("Home", href="/home", style="margin-right: 20px;"),
-        A("Categories", href="/categories", style="margin-right: 20px;"),
-        A("Promotions", href="/promotions", style="margin-right: 20px;"),
+        A("Favorites", href="/favorite", style="margin-right: 20px;"),
+        A("Promotions", href="/promotion", style="margin-right: 20px;"),
+        A("Carts", href="/cart", style="margin-right: 20px;"),
         style="text-align:center; margin-top: 10px;"
     )
 
@@ -61,7 +62,7 @@ def ShowHomepage():
         ),
         Div(
             *catagory_element,
-            style="display:flex;flex-wrap:wrap;justify-content:space-around;margin-top:200px;"
+            style="display:flex;flex-wrap:wrap;justify-content:space-around;margin-top:40px;"
         ),
         promotion_element,
         style="text-align:center;"

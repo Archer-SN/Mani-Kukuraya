@@ -30,15 +30,28 @@ def get():
 
     # รูปลูกศรย้อนกลับที่คลิกได้
     back_button = A(
-        Img(src='/static/arrow.jpeg', alt="back", style="width: 30px; height: 30px; margin-right: 10px;"),  # รูปลูกศรที่คลิกได้
+        Img(src='/static/arrow.jpeg', alt="back", style="width: 30px; height: 30px; margin-right: 20px;"),  # รูปลูกศรที่คลิกได้
         href="/home"  # ลิงก์ไปยังหน้า home
     )
 
-    # สร้างหน้าเว็บหลักที่มีปุ่ม Manage อยู่ในแถวเดียวกับ My Cart
-    return Container(
+    # สร้าง navbar สำหรับการนำทาง โดยที่ลูกศรย้อนกลับอยู่ทางซ้ายและ navbar อยู่กลาง
+    navbar = Div(
+        Div(back_button, style="flex: 0 0 auto;"),  # ลูกศรย้อนกลับอยู่ทางซ้าย
         Div(
-            back_button,
-            H1("My Cart", style="font-weight: normal; margin-right: 20px;"),
+            A("Home", href="/home", style="margin-right: 20px;"),
+            A("Favorites", href="/favorite", style="margin-right: 20px;"),
+            A("Promotions", href="/promotion", style="margin-right: 20px;"),
+            A("Carts", href="/cart", style="margin-right: 20px;"),
+            style="display: flex; justify-content: center; align-items: center; flex-grow: 1;"
+        ),
+        style="display: flex; align-items: center; margin-top: 10px; width: 100%;"
+    )
+
+    # สร้างหน้าเว็บหลักที่มีปุ่ม "Manage" อยู่ในแถวเดียวกับ "My Cart"
+    return Container(
+        navbar,  # แสดง navbar ที่จัดตำแหน่งให้ลูกศรย้อนกลับอยู่ทางซ้ายและแถบการนำทางอยู่ตรงกลาง
+        Div(
+            H1("My Cart", style="font-weight: normal; margin-right: 20px; margin-top: 20px;"),  # ขยับ "My Cart" ลง 20px
             Div(A("Manage", href="#", style="font-size: 14px; color: #f1a22a;"), cls="manage-button"),
             style="display: flex; justify-content: space-between; align-items: center; width: 100%;"
         ),
