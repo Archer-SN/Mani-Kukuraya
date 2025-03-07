@@ -2,6 +2,7 @@ from app import *
 from models import *
 from fasthtml.common import *
 
+# Sample restaurant data
 restaurants = [
     {"name": "ไข่ข้นป้า - ตลาดกระบัง 46", "food": "อาหารตามสั่ง", "rating": 4.8, "distance": 5.7, "image": "egg.jpeg"},
     {"name": "ไข่ข้นป้า - ตลาดกระบัง 46", "food": "อาหารตามสั่ง", "rating": 4.8, "distance": 5.7, "image": "egg.jpeg"}
@@ -9,7 +10,7 @@ restaurants = [
 
 @app.get("/favorite")
 def get():
-    # สร้างรายการของร้านอาหาร
+    # Create list of restaurants
     items = []
     for restaurant in restaurants:
         items.append(
@@ -27,16 +28,29 @@ def get():
             )
         )
 
-    # สร้างรูปภาพที่สามารถกดย้อนกลับไปหน้า home
+    # Back button image that leads back to home
     back_button = A(
-        Img(src='/static/arrow.jpeg', alt="back", style="width: 30px; height: 30px; margin-bottom: 20px;"),  # รูปลูกศรที่คลิกได้
-        href="/home"  # ลิงก์ไปยังหน้า home
+        Img(src='/static/arrow.jpeg', alt="back", style="width: 30px; height: 30px; margin-right: 20px;"),  # รูปลูกศรที่คลิกได้
+        href="/home"  # Link to home page
     )
 
-    # สร้างหน้าเว็บหลัก
+    # Create navbar for navigation with back button on the left and navbar in the center
+    navbar = Div(
+        Div(back_button, style="flex: 0 0 auto;"),  # Back button on the left side
+        Div(
+            A("Home", href="/home", style="margin-right: 20px;"),
+            A("Favorites", href="/favorite", style="margin-right: 20px;"),
+            A("Promotions", href="/promotion", style="margin-right: 20px;"),
+            A("Carts", href="/cart", style="margin-right: 20px;"),
+            style="display: flex; justify-content: center; align-items: center; flex-grow: 1;"
+        ),
+        style="display: flex; align-items: center; margin-top: 10px; width: 100%;"
+    )
+
+    # Main content with navbar, back button, restaurant list, and message
     return Container(
-        back_button,  # รูปลูกศรที่สามารถกดกลับ
-        H1("Favourite Restaurants", style="font-weight: normal;"),  # หัวข้อเป็นข้อความธรรมดา
+        navbar,  # Navbar at the top with back button aligned to the left and navbar centered
+        H1("Favourite Restaurants", style="font-weight: normal; margin-top : 35px;"),  # Title for favorites
         Div(*items, cls="restaurant-list"),
         Div("Looking for something else? Try searching or explore another category!", style="font-size: 14px; color: grey; text-align: center;")
     )

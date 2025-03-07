@@ -157,17 +157,64 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
+<<<<<<< HEAD
     def __init__(self, name, menu, score, reviews, restaurant_image, description="", id=uuid.uuid4()):
         self.__restaurant_id = id
+=======
+    def __init__(self, name, menu, description, score, reviews, restaurant_image):
+        self.__restaurant_id = uuid.uuid4()
+>>>>>>> 50bcd308fd49f2e76af05e460fe70c4fef0defed
         self.__name = name
         self.__menu = menu
+        self.__description = description
         self.__score = score
         self.__reviews = reviews
         self.__restaurant_image = restaurant_image
         self.__description = description
 
     def get_restaurant_id(self):
+<<<<<<< HEAD
         return self.__restaurant_id
+=======
+        return str(self.__restaurant_id)
+
+    def get_name(self):
+        return self.__name
+
+    def get_menu(self):
+        return self.__menu
+
+    def get_score(self):
+        return self.__score
+
+    def get_reviews(self):
+        return self.__reviews
+
+    def get_restaurant_image(self):
+        return self.__restaurant_image
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(
+            name=data["name"],
+            menu=data.get("menu", []),
+            description=data.get("description", ""),
+            score=data.get("score", 0),
+            reviews=data.get("reviews", []),
+            restaurant_image=data.get("image", "")
+        )
+
+    @staticmethod
+    def find_restaurant_id_by_name(restaurant_name):
+        for restaurant in Restaurant._instances:
+            if restaurant.get_name() == restaurant_name:
+                return restaurant.get_restaurant_id()
+        return None
+
+    @classmethod
+    def list_restaurants(cls):
+        return cls._instances
+>>>>>>> 50bcd308fd49f2e76af05e460fe70c4fef0defed
 
     def get_food(self, food_name):
         for food in self.__menu:
@@ -393,6 +440,7 @@ Controller = Controller(
     foods=[]
 )
 
+<<<<<<< HEAD
 # Create foods for each restaurant
 kfc_food1 = Food(
     food_id="1",
@@ -493,3 +541,10 @@ user._User__carts.append(cart)
 print(f"User {user.get_user_id()} has the following items in their cart:")
 for food in cart.get_foods():
     print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
+=======
+for data in restaurant_data:
+    Restaurant.from_data(data)
+
+restaurant_list = Restaurant.list_restaurants()
+print([restaurant.get_name() for restaurant in restaurant_list])
+>>>>>>> 50bcd308fd49f2e76af05e460fe70c4fef0defed
