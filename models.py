@@ -22,7 +22,7 @@ class Controller:
     def get_restaurant_by_id(self):
         for restaurant in self.__restaurants:
             if restaurant.get_restaurant_id() == restaurant_id:
-                return restaurant
+                return restaurants
 
 
     def find_food(self):
@@ -169,20 +169,22 @@ class Restaurant:
     def get_restaurant_image(self):
         return self.__restaurant_image
 
-def from_data(cls, data):
-        return cls(
-            name=data["name"],
-            menu=data.get("menu", []),
-            score=data.get("score", 0),
-            reviews=data.get("reviews", []),
-            restaurant_image=data.get("image", "")
-        )
+    @classmethod
+    def from_data(cls, data):
+            return cls(
+                name=data["name"],
+                menu=data.get("menu", []),
+                score=data.get("score", 0),
+                reviews=data.get("reviews", []),
+                restaurant_image=data.get("image", "")
+            )
 
-def find_restaurant_id_by_name(restaurants, restaurant_name):
-    for restaurant in restaurants:
-        if restaurant.get_name() == restaurant_name:
-            return restaurant.get_restaurant_id()
-    return None
+    @staticmethod
+    def find_restaurant_id_by_name(restaurants, restaurant_name):
+        for restaurant in restaurants:
+            if restaurant.get_name() == restaurant_name:
+                return restaurant.get_restaurant_id()
+        return None
 
 
     def get_food(self, food_name):
