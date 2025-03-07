@@ -150,10 +150,11 @@ class Review:
 import uuid
 
 class Restaurant:
-    def __init__(self, name, menu, score, reviews, restaurant_image):
+    def __init__(self, name, menu, description, score, reviews, restaurant_image):
         self.__restaurant_id = uuid.uuid4()
         self.__name = name
         self.__menu = menu
+        self.__description = description
         self.__score = score
         self.__reviews = reviews
         self.__restaurant_image = restaurant_image
@@ -178,21 +179,25 @@ class Restaurant:
 
     @classmethod
     def from_data(cls, data):
-            return cls(
-                name=data["name"],
-                menu=data.get("menu", []),
-                score=data.get("score", 0),
-                reviews=data.get("reviews", []),
-                restaurant_image=data.get("image", "")
-            )
+        return cls(
+            name=data["name"],
+            menu=data.get("menu", []),
+            description=data.get("description", ""),
+            score=data.get("score", 0),
+            reviews=data.get("reviews", []),
+            restaurant_image=data.get("image", "")
+        )
 
     @staticmethod
-    def find_restaurant_id_by_name(restaurants, restaurant_name):
-        for restaurant in restaurants:
+    def find_restaurant_id_by_name(restaurant_name):
+        for restaurant in Restaurant._instances:
             if restaurant.get_name() == restaurant_name:
                 return restaurant.get_restaurant_id()
         return None
 
+    @classmethod
+    def list_restaurants(cls):
+        return cls._instances
 
     def get_food(self, food_name):
         for food in self.__menu:
@@ -459,4 +464,8 @@ restaurant_data = [
     {"name": "ไข่ขนป้า - ลาดกระบัง 46", "description": "อาหารตามสั่ง, ผัดไทย, ส้มตำ", "price": 299, "rating": 4.8, "distance": "5.7 km", "image": "egg.jpeg"},
 ]
 
-restaurants = [Restaurant.from_data(data) for data in restaurant_data]
+for data in restaurant_data:
+    Restaurant.from_data(data)
+
+restaurant_list = Restaurant.list_restaurants()
+print([restaurant.get_name() for restaurant in restaurant_list])

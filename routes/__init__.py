@@ -17,5 +17,6 @@ from . import profile
 from . import mycart
 from . import favorite
 from . import Homepage
+from . import restaurants
 
 
