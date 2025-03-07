@@ -16,5 +16,6 @@ from . import qrcode_payment
 from . import profile
 from . import mycart
 from . import favorite
+from . import Homepage
 
 
