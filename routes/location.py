@@ -6,6 +6,9 @@ from fasthtml.common import *
 @app.get("/locations")
 def saved_locations_page():
     locations = user.get_locations() 
+    print(locations)
+    if not locations:
+        return Redirect("/address")
     return Container(
         H2("สถานที่ที่บันทึกไว้", style="margin-top: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;"),
 
@@ -38,13 +41,11 @@ def saved_locations_page():
                 )
                 for location in locations
             ]
-        ) if locations else P("ไม่มีสถานที่ที่บันทึกไว้", style="color: gray; text-align: center;"),
-
-        Div(
-            Button("+", type="button",
-                   style="width: 40px; height: 40px; border-radius: 50%; font-size: 24px; background: none; border: 2px solid gray; color: gray; cursor: pointer;",
-                   onclick="window.location.href='/address';"),
-            P("เพิ่มสถานที่ใหม่", style="color: gray; font-size: 16px;"),
-            style="display: flex; align-items: center; gap: 10px; padding: 15px; cursor: pointer;",
         ),
+
+          Div(
+                A("+", href="/address", cls="button outline circle large"),
+                P("เพิ่มสถานที่ใหม่", cls="add-location-text"),
+                cls="grid center"
+            )
     )

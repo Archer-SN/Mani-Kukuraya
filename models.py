@@ -51,13 +51,8 @@ class User:
         self.__username = username
         self.__password = password
         self.__carts = carts
-<<<<<<< HEAD
-        self.__locations = locations
-        self.__user_order_history = user_order_history
-=======
         self.__locations = []
         self.__user_order_history = []
->>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__promotions = promotions
         self.__reviews = reviews
         self.__current_order = None
@@ -101,8 +96,6 @@ class User:
         return "Error: Object only"
         
     def get_locations(self):
-        if not self.__locations:
-            return "No Locations Save"
         return  self.__locations
     
     def get_location_by_id(self, location_id):
@@ -189,6 +182,14 @@ class Location:
     @property
     def extra_information(self):  
         return self.__extra_information
+    
+    def edit_location(self,full_name, phone, address,street, unit, extra_info) :
+        self.__full_name = full_name
+        self.__phone_number = phone
+        self.__address = address
+        self.__street = street 
+        self.__unit = unit
+        self.__extra_information = extra_info
 
 
 
@@ -207,13 +208,8 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
-<<<<<<< HEAD
-    def __init__(self, name, menu, score, reviews, restaurant_image):
-        self.__restaurant_id = uuid.uuid4().hex
-=======
     def __init__(self, name="", menu=[], description="", score=0, reviews=[], restaurant_image="", restaurant_id=uuid.uuid4()):
         self.__restaurant_id = restaurant_id
->>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
         self.__name = name
         self.__menu = menu
         self.__description = description
@@ -342,11 +338,7 @@ class SelectedFood:
         return 
 
 class Cart:
-<<<<<<< HEAD
-    def __init__(self, cart_id, restaurant : Restaurant, selected_foods):
-=======
-    def __init__(self, cart_id, restaurants, selected_foods,restaurant_id):
->>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
+    def __init__(self, cart_id, restaurants, selected_foods,restaurant):
         self.__cart_id = cart_id
         self.__restaurant = restaurant
         self.__selected_foods = selected_foods
@@ -423,17 +415,10 @@ class Order:
         pass
 
 user = User(
-<<<<<<< HEAD
     user_id= 67010751 ,
     name="Yokphon Ninbarun",
     username="ForceFord",
     password="911",
-=======
-    user_id="1",
-    name="Yokphon ",
-    username="foshforce",
-    password="password123",
->>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
     carts=[],
     locations=[],
     user_order_history=[],
@@ -441,8 +426,6 @@ user = User(
     reviews=[]
 )
 
-<<<<<<< HEAD
-=======
 kfc_restaurant = Restaurant(
     restaurant_id="1",
     name="KFC",
@@ -653,29 +636,28 @@ kfc_restaurant_from_controller = Controller.get_restaurant_by_id(1)
 print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
 
 # Create a cart for the user
-cart = Cart(
-    cart_id=uuid.uuid4(),
-    restaurants=[kfc_restaurant],
-    selected_foods=[],
-    restaurant_id=kfc_restaurant.get_restaurant_id()
-)
+# cart = Cart(
+#     cart_id=uuid.uuid4(),
+#     restaurants=[kfc_restaurant],
+#     selected_foods=[],
+#     restaurants=kfc_restaurant
+# )
 
 # Add food to the cart
-selected_food = SelectedFood(
-    selected_food_id=uuid.uuid4(),
-    food=kfc_food1,
-    option=None,
-    choice=None,
-    quantity=2
-)
+# selected_food = SelectedFood(
+#     selected_food_id=uuid.uuid4(),
+#     food=kfc_food1,
+#     option=None,
+#     choice=None,
+#     quantity=2
+# )
 
-cart.add_to_cart(selected_food)
+# cart.add_to_cart(selected_food)
 
-# Add the cart to the user's carts
-user._User__carts.append(cart)
+# # Add the cart to the user's carts
+# user._User__carts.append(cart)
 
-# Print the cart details
-print(f"User {user.get_user_id()} has the following items in their cart:")
-for food in cart.get_foods():
-    print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
->>>>>>> 5161f38fa6a85b05ca1f8a7f29ff3bfe6445cfdf
+# # Print the cart details
+# print(f"User {user.get_user_id()} has the following items in their cart:")
+# for food in cart.get_foods():
+#     print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
