@@ -4,21 +4,36 @@ from fasthtml.common import *
 
 @app.get("/home")
 def ShowHomepage():
+    
+    dataforhomepage = controller.dataforhomepage()
     # Categories from the controller
-    catagories = controller.get_numbers_categories()
+    user_profile = Div(
+    Img(
+        src="https://upload.wikimedia.org/wikipedia/en/c/c2/Peter_Griffin.png" if hasattr(user, "profile_picture") else "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&q=70&fm=webp",
+        alt="User Profile Picture",
+        style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;"
+    ),
+    A(
+        f"{user.name}",
+        href="/profile",
+        style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
+    ),
+    
+    style="display: flex; align-items: center; position: absolute; top: 10px; left: 10px;"
+)
+    categories = dataforhomepage[0]
     
     # Create category elements (using A and Div to structure the categories)
-    catagory_element = [
+    category_element = [
         A(
             Div(
-                Img(src=category[1], style="width:100%;height:50%;"),
-                P(category[0], style="text-align:center; margin-top: 10px;"),
+                P(category, style="text-align:center; margin-top: 10px;"),
                 style="text-align:center;"
             ),
             href=f"/category/{category[0]}",  # Navigate to a category-specific page
             style="display:block; text-align:center; margin: 10px;"
         )
-        for category in catagories
+        for category in categories
     ]
 
     
@@ -34,7 +49,7 @@ def ShowHomepage():
             ],
             style="text-align:left;"
         ),
-        style="width:30%;height:20%;margin-top:10px;"
+        style="width:30%;height:20%;margin-top:50px;"
     )
 
     # Search bar
@@ -63,7 +78,7 @@ def ShowHomepage():
         style="text-align:center; margin-top: 10px;"
     )
 
-    # recent_order = Controller.get_recent_order()
+    # recent_order = controller.get_recent_order()
     # recent_order_element = [
     #     Card(
     #         Img(src=order["image"], style="width:100%;height:50%;"),
@@ -75,35 +90,54 @@ def ShowHomepage():
 
     
     # Recommended food
-    recommended_food = Controller.get_recommended_food()
+    recommended_food = dataforhomepage[1]
     recommended_food_element = [
-        Div(
-            Img(src=food[1], style="width:300px;height:200px;"),
-            P(food[0]),
-            style="text-align:left; margin: 10px;"
-        )
-        for food in recommended_food
-    ]
-
+    Div(
+        Img(
+            src=food.get_image(), 
+            style="width:320px; height:200px; object-fit:cover; display:block; margin-bottom: 5px;"
+        ),
+        A(
+            f"{food.get_name()}",
+            href="/review",
+            style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
+        ),
+        style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
+    )
+    for food in recommended_food
+]
     #recommended restaurant
-    # recommended_restaurant = Controller.get_recommended_restaurant()
-    # recommended_food_element = [
-
-    # ]
+    recommended_restaurant = dataforhomepage[2]
+    recommended_restaurant_element = [
+    Div(
+        Img(
+            src=restaurant.get_image(),
+            style="width:300px; height:200px; object-fit:cover; display:block; margin-bottom: 5px;"
+        ),
+        A(  
+            f"{restaurant.get_name()}",
+            href = "/review",
+            style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
+        ),
+        style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
+    )
+    for restaurant in recommended_restaurant
+]
 
 
 
     # Return the entire page with navbar, search, categories, and promotions
     return Container(
         navbar,  # Add the navigation bar at the top
+        user_profile,
         Div(
-        search_bar_element
+            search_bar_element
         ),
         Div(
 
             H2("หมวดหมู่", style="width: 100%; text-align: left; margin-top: 20px;"),
             Div(
-                *catagory_element,
+                *category_element,
                 style="display:flex;flex-direction:row;justify-content:space-around;margin-top:40px;"
             ),
         ),
@@ -111,26 +145,29 @@ def ShowHomepage():
         Div(
             H2("อาหารแนะนำ", style="width: 100%; text-align: left; margin-bottom: 20px;"),  # Custom style for H2
             Div(
-                *recommended_food_element,
-                style="display:flex;flex-direction;justify-content:flex-start;"
+                *recommended_food_element,  # Show only the first 5 items initially
+                id="recommended-food-container",
+                style="display:flex;flex-wrap:row;justify-content:flex-start;"
             ),
-            style="margin-top:30px;"
+            style="margin-top:100px;"
         ),
 
+        Div(
+            H2("ร้านอาหารแนะนำ", style="width: 100%; text-align: left; margin-bottom: 20px;"),  # Custom style for H2
+            Div(
+                *recommended_restaurant_element,
+                style="display:flex;flex-direction:row;justify-content:flex-start;"
+            ),
+            style="margin-top:100px;"
+        )
 
-        # Div(
-        #     H2("อาหารล่าสุด"),
-        #     *recent_order_element,
-        #     style="display:flex;flex-wrap:wrap;justify-content:space-around;margin-top:200px;"
-        # ),
-
-        style="text-align:center;"
+        # style="text-align:center;"
     )
 
 @app.get("/search")
 def SearchResults(query: str):
     # Implement your search logic here
-    search_results = Controller.search_food(query)
+    search_results = controller.search_food(query)
     
     # Display search results
     search_results_elements = [
