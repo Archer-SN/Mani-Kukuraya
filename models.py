@@ -195,14 +195,6 @@ class Location:
     @property
     def extra_information(self):  
         return self.__extra_information
-    
-    def edit_location(self,full_name, phone, address,street, unit, extra_info) :
-        self.__full_name = full_name
-        self.__phone_number = phone
-        self.__address = address
-        self.__street = street 
-        self.__unit = unit
-        self.__extra_information = extra_info
 
 
 
@@ -668,15 +660,15 @@ cart = Cart(
 )
 
 # Add food to the cart
-# selected_food = SelectedFood(
-#     selected_food_id=uuid.uuid4(),
-#     food=kfc_food1,
-#     option=None,
-#     choice=None,
-#     quantity=2
-# )
+selected_food = SelectedFood(
+    selected_food_id=uuid.uuid4(),
+    food=kfc_food1,
+    option=None,
+    choice=None,
+    quantity=2
+)
 
-# cart.add_to_cart(selected_food)
+cart.add_to_cart(selected_food)
 
 # Add the cart to the user's carts
 user.add_cart(cart)

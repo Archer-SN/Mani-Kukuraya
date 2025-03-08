@@ -56,10 +56,14 @@ def address_view(id: str):
 
 @app.post("/update-address/{id}")
 def submit_address(id:str, full_name: str, phone: str, address: str, street: str, unit: str = "", extra_info: str = ""):
+    print(f"ข้อมูลที่ได้รับ: {full_name}, {phone}, {address}, {street}, {unit}, {extra_info}")  
 
     if not full_name or not phone or not address or not street:
         return Span("กรุณากรอกข้อมูลให้ครบถ้วน", cls="error")
     
-    user.get_location_by_id(id).edit_location(full_name.strip(), phone.strip(), address.strip(),street.strip(), unit.strip(), extra_info.strip())
+    user.get_location_by_id(id).edit_location(full_name.strip(), phone.strip(), address.strip(), street.strip(), unit.strip(), extra_info.strip())
+    if location is None:
+        print(f"ไม่พบที่อยู่สำหรับ ID: {id}")  
+        return Span("ไม่พบข้อมูลที่อยู่", cls="error")
     
     return Response(headers={"HX-Redirect": "/locations"})
