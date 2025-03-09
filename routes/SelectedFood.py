@@ -24,7 +24,7 @@ def get(id: str):
                 H4(option.get_name()),
                 *[
                     Div(
-                        Input(type="checkbox", name=f"choice[]", value=choice.get_id(), id=f"option_{option.get_id()}_{choice.get_id()}"),
+                        Input(type="checkbox", name=f"choices", value=choice.get_id(), id=f"option_{option.get_id()}_{choice.get_id()}"),
                         Label(choice.get_name(), for_=f"option_{option.get_id()}_{choice.get_id()}")
                     )
                     for choice in option.get_choices()
@@ -107,10 +107,19 @@ def update_quantity(value: int):
 # If you want to check the request, just use request: dict
 
 @app.post("/add-to-cart")
+# def add_to_cart(req: dict):
 def add_to_cart(food_id: str, choices: list[str], comment: str, value: str, restaurant_id: str):
+    # print(req)
+    food = controller.get_food_by_id(food_id)
     restaurant = controller.get_restaurant_by_id(restaurant_id)
     cart = user.get_cart_by_restaurant_id(restaurant_id)
+    selected_food = SelectedFood(food, int(value))
     if cart == None:
+        for choice_id in choices:
+            choice = controller.get_choice_by_id(choice_id)
+            selected_food.add_choice(choice)
         cart = Cart(restaurant)
-    return Span("เพิ่มสินค้าลงตะกร้าแล้ว", cls="success")
+        user.add_cart(cart)
+    cart.add_to_cart(selected_food)
+    return Response(headers={"HX-Redirect": f"/restaurant/{restaurant_id}"})
 

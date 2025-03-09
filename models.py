@@ -96,6 +96,14 @@ class Controller:
             recommended.append(self.__foods[k])
         return recommended
 
+    def get_choice_by_id(self, choice_id):
+        for food in self.__foods:
+            for option in food.get_food_options():
+                for choice in option.get_choices():
+                    if choice.get_id() == choice_id:
+                        return choice
+        return None
+
 
 class User:
     def __init__(self, user_id: str, name, username, password):
@@ -163,7 +171,7 @@ class User:
     
     def get_cart_by_restaurant_id(self, restaurant_id):
         for cart in self.__carts:
-            if cart.get_restaurant().get_cart_by_restaurant_id() == restaurant_id:
+            if cart.get_restaurant().get_restaurant_id() == restaurant_id:
                 return cart
         return None
 
@@ -397,11 +405,14 @@ class SelectedFoodOption():
         self.__option = option
         self.__selected_choices = []
 
-    def select_choice(self):
-        pass
+    def select_choice(self, choice):
+        self.__selected_choices.append(choice)
 
     def get_option(self):
         return self.__option
+
+    def get_selected_choices(self):
+        return self.__selected_choices
 
 class SelectedFood:
     def __init__(self, food, quantity, selected_food_id=uuid.uuid4().hex,):
@@ -423,13 +434,18 @@ class SelectedFood:
     def add_choice(self, choice):
         for selected_option in self.__selected_options:
             option = selected_option.get_option()
-            
+            if choice in option.get_choices():
+                selected_option.select_choice(choice)
+    
+    def get_selected_options(self):
+        return self.__selected_options
+
 
 class Cart:
-    def __init__(self, restaurant : Restaurant, selected_foods):
+    def __init__(self, restaurant : Restaurant):
         self.__cart_id = uuid.uuid4().hex
         self.__restaurant = restaurant
-        self.__selected_foods = selected_foods
+        self.__selected_foods = []
         self.__status = 'open'
 
     def get_foods(self):
@@ -440,9 +456,6 @@ class Cart:
 
     def delete_from_cart(self, food):
         self.__selected_foods.remove(food)
-
-    def get_cart_items(self):
-        return self.__selected_foods
 
     def calculate_price(self):
         total_price = 0
@@ -839,7 +852,6 @@ kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
 # Create a cart for the user
 cart = Cart(
     restaurant=kfc_restaurant,
-    selected_foods=[]
 )
 
 # Add food to the cart
