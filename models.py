@@ -161,6 +161,12 @@ class User:
             if location.id == location_id:
                 return location
     
+    def get_cart_by_restaurant_id(self, restaurant_id):
+        for cart in self.__carts:
+            if cart.get_restaurant().get_cart_by_restaurant_id() == restaurant_id:
+                return cart
+        return None
+
     @classmethod
     def get_current_user(cls):
         return cls.onlyuser
@@ -345,6 +351,9 @@ class OptionChoice:
     def get_name(self):
         return self.__choice
 
+    def get_option(self):
+        return self.__option 
+
 class Food:
     def __init__(self, restaurant, name, description, price, category, food_image, food_id=uuid.uuid4().hex):
         self.__restaurant = restaurant
@@ -383,7 +392,6 @@ class Food:
     def get_restaurant(self):
         return self.__restaurant
 
-
 class SelectedFoodOption():
     def __init__(self, option):
         self.__option = option
@@ -392,13 +400,14 @@ class SelectedFoodOption():
     def select_choice(self):
         pass
 
+    def get_option(self):
+        return self.__option
 
 class SelectedFood:
-    def __init__(self, food, option, choice, quantity, selected_food_id=uuid.uuid4().hex,):
+    def __init__(self, food, quantity, selected_food_id=uuid.uuid4().hex,):
         self.__selected_food_id = selected_food_id
         self.__food = food
-        self.__option = option
-        self.__choice = choice
+        self.__selected_options = [SelectedFoodOption(option) for option in food.get_food_options()]
         self.__quantity = quantity
 
     def get_quantity(self):
@@ -411,9 +420,14 @@ class SelectedFood:
         total_price = self.__food.get_price()
         return total_price * self.__quantity
 
+    def add_choice(self, choice):
+        for selected_option in self.__selected_options:
+            option = selected_option.get_option()
+            
+
 class Cart:
-    def __init__(self, cart_id, restaurant : Restaurant, selected_foods):
-        self.__cart_id = cart_id
+    def __init__(self, restaurant : Restaurant, selected_foods):
+        self.__cart_id = uuid.uuid4().hex
         self.__restaurant = restaurant
         self.__selected_foods = selected_foods
         self.__status = 'open'
@@ -435,6 +449,9 @@ class Cart:
         for selected_food in self.__selected_foods:
             total_price += selected_food.calculate_price()
         return total_price
+
+    def get_restaurant(self):
+        return self.__restaurant
 
 class Payment:
     def __init__(self, amount: float, currency="THB"):
@@ -821,8 +838,7 @@ kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
 
 # Create a cart for the user
 cart = Cart(
-    cart_id=uuid.uuid4(),
-    restaurant=[kfc_restaurant],
+    restaurant=kfc_restaurant,
     selected_foods=[]
 )
 
@@ -830,8 +846,6 @@ cart = Cart(
 selected_food = SelectedFood(
     selected_food_id=uuid.uuid4(),
     food=kfc_food1,
-    option=None,
-    choice=None,
     quantity=2
 )
 

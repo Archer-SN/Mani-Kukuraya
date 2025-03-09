@@ -7,6 +7,7 @@ def get(id: str):
     food = controller.get_food_by_id(id)
 
     form = Form(
+        Input(id="food-id", name="food_id", type="hidden", value=f"{food.get_food_id()}"),
         # รูปภาพและรายละเอียดสินค้า
          Card(
             Img(src=food.get_image(), style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px;"),
@@ -23,7 +24,7 @@ def get(id: str):
                 H4(option.get_name()),
                 *[
                     Div(
-                        Input(type="radio", name=f"option_{option.get_id()}", value=choice.get_id(), id=f"option_{option.get_id()}_{choice.get_id()}"),
+                        Input(type="checkbox", name=f"choice[]", value=choice.get_id(), id=f"option_{option.get_id()}_{choice.get_id()}"),
                         Label(choice.get_name(), for_=f"option_{option.get_id()}_{choice.get_id()}")
                     )
                     for choice in option.get_choices()
@@ -31,7 +32,6 @@ def get(id: str):
             )
             for option in food.get_food_options()
         ],
-
         # ความคิดเห็นเพิ่มเติม
         Fieldset(
             Legend("ความคิดเห็นถึงร้านค้า (Optional)"),
@@ -39,24 +39,24 @@ def get(id: str):
         ),
         # ปุ่มเพิ่ม-ลดจำนวนสินค้า
         Div(
-    Button("-", 
-           hx_post="/update-quantity",  
-           hx_target="#counter",  
-           hx_swap="innerHTML",  
-           hx_include="#counter-value"  # Include hidden input data
-    ),
+            Button("-", 
+                hx_post="/update-quantity",  
+                hx_target="#counter",  
+                hx_swap="innerHTML",  
+                hx_include="#counter-value"  # Include hidden input data
+            ),
 
-    Span("0", id="counter", style="margin: 0 10px; font-size: 1.5rem;"),  # Displays the number
-    
-    Button("+", 
-           hx_post="/update-quantity",  
-           hx_target="#counter",  
-           hx_swap="innerHTML",  
-           hx_include="#counter-value"  # Include hidden input data
-    ),
+            Span("0", id="counter", style="margin: 0 10px; font-size: 1.5rem;"),  # Displays the number
+            
+            Button("+", 
+                hx_post="/update-quantity",  
+                hx_target="#counter",  
+                hx_swap="innerHTML",  
+                hx_include="#counter-value"  # Include hidden input data
+            ),
 
     Input(id="counter-value", name="value", type="hidden", value="0"),  # Stores the current value
-
+    Input(id="restaurant-id", name="restaurant_id", type="hidden", value=f"{food.get_restaurant().get_restaurant_id()}"),
     Script("""
         document.querySelectorAll('button').forEach(button => {
             button.addEventListener('click', () => {
@@ -104,10 +104,13 @@ def update_quantity(value: int):
         value = 0
     return Span(value, id="counter", style="margin: 0 10px; font-size: 1.5rem;")  # Displays the number
 
-
+# If you want to check the request, just use request: dict
 
 @app.post("/add-to-cart")
-def add_to_cart():
-    
+def add_to_cart(food_id: str, choices: list[str], comment: str, value: str, restaurant_id: str):
+    restaurant = controller.get_restaurant_by_id(restaurant_id)
+    cart = user.get_cart_by_restaurant_id(restaurant_id)
+    if cart == None:
+        cart = Cart(restaurant)
     return Span("เพิ่มสินค้าลงตะกร้าแล้ว", cls="success")
 
