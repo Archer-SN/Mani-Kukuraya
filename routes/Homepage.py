@@ -99,7 +99,7 @@ def ShowHomepage():
         ),
         A(
             f"{food.get_name()}",
-            href="/review",
+            href=f"/",
             style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
         ),
         style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
@@ -116,7 +116,7 @@ def ShowHomepage():
         ),
         A(  
             f"{restaurant.get_name()}",
-            href = "/review",
+            href = f"/restaurant/{restaurant.get_restaurant_id()}",
             style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
         ),
         style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"

@@ -2,56 +2,76 @@ from app import *
 from models import *
 from fasthtml.common import *
 
-@app.get("/selectedFood")
-def get():
-    product = {
-        "name": "ส้มตำไทย ไข่เค็ม",
-        "description": "ส้มตำไทยไม่เผ็ดเป็นเมนูยอดนิยม...",
-        "price": 99,
-        "image": "https://media.istockphoto.com/id/478186916/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%A2%E0%B9%8D%E0%B8%B2%E0%B8%A1%E0%B8%B0%E0%B8%A5%E0%B8%B0%E0%B8%81%E0%B8%AD%E0%B8%AA%E0%B9%84%E0%B8%95%E0%B8%A5%E0%B9%8C%E0%B9%84%E0%B8%97%E0%B8%A2.jpg?s=612x612&w=0&k=20&c=BsKuToHcvJ_2HAcI3DuZi9V_P8gAR2bvNd1dZeyjtOc="
-    }
+@app.get("/selectedFood/{id:str}")
+def get(id: str):
+    food = controller.get_food_by_id(id)
 
     form = Form(
         # รูปภาพและรายละเอียดสินค้า
          Card(
-            Img(src=product["image"], style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px;"),
+            Img(src=food.get_image(), style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px;"),
             Div(
-                H2(product["name"]),
-                P(product["description"]),
-                H3(f"{product['price']} บาท", style="color: #ff5722;"),
+                H2(food.get_name()),
+                P(food.get_description()),
+                H3(f"{food.get_price()} บาท", style="color: #ff5722;"),
             ),
             style="display: flex; align-items: center; gap: 15px;"
         ),
-
-        # ตัวเลือกปริมาณ
-        Fieldset(
-            Legend("ปริมาณ (Pick 1)"),
+        # ตัวเลือกเพิ่มเติมจาก foodOption และ foodOptionChoices
+        *[
             Div(
-                Input(type="radio", name="size", value="normal", id="size-normal", checked=True),
-                Label("ธรรมดา (+0 บาท)", for_="size-normal"),
-            ),
-            Div(
-                Input(type="radio", name="size", value="extra", id="size-extra"),
-                Label("พิเศษ (+10 บาท)", for_="size-extra"),
+                H4(option.get_name()),
+                *[
+                    Div(
+                        Input(type="radio", name=f"option_{option.get_id()}", value=choice.get_id(), id=f"option_{option.get_id()}_{choice.get_id()}"),
+                        Label(choice.get_name(), for_=f"option_{option.get_id()}_{choice.get_id()}")
+                    )
+                    for choice in option.get_choices()
+                ]
             )
-        ),
+            for option in food.get_food_options()
+        ],
+        # # ตัวเลือกเพิ่มเติมจาก foodOption และ foodOptionChoices
+        # Fieldset(
+        #     Legend("ตัวเลือกเพิ่มเติม"),
+        #     *[
+        #     Div(
+        #         Input(type="radio", name=f"option_{option.get_id()}", value=choice.get_id(), id=f"option_{option.get_id()}_{choice.get_id()}"),
+        #         Label(choice.get_name(), for_=f"option_{option.get_id()}_{choice.get_id()}")
+        #     )
+        #     for option in food.get_food_options()
+        #     for choice in option.get_choices()
+        #     ]
+        # ),
+        # # ตัวเลือกปริมาณ
+        # Fieldset(
+        #     Legend("ปริมาณ (Pick 1)"),
+        #     Div(
+        #         Input(type="radio", name="size", value="normal", id="size-normal", checked=True),
+        #         Label("ธรรมดา (+0 บาท)", for_="size-normal"),
+        #     ),
+        #     Div(
+        #         Input(type="radio", name="size", value="extra", id="size-extra"),
+        #         Label("พิเศษ (+10 บาท)", for_="size-extra"),
+        #     )
+        # ),
 
-        # ตัวเลือกระดับรสชาติ
-        Fieldset(
-            Legend("รสเผ็ด (Pick 1)"),
-            Div(
-                Input(type="radio", name="spicy", value="mild", id="spicy-mild", checked=True),
-                Label("เผ็ดน้อย (+0 บาท)", for_="spicy-mild"),
-            ),
-            Div(
-                Input(type="radio", name="spicy", value="medium", id="spicy-medium"),
-                Label("เผ็ดกลาง (+10 บาท)", for_="spicy-medium"),
-            ),
-            Div(
-                Input(type="radio", name="spicy", value="hot", id="spicy-hot"),
-                Label("เผ็ดมาก (+20 บาท)", for_="spicy-hot"),
-            )
-        ),
+        # # ตัวเลือกระดับรสชาติ
+        # Fieldset(
+        #     Legend("รสเผ็ด (Pick 1)"),
+        #     Div(
+        #         Input(type="radio", name="spicy", value="mild", id="spicy-mild", checked=True),
+        #         Label("เผ็ดน้อย (+0 บาท)", for_="spicy-mild"),
+        #     ),
+        #     Div(
+        #         Input(type="radio", name="spicy", value="medium", id="spicy-medium"),
+        #         Label("เผ็ดกลาง (+10 บาท)", for_="spicy-medium"),
+        #     ),
+        #     Div(
+        #         Input(type="radio", name="spicy", value="hot", id="spicy-hot"),
+        #         Label("เผ็ดมาก (+20 บาท)", for_="spicy-hot"),
+        #     )
+        # ),
 
         # ความคิดเห็นเพิ่มเติม
         Fieldset(

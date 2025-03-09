@@ -31,7 +31,7 @@ class Controller:
     
     def get_restaurant_by_id(self, restaurant_id):
         for restaurant in self.__restaurants:
-            if restaurant.get_restaurant_id() == str(restaurant_id):
+            if restaurant.get_restaurant_id() == restaurant_id:
                 return restaurant
     
     def find_food(self):
@@ -98,17 +98,17 @@ class Controller:
 
 
 class User:
-    def __init__(self, user_id: str, name, username, password, carts=[], locations=[], user_order_history=[], promotions=[], reviews=[], favorites=[]):
+    def __init__(self, user_id: str, name, username, password):
         self.__user_id = user_id
         self.__name = name
         self.__username = username
         self.__password = password
-        self.__carts = carts
-        self.__locations = locations
+        self.__carts = []
+        self.__locations = []
         self.__user_order_history = []
-        self.__promotions = promotions
-        self.__reviews = reviews
-        self.__favorites = favorites
+        self.__promotions = []
+        self.__reviews = []
+        self.__favorites = []
         self.__current_order = None
 
     def set_username(self, new_username):
@@ -282,7 +282,7 @@ class Restaurant:
         self.__restaurant_image = restaurant_image
 
     def get_restaurant_id(self):
-        return str(self.__restaurant_id)
+        return self.__restaurant_id
 
     def get_name(self):
         return self.__name
@@ -309,14 +309,52 @@ class Restaurant:
         self.reviews.append(comment)
         return "Success"
 
+    def get_description(self):
+        return self.__description
+
+class FoodOption:
+    def __init__(self, option_name, choices, max_selection):
+        self.__option_id = uuid.uuid4().hex
+        self.__option_name = option_name
+        self.__choices = choices
+        self.__max_selection = max_selection
+
+    def get_id(self):
+        return self.__option_id
+
+    def add_choice(self, choice):
+        self.__choices.append(choice)
+
+    def get_choices(self):
+        return self.__choices
+
+    def get_name(self):
+        return self.__option_name
+
+
+class OptionChoice:
+    def __init__(self, option, choice, choices_value, price):
+        self.__choice_id = uuid.uuid4().hex
+        self.__option = option
+        self.__choice = choice
+        self.__choices_value = choices_value
+
+    def get_id(self):
+        return self.__choice_id
+
+    def get_name(self):
+        return self.__choice
+
 class Food:
-    def __init__(self, food_id, name, description, price, category, food_image):
+    def __init__(self, restaurant, name, description, price, category, food_image, food_id=uuid.uuid4().hex):
+        self.__restaurant = restaurant
         self.__food_id = food_id
         self.__name = name    
         self.__description = description 
         self.__price = price     
         self.__category = category
         self.__food_image = food_image
+        self.__food_options = []
     
     def get_name(self):
         return self.__name
@@ -332,37 +370,28 @@ class Food:
     
     def get_category(self):
         return self.__category
+
+    def get_food_id(self):
+        return self.__food_id
     
+    def get_food_options(self):
+        return self.__food_options
 
-class FoodOption:
-    def __init__(self, option_name, choices, max_selection):
-        self.__option_name = option_name
-        self.__choices = choices
-        self.__max_selection = max_selection
-
-    def add_choice(self, choice):
-        self.__choices.append(choice)
-
-
-class OptionChoice:
-    def __init__(self, option, choice, choices_value, price):
-        self.__option = option
-        self.__choice = choice
-        self.__choices_value = choices_value
-        self.__price = price
+    def add_option(self, option):
+        self.__food_options.append(option)
 
 
 class SelectedFoodOption():
-    def __init__(self, option, selected_choices=[]):
+    def __init__(self, option):
         self.__option = option
-        self.__selected_choices = selected_choices
+        self.__selected_choices = []
 
     def select_choice(self):
         pass
 
 
 class SelectedFood:
-    def __init__(self, selected_food_id, food, option, choice, quantity):
+    def __init__(self, food, option, choice, quantity, selected_food_id=uuid.uuid4().hex,):
         self.__selected_food_id = selected_food_id
         self.__food = food
         self.__option = option
@@ -377,8 +406,6 @@ class SelectedFood:
 
     def calculate_price(self):
         total_price = self.__food.get_price()
-
-
         return total_price * self.__quantity
 
 class Cart:
@@ -461,16 +488,13 @@ class Order:
     def create_user_order(self):
         pass
 
+# Simulated Data
+
 user = User(
     user_id="1",
     name="Yokphon ",
     username="foshforce",
     password="password123",
-    carts=[],
-    locations=[],
-    user_order_history=[],
-    promotions=[],
-    reviews=[]
 )
 
 kfc_restaurant = Restaurant(
@@ -479,7 +503,7 @@ kfc_restaurant = Restaurant(
     description="Fast-food chain known for its buckets of fried chicken, plus wings & sides.",
     score=4.5,
     reviews=[],
-    restaurant_image="https://images.unsplash.com/photo-1612170153139-6f881ff067e0?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D"
+    restaurant_image="www.images.unsplash.com/photo-1612170153139-6f881ff067e0?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D"
 )
 
 kfc_promotion = Promotion(
@@ -531,6 +555,7 @@ controller = Controller(
 )
 
 kfc_food1 = Food(
+    restaurant=kfc_restaurant,
     food_id="1",
     name="Fried Chicken",
     description="Crispy fried chicken",
@@ -540,6 +565,7 @@ kfc_food1 = Food(
 )
 
 kfc_food2 = Food(
+    restaurant=kfc_restaurant,
     food_id="2",
     name="Chicken Burger",
     description="Delicious chicken burger",
@@ -549,6 +575,7 @@ kfc_food2 = Food(
 )
 
 dq_food1 = Food(
+    restaurant=dairy_queen_restaurant,
     food_id="3",
     name="Blizzard",
     description="Ice cream with mix-ins",
@@ -558,6 +585,7 @@ dq_food1 = Food(
 )
 
 dq_food2 = Food(
+    restaurant=dairy_queen_restaurant,
     food_id="4",
     name="Sundae",
     description="Ice cream sundae",
@@ -567,6 +595,7 @@ dq_food2 = Food(
 )
 
 mcd_food1 = Food(
+    restaurant=mc_donald_restaurant,
     food_id="5",
     name="Big Mac",
     description="Classic Big Mac burger",
@@ -576,6 +605,7 @@ mcd_food1 = Food(
 )
 
 mcd_food2 = Food(
+    restaurant=mc_donald_restaurant,
     food_id="6",
     name="French Fries",
     description="Crispy french fries",
@@ -656,23 +686,132 @@ dq_food_choice6 = OptionChoice(
 )
 
 # Add choices to options
-dq_option_toppings._FoodOption__choices.extend([dq_food_choice1, dq_food_choice2, dq_food_choice3])
-dq_option_size._FoodOption__choices.extend([dq_food_choice4, dq_food_choice5, dq_food_choice6])
+dq_option_toppings.add_choice(dq_food_choice1)
+dq_option_toppings.add_choice(dq_food_choice2)
+dq_option_toppings.add_choice(dq_food_choice3)
+
+dq_option_size.add_choice(dq_food_choice4)
+dq_option_size.add_choice(dq_food_choice5)
+dq_option_size.add_choice(dq_food_choice6)
 
 # Add options to Dairy Queen foods
-dq_food1_options = [
-    SelectedFoodOption(option=dq_option_toppings, selected_choices=[dq_food_choice1, dq_food_choice3]),
-    SelectedFoodOption(option=dq_option_size, selected_choices=[dq_food_choice5])
-]
+dq_food1.add_option(dq_option_toppings)
+dq_food1.add_option(dq_option_size)
 
-dq_food2_options = [
-    SelectedFoodOption(option=dq_option_toppings, selected_choices=[dq_food_choice2]),
-    SelectedFoodOption(option=dq_option_size, selected_choices=[dq_food_choice4])
-]
+dq_food2.add_option(dq_option_toppings)
+dq_food2.add_option(dq_option_size)
 
-# Add selected food options to Dairy Queen foods
-dq_food1.selected_options = dq_food1_options
-dq_food2.selected_options = dq_food2_options
+# Create food options for KFC foods
+kfc_option_sides = FoodOption(
+    option_name="Sides",
+    choices=[],
+    max_selection=2
+)
+
+kfc_option_drinks = FoodOption(
+    option_name="Drinks",
+    choices=[],
+    max_selection=1
+)
+
+# Create food choices for KFC foods
+kfc_food_choice1 = OptionChoice(
+    option=kfc_option_sides,
+    choice="Fries",
+    choices_value="Fries",
+    price=1.5
+)
+
+kfc_food_choice2 = OptionChoice(
+    option=kfc_option_sides,
+    choice="Coleslaw",
+    choices_value="Coleslaw",
+    price=1.0
+)
+
+kfc_food_choice3 = OptionChoice(
+    option=kfc_option_drinks,
+    choice="Coke",
+    choices_value="Coke",
+    price=1.0
+)
+
+kfc_food_choice4 = OptionChoice(
+    option=kfc_option_drinks,
+    choice="Pepsi",
+    choices_value="Pepsi",
+    price=1.0
+)
+
+# Add choices to options
+kfc_option_sides.add_choice(kfc_food_choice1)
+kfc_option_sides.add_choice(kfc_food_choice2)
+
+kfc_option_drinks.add_choice(kfc_food_choice3)
+kfc_option_drinks.add_choice(kfc_food_choice4)
+
+# Add options to KFC foods
+kfc_food1.add_option(kfc_option_sides)
+kfc_food1.add_option(kfc_option_drinks)
+
+kfc_food2.add_option(kfc_option_sides)
+kfc_food2.add_option(kfc_option_drinks)
+
+# Create food options for McDonald's foods
+mcd_option_sides = FoodOption(
+    option_name="Sides",
+    choices=[],
+    max_selection=2
+)
+
+mcd_option_drinks = FoodOption(
+    option_name="Drinks",
+    choices=[],
+    max_selection=1
+)
+
+# Create food choices for McDonald's foods
+mcd_food_choice1 = OptionChoice(
+    option=mcd_option_sides,
+    choice="Fries",
+    choices_value="Fries",
+    price=1.5
+)
+
+mcd_food_choice2 = OptionChoice(
+    option=mcd_option_sides,
+    choice="Salad",
+    choices_value="Salad",
+    price=2.0
+)
+
+mcd_food_choice3 = OptionChoice(
+    option=mcd_option_drinks,
+    choice="Coke",
+    choices_value="Coke",
+    price=1.0
+)
+
+mcd_food_choice4 = OptionChoice(
+    option=mcd_option_drinks,
+    choice="Sprite",
+    choices_value="Sprite",
+    price=1.0
+)
+
+# Add choices to options
+mcd_option_sides.add_choice(mcd_food_choice1)
+mcd_option_sides.add_choice(mcd_food_choice2)
+
+mcd_option_drinks.add_choice(mcd_food_choice3)
+mcd_option_drinks.add_choice(mcd_food_choice4)
+
+# Add options to McDonald's foods
+mcd_food1.add_option(mcd_option_sides)
+mcd_food1.add_option(mcd_option_drinks)
+
+mcd_food2.add_option(mcd_option_sides)
+mcd_food2.add_option(mcd_option_drinks)
 
 # Get KFC restaurant from the controller
 kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
