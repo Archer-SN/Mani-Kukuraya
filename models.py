@@ -380,6 +380,9 @@ class Food:
     def add_option(self, option):
         self.__food_options.append(option)
 
+    def get_restaurant(self):
+        return self.__restaurant
+
 
 class SelectedFoodOption():
     def __init__(self, option):

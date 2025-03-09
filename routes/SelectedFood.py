@@ -31,61 +31,53 @@ def get(id: str):
             )
             for option in food.get_food_options()
         ],
-        # # ตัวเลือกเพิ่มเติมจาก foodOption และ foodOptionChoices
-        # Fieldset(
-        #     Legend("ตัวเลือกเพิ่มเติม"),
-        #     *[
-        #     Div(
-        #         Input(type="radio", name=f"option_{option.get_id()}", value=choice.get_id(), id=f"option_{option.get_id()}_{choice.get_id()}"),
-        #         Label(choice.get_name(), for_=f"option_{option.get_id()}_{choice.get_id()}")
-        #     )
-        #     for option in food.get_food_options()
-        #     for choice in option.get_choices()
-        #     ]
-        # ),
-        # # ตัวเลือกปริมาณ
-        # Fieldset(
-        #     Legend("ปริมาณ (Pick 1)"),
-        #     Div(
-        #         Input(type="radio", name="size", value="normal", id="size-normal", checked=True),
-        #         Label("ธรรมดา (+0 บาท)", for_="size-normal"),
-        #     ),
-        #     Div(
-        #         Input(type="radio", name="size", value="extra", id="size-extra"),
-        #         Label("พิเศษ (+10 บาท)", for_="size-extra"),
-        #     )
-        # ),
-
-        # # ตัวเลือกระดับรสชาติ
-        # Fieldset(
-        #     Legend("รสเผ็ด (Pick 1)"),
-        #     Div(
-        #         Input(type="radio", name="spicy", value="mild", id="spicy-mild", checked=True),
-        #         Label("เผ็ดน้อย (+0 บาท)", for_="spicy-mild"),
-        #     ),
-        #     Div(
-        #         Input(type="radio", name="spicy", value="medium", id="spicy-medium"),
-        #         Label("เผ็ดกลาง (+10 บาท)", for_="spicy-medium"),
-        #     ),
-        #     Div(
-        #         Input(type="radio", name="spicy", value="hot", id="spicy-hot"),
-        #         Label("เผ็ดมาก (+20 บาท)", for_="spicy-hot"),
-        #     )
-        # ),
 
         # ความคิดเห็นเพิ่มเติม
         Fieldset(
             Legend("ความคิดเห็นถึงร้านค้า (Optional)"),
             Textarea(name="comment", placeholder="ใส่ข้อความถึงร้านค้า...")
         ),
-
         # ปุ่มเพิ่ม-ลดจำนวนสินค้า
         Div(
-            Button("-", type="button", id="decrease", hx_post="/update-quantity", hx_target="#quantity", hx_vals='{"value": -1}'),
-            Span("1", id="quantity", style="font-size: 28px; font-weight: bold; position: relative; top: -5px; margin: 0 20px;"),
-            Button("+", type="button", id="increase", hx_post="/update-quantity", hx_target="#quantity", hx_vals='{"value": +1}'),
-            style="display: flex; justify-content: center; align-items: center; margin: 10px 0;"
-        ),
+    Button("-", 
+           hx_post="/update-quantity",  
+           hx_target="#counter",  
+           hx_swap="innerHTML",  
+           hx_include="#counter-value"  # Include hidden input data
+    ),
+
+    Span("0", id="counter", style="margin: 0 10px; font-size: 1.5rem;"),  # Displays the number
+    
+    Button("+", 
+           hx_post="/update-quantity",  
+           hx_target="#counter",  
+           hx_swap="innerHTML",  
+           hx_include="#counter-value"  # Include hidden input data
+    ),
+
+    Input(id="counter-value", name="value", type="hidden", value="0"),  # Stores the current value
+
+    Script("""
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                let counter = document.getElementById('counter');
+                let counterInput = document.getElementById('counter-value');
+
+                if (button.innerText === '+') {
+                    counter.innerText = parseInt(counter.innerText) + 1;
+                    counterInput.value = parseInt(counterInput.value) + 1;
+                } else {
+                    if (counterInput.value > 0) {
+                        counter.innerText = parseInt(counter.innerText) - 1;
+                        counterInput.value = parseInt(counterInput.value) - 1;
+                    }
+                }
+            });
+        });
+    """),  # Updates the hidden input value before sending the request
+
+    style="display: flex; justify-content: center; align-items: center; margin-top: 20px;"
+),
 
         # ปุ่มเพิ่มลงตะกร้า
         Button("+ เพิ่มลงตะกร้า", type="submit",style="border: none; background-color: #ff5722; color: white;",
@@ -98,7 +90,7 @@ def get(id: str):
     return Titled(
         "",
         Div(
-            A("⬅ กลับ", href ="/restaurant/1", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+            A("⬅ กลับ", href =f"/restaurant/{food.get_restaurant().get_restaurant_id()}", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
             style="position: absolute; top: 10px; left: 10px;"
     
         ),
@@ -108,12 +100,14 @@ def get(id: str):
 
 @app.post("/update-quantity")
 def update_quantity(value: int):
-    selected_food = ""
-    return str(new_quantity)  
+    if (value < 0):
+        value = 0
+    return Span(value, id="counter", style="margin: 0 10px; font-size: 1.5rem;")  # Displays the number
 
 
 
 @app.post("/add-to-cart")
 def add_to_cart():
+    
     return Span("เพิ่มสินค้าลงตะกร้าแล้ว", cls="success")
 
