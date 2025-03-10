@@ -23,20 +23,19 @@ def ShowHomepage():
     style="display: flex; align-items: center; position: absolute; top: 10px; left: 10px;"
 )
     categories = dataforhomepage[0]
-    
-        # Create category elements with links
+    # Create category elements with links
     category_element = [
         A(
             Button(
                 f"{category}",
+                cls="btn btn-layered-3d btn-layered-3d--purple",
                 style="display:block; text-align:center; margin:10px; width:200px; height:70px; line-height:30px;"
             ),
-            href=f"/category",
-            style="text-decoration:none;",
-            cls="btn btn-layered-3d btn-layered-3d--purple",
+            href=f"/category/{category.lower()}",
+            style="text-decoration:none;"
         )
         for category in categories
-]
+    ]
 
     
     # Promotion element
