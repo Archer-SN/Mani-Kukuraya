@@ -3,54 +3,20 @@ from models import *
 from fasthtml.common import *
 
 @app.get("/home")
-def ShowHomepage(user_id: str = "1"):
-    user = controller.get_user_by_id(user_id)
-
-    if not user:
-        return Span("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")
-
-    dataforhomepage = controller.dataforhomepage("1")
-
-    # User Profile
+def ShowHomepage():
+    
+    dataforhomepage = controller.dataforhomepage()
+    # Categories from the controller
+    member = dataforhomepage[4]
     user_profile = Div(
-        Img(
-            src="https://upload.wikimedia.org/wikipedia/en/c/c2/Peter_Griffin.png" if hasattr(user, "profile_picture") else "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&q=70&fm=webp",
-            alt="User Profile Picture",
-            style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;"
-        ),
-        A(
-            f"{user.name}",
-            href=f"/profile?user_id={user_id}",
-            style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
-        ),
-        style="display: flex; align-items: center; position: absolute; top: 10px; left: 10px;"
-    )
-
-    # Navigation Bar
-    navbar = Div(
-        A("Home", href=f"/home?user_id={user_id}", style="margin-right: 20px;"),
-        A("Favorites", href=f"/favorite?user_id={user_id}", style="margin-right: 20px;"),
-        A("Promotions", href=f"/promotion?user_id={user_id}", style="margin-right: 20px;"),
-        A("Carts", href=f"/cart?user_id={user_id}", style="margin-right: 20px;"),
-        A("Categories", href=f"/categories?user_id={user_id}", style="margin-right: 20px;"),
-        style="text-align:center; margin-top: 10px;"
-    )
-
-    # Search Bar
-    search_bar_element = Form(
-        Input(type="text", name="query", placeholder="ค้นหาอาหาร", style="width: 80%; height: 100%; display: inline-block; margin-right:10px;"),
-        Button("ค้นหา", type="submit", style="width: 30%; height: 100%; display: inline-block;"),
-        action=f"/search?user_id={user_id}",
-        method="get",
-        style="position: absolute; top: 20px; right: 20px; width: 300px; height: 40px; display: flex;"
     Img(
         src="https://upload.wikimedia.org/wikipedia/en/c/c2/Peter_Griffin.png" if hasattr(user, "profile_picture") else "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&q=70&fm=webp",
         alt="User Profile Picture",
         style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;"
     ),
     A(
-        f"{user.name}",
-        href="/profile",
+        f"{member.name}",
+        href=f"/profile/{member.get_user_id()}",
         style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
     ),
     
@@ -58,34 +24,30 @@ def ShowHomepage(user_id: str = "1"):
 )
     categories = dataforhomepage[0]
     
-    # Create category elements (using A and Div to structure the categories)
+        # Create category elements with links
     category_element = [
         A(
-            Div(
-                P(category, style="text-align:center; margin-top: 10px;"),
-                style="text-align:center;"
+            Button(
+                f"{category}",
+                cls="btn btn-layered-3d btn-layered-3d--purple",
+                style="display:block; text-align:center; margin:10px; width:200px; height:70px; line-height:30px;"
             ),
-            href=f"/category/{category[0]}",  # Navigate to a category-specific page
-            style="display:block; text-align:center; margin: 10px;"
+            href=f"/category/{category.lower()}",
+            style="text-decoration:none;"
         )
         for category in categories
-    ]
+]
 
     
     # Promotion element
 
-    numbers_promotion = len(user.get_promotions())
+    numbers_promotion = dataforhomepage[3]
 
-    promotion_element = Card(
-        H3("โปรโมชั่น", style="text-align:left;"),
-        Div(
-            *[
-                P(f"โปรโมชั่นที่คุณมี {numbers_promotion}", style="text-align:left;")
-            ],
-            style="text-align:left;"
-        ),
-        style="width:30%;height:20%;margin-top:50px;"
-    )
+    promotion_element =Button(
+                f"โปรโมชั่นที่คุณมี {len(numbers_promotion)}",cls="btn flash-slide flash-slide--green",style="margin-top:40px",
+            ),
+        
+    
 
     # Search bar
     search_bar_element = Nav(
@@ -109,12 +71,41 @@ def ShowHomepage(user_id: str = "1"):
                 method="get"
             ),
             className="container-fluid",
-            style="position: absolute; top: 15px; right: 17px; width: 25%;"
+            style="position: absolute; top: 15px; right: 17px; width: 20%;"
         ),
         className="navbar bg-body-tertiary"
     )
 
-    # Recommended Food
+    
+    # Navbar with links to different pages
+    navbar = Div(
+        Div(
+            Button("Favorites", href=f"/favorite/{member.get_favorites()}", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
+            style="margin: 10px;"
+        ),
+        Div(
+            Button("Promotions", href=f"/promotion/{member.get_promotions()}", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
+            style="margin: 10px;"
+        ),
+        Div(
+            Button("Carts", href=f"/cart", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
+            style="margin: 10px;"
+        ),     
+        style="display:flex; flex-direction:row; justify-content:center; gap: 20px; margin-top: 10px;"
+)
+
+    # recent_order = controller.get_recent_order()
+    # recent_order_element = [
+    #     Card(
+    #         Img(src=order["image"], style="width:100%;height:50%;"),
+    #         P(order["name"], style="text-align:center;"),
+    #         style="text-align:center; margin: 10px;"
+    #     )
+    #     for order in recent_order
+    # ]
+
+    
+    # Recommended food
     recommended_food = dataforhomepage[1]
     recommended_food_element = [
         Div(
@@ -124,112 +115,89 @@ def ShowHomepage(user_id: str = "1"):
             ),
             A(
                 f"{food.get_name()}",
-                href=f"/food/{food.get_food_id()}",
+                href=f"/",
                 style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
+            ),
+            Button(
+                "สั่งซื้อ",
+                href=f"/order/{food.get_food_id()}",
+                cls="btn flash-slide flash-slide--blue",
+                style="display:block; text-decoration:none; color:#ffffff; text-align:center; font-size:16px; margin-top: 5px;"
             ),
             style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
         )
         for food in recommended_food
     ]
-
-    # Recommended Restaurants
-        Div(
-            Img(
-                src=food.get_image(),
-                className="card-img-top",
-                alt=food.get_name(),
-                style="border-radius: 15px;"
-            ),
-            Div(
-                H5(food.get_name(), className="card-title"),
-                P("Some quick example text to build on the card title and make up the bulk of the card's content.", className="card-text"),
-                Button(
-                    "ดูสินค้า",
-                    onclick=f"window.location.href='/selectedFood/{food.get_food_id()}'",
-                    className="btn btn-primary"
-                ),
-                className="card-body"
-            ),
-            className="card",
-            style="width: 18rem; margin: 10px;"
-        )
-        for food in recommended_food
-    ]
-    # recommended restaurant
+    #recommended restaurant
     recommended_restaurant = dataforhomepage[2]
     recommended_restaurant_element = [
-        Div(
-            Img(
-                src=restaurant.get_image(),
-                style="width:300px; height:200px; object-fit:cover; display:block; margin-bottom: 5px;"
-            ),
-            A(  
-                f"{restaurant.get_name()}",
-                href=f"/restaurant/{restaurant.get_restaurant_id()}",
-                style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
-            ),
-            style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
-        )
-        for restaurant in recommended_restaurant
-    ]
-        Div(
-            Img(
-                src=restaurant.get_image(),
-                className="card-img-top",
-                alt=restaurant.get_name(),
-                style="border-radius: 15px;"
-            ),
-            Div(
-                H5(restaurant.get_name(), className="card-title"),
-                P("Some quick example text to build on the card title and make up the bulk of the card's content.", className="card-text"),
-                Button(
-                    "ดูสินค้า",
-                    onclick=f"window.location.href='/restaurant/{restaurant.get_restaurant_id()}'",
-                    className="btn btn-primary"
-                ),
-                className="card-body"
-            ),
-            className="card",
-            style="width: 18rem; margin: 10px;"
-        )
-        for restaurant in recommended_restaurant
-    ]
+    Div(
+        Img(
+            src=restaurant.get_image(),
+            style="width:300px; height:200px; object-fit:cover; display:block; margin-bottom: 5px;"
+        ),
+        P(f"{restaurant.get_name()}"),
+        Button(  
+            "ดูร้านค้า",
+            href = f"/restaurant/{restaurant.get_restaurant_id()}",
+            cls="btn flash-slide flash-slide--red",
+            style="display:block; text-decoration:none; color:#ffffff; text-align:center; font-size:16px; margin-top: 5px;"
+        ),
+        style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
+    )
+    for restaurant in recommended_restaurant
+]
 
-    return Container(
-        navbar,  
+
+
+    # Return the entire page with navbar, search, categories, and promotions
+    return Main(Container(
+        navbar,  # Add the navigation bar at the top
         user_profile,
-        search_bar_element,
         Div(
-            H2("อาหารแนะนำ", style="width: 100%; text-align: left; margin-bottom: 20px;"),  
+            search_bar_element
+        ),
+        Div(
+
+            H2("หมวดหมู่", style="width: 100%; text-align: left; margin-top: 20px;"),
             Div(
-                *recommended_food_element,
+                *category_element,
+                style="display:flex;flex-direction:row;justify-content:space-around;margin-top:40px;"
+            ),
+        ),
+        promotion_element,
+        Div(
+            H2("อาหารแนะนำ", style="width: 100%; text-align: left; margin-bottom: 20px;"),  # Custom style for H2
+            Div(
+                *recommended_food_element,  # Show only the first 5 items initially
+                id="recommended-food-container",
                 style="display:flex;flex-wrap:row;justify-content:flex-start;"
             ),
             style="margin-top:100px;"
         ),
+
         Div(
-            H2("ร้านอาหารแนะนำ", style="width: 100%; text-align: left; margin-bottom: 20px;"),  
+            H2("ร้านอาหารแนะนำ", style="width: 100%; text-align: left; margin-bottom: 20px;"),  # Custom style for H2
             Div(
                 *recommended_restaurant_element,
                 style="display:flex;flex-direction:row;justify-content:flex-start;"
             ),
             style="margin-top:100px;"
-        )
+            ),
         ),
-
-        style="text-align:center;"
+            style='background-image: url("https://img.freepik.com/free-photo/sunset-silhouettes-trees-mountains-generative-ai_169016-29371.jpg?t=st=1741606590~exp=1741610190~hmac=ed02424dae918e0a06718dd3987c1c9d2f47b921de4fb0af1d9402b1c131612e&w=2000");'
     )
 
 @app.get("/search")
-def SearchResults(user_id: str, query: str):
+def SearchResults(query: str):
     # Implement your search logic here
     search_results = controller.search_result(query)
+    
     # Display search results
     search_results_elements = [
-        A(
+        Div(
             P(result.get_name(), style="text-align:center;"),
-            Img(src=result.get_image(), style="width:70%;height:50%;"),
-            href="/review",
+            Img(src=result.get_image(), style="width:100%;height:50%;"),
             style="text-align:center; margin: 10px;"
         )
         for result in search_results
@@ -239,8 +207,7 @@ def SearchResults(user_id: str, query: str):
         H1(f"ผลการค้นหาสำหรับ '{query}'"),
         Div(
             *search_results_elements,
-            style="display:flex;flex-wrap:wrap;flex-direction:row;justify-content:space-around;margin-top:20px;"
+            style="display:flex;flex-wrap:wrap;justify-content:space-around;margin-top:20px;"
         ),
-        A("กลับหน้าหลัก", href=f"/home?user_id={user_id}", style="display:block; text-align:center; margin-top:20px; color:#ff6600;"),
         style="text-align:center;"
     )

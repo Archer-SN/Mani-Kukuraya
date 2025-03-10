@@ -2,6 +2,7 @@ from datetime import datetime
 from fasthtml.common import *
 import uuid
 import random
+import difflib
 
 class Controller:
     def __init__(self, users, restaurants, foods):
@@ -9,7 +10,6 @@ class Controller:
         self.__restaurants = restaurants
         self.__foods = foods
         self.__recommended_food = []
-        self.__orders = []
 
     def add_restaurant(self, restaurant):
         self.__restaurants.append(restaurant)
@@ -34,6 +34,9 @@ class Controller:
         for restaurant in self.__restaurants:
             if restaurant.get_restaurant_id() == restaurant_id:
                 return restaurant
+    
+    def find_food(self):
+        pass
 
     def get_categories(self):
         categories = []
@@ -58,14 +61,14 @@ class Controller:
     def get_restaurants(self):
         return self.__restaurants
 
-    def dataforhomepage(self, user_id):
+    def dataforhomepage(self,user_id="1"):
         cat = self.get_categories()
         rec = self.get_recommended_food()
         res = self.get_restaurant_home()
-        pro = self.get_user_by_id(user_id).get_promotions() 
-        profile = self.get_user_by_id(user_id) 
-        return [cat, rec, res, pro, profile]
-
+        pro = self.get_promotions()
+        profile = self.get_user_by_id(user_id)
+        datalist = [cat,rec,res,pro,profile]
+        return datalist
     
     def get_restaurant_home(self):
         restaurant_range = []
@@ -102,38 +105,28 @@ class Controller:
                     if choice.get_id() == choice_id:
                         return choice
         return None
+    
+    def search_result(self, word):
+        show_result =[]
 
-    def get_order_by_id(self, order_id):
-        for order in self.__orders:
-            if order.get_order_id() == order_id:
-                return order
-        return None
-    def get_orders(self):
-        return self.__orders
+        all_elements = [food for food in self.__foods] + \
+                    [restaurant for restaurant in self.__restaurants]
 
-    def get_order_by_id(self, order_id):
-        for order in self.__orders:
-            if order.get_order_id() == order_id:
-                return order
-        return None
-    def get_orders(self):
-        return self.__orders
+        similar_names = difflib.get_close_matches(word, [name.get_name() for name in all_elements], n=3, cutoff=0.3)
 
-    def get_order_by_id(self, order_id):
-        for order in self.__orders:
-            if order.get_order_id() == order_id:
-                return order
-        return None
-    def get_orders(self):
-        return self.__orders
 
-    def get_order_by_id(self, order_id):
-        for order in self.__orders:
-            if order.get_order_id() == order_id:
-                return order
-        return None
-    def get_orders(self):
-        return self.__orders
+        for result in range(len(similar_names)):
+            for elements_object in all_elements:
+                if similar_names[result] == elements_object.get_name():
+                    show_result.append(elements_object)
+                else:
+                    continue
+        return show_result 
+    
+    def get_promotions(self):
+        user = self.get_user_by_id("1")
+        return user.number_promotions()
+
 
 class User:
     def __init__(self, user_id: str, name, username, password):
@@ -147,12 +140,16 @@ class User:
         self.__promotions = []
         self.__reviews = []
         self.__favorites = []
+        self.__current_order = None
 
     def set_username(self, new_username):
         self.__username = new_username
 
     def set_name(self, new_name) :
         self.__name = new_name
+    
+    def get_favorites(self):
+        return self.__favorites
 
     def set_password(self, new_password: int):
         self.__password = new_password
@@ -160,9 +157,11 @@ class User:
     def get_user_id(self):
         return self.__user_id
     
+    def get_cart(self):
+        return self.__carts
+    
     def get_promotions(self):
         return self.__promotions
-
 
     def add_location(self, new_location):
         self.__locations.append(new_location)
@@ -177,15 +176,28 @@ class User:
         for promotion in self.__promotions:
             if promotion.get_promotion_code() == promotion_code:
                 return promotion
+            
+    def number_promotions(self):
+        return self.__promotions
 
     def use_promotion(self, promotion):
         self.__promotions.remove(promotion)
 
+    def add_location(self, location):
+        if isinstance(location, Location): 
+            self.__locations.append(location) 
+            return "Add Location Success"
+        return "Error: Object only"
+        
     def get_locations(self):
         return  self.__locations
     
     def get_location_by_id(self, location_id):
         for location in self.__locations:
+            print("1")
+            print(location.id)
+            print("2")
+            print(location_id)
             if location.id == location_id:
                 return location
     
@@ -195,12 +207,7 @@ class User:
                 return cart
         return None
 
-    def get_cart_by_cart_id(self, cart_id):
-        for cart in self.__carts:
-            if cart.get_cart_id() == cart_id:
-                return cart
-        return None
-  
+
     @classmethod
     def get_current_user(cls):
         return cls.onlyuser
@@ -216,6 +223,12 @@ class User:
     def get_locations(self):
         return self.__locations
 
+    def get_current_order(self):
+        return self.__current_order
+
+    def set_current_order(self, new_order):
+        self.__current_order = new_order
+
 
     def send_recentorder(self):
         return self.__user_order_history
@@ -225,28 +238,11 @@ class User:
 
     def get_carts(self):
         return self.__carts
-    def add_favorite(self, restaurant_id):
-        if restaurant_id not in self.favorite_restaurants:
-            self.favorite_restaurants.append(restaurant_id)
+    def add_favorite(self, restaurant):
+        self.__favorites.append(restaurant)
 
-    def remove_favorite(self, restaurant_id):
-        if restaurant_id in self.favorite_restaurants:
-            self.favorite_restaurants.remove(restaurant_id)
-
-    def get_promotions_by_restaurant(self, restaurant):
-        available_promotions = []
-        for promotion in self.__promotions:
-            if promotion.get_restaurant() == restaurant:
-                available_promotions.append(promotion)
-        return available_promotions
-
-    def get_promotions(self) :
-        return self.__promotions
-
-
-    def get_promotions(self) :
-        return self.__promotions
-
+    def remove_favorite(self, restaurant):
+        self.__favorites.remove(restaurant)
 
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
@@ -262,9 +258,6 @@ class Promotion:
 
     def get_promotion_code(self):
         return self.__promotion_code
-    
-    def get_restaurant(self):
-        return self.__restaurant
 
 class Location:
     def __init__(self, full_name="", phone_number="", address="",street="",unit="", extra_information="") :
@@ -311,6 +304,13 @@ class Location:
         self.__street = street
         self.__unit = unit
         self.__extra_information = extra_information
+
+class UserOrder:
+    def __init__(self, status, restaurant, foods):
+        self.__id = uuid.uuid4()
+        self.__status = status
+        self.__restaurant = restaurant
+        self.__foods = foods
 
 class Review:
     def init(self, user, comment, stars):
@@ -475,10 +475,9 @@ class SelectedFood:
 
 
 class Cart:
-    def __init__(self, restaurant : Restaurant, user: User):
+    def __init__(self, restaurant : Restaurant):
         self.__cart_id = uuid.uuid4().hex
         self.__restaurant = restaurant
-        self.__user = user
         self.__selected_foods = []
         self.__status = 'open'
 
@@ -499,12 +498,6 @@ class Cart:
 
     def get_restaurant(self):
         return self.__restaurant
-
-    def get_cart_id(self):
-        return self.__cart_id
-    
-    def get_user(self):
-        return self.__user
 
 class Payment:
     def __init__(self, amount: float, currency="THB"):
@@ -536,52 +529,15 @@ class DeliveryOption:
         self.__name = name
         self.__estimate_time = estimate_time
         self.__price = price
-    
-    def __str__(self):
-        return self.__name + " < " + str(self.__estimate_time) + " " + str(self.__price) + " บาท"
-
-    def get_price(self):
-        return self.__price
-
-    def get_name(self):
-        return self.__name
 
 class Order:
-    # Create delivery options
-    priority_delivery = DeliveryOption(
-        name="Priority",
-        estimate_time="25 นาที",
-        price=32
-    )
-
-    standard_delivery = DeliveryOption(
-        name="Standard",
-        estimate_time="25 นาที",
-        price=32
-    )
-
-    saver_delivery = DeliveryOption(
-        name="Saver",
-        estimate_time="35 นาที",
-        price=0
-    )
-
-    delivery_options = [
-        priority_delivery,
-        standard_delivery,
-        saver_delivery
-    ]
-
-    def __init__(self, user: User, cart: Cart, location: Location):
-        self.__order_id = cart.get_cart_id()
+    def __init__(self, user: User, cart: Cart, location: Location, deliveryoption: DeliveryOption, payment_method: Payment, selected_promotion: Promotion):
         self.__user = user
         self.__cart = cart
         self.__location = location
-        self.__delivery_option = self.standard_delivery
-        self.__payment_method = None
-        self.__selected_promotion = None
-        # Not delivered
-        self.__status = False
+        self.__deliveryoption = deliveryoption
+        self.__payment_method = payment_method
+        self.__selected_promotion = selected_promotion
 
     def select_location(self, new_location):
         self.__location = new_location
@@ -589,19 +545,14 @@ class Order:
     def select_payment(self, new_payment):
         self.__payment = new_payment
 
-    def select_delivery_option(self, delivery_num):
+    def select_delivery_option(self, new_delivery_option):
         self.__delivery_option = new_delivery_option
 
-    def get_delivery_option(self):
-        return self.__delivery_option
-
     def calculate_price(self):
-        return self.__cart.calculate_price() + self.__delivery_option.get_price()
+        self.__cart.calculate_price()
 
-    def get_order_id(self):
-        return self.__order_id
-
-
+    def create_user_order(self):
+        pass
 
 # Simulated Data
 
@@ -709,6 +660,108 @@ dq_food2 = Food(
     food_image="https://s3-ap-southeast-1.amazonaws.com/cdn.dairyqueenthailand.com/images/1670569171.png"
 )
 
+dessert1 = Food(
+    restaurant=dairy_queen_restaurant,
+    food_id="7",
+    name="Chocolate Cake",
+    description="Rich and moist chocolate cake with a creamy frosting",
+    price=4.99,
+    category="Dessert",
+    food_image="https://www.cookingclassy.com/wp-content/uploads/2019/10/chocolate-cake-3.jpg"
+)
+
+dessert2 = Food(
+    restaurant=dairy_queen_restaurant,
+    food_id="8",
+    name="Strawberry Cheesecake",
+    description="Smooth and creamy cheesecake with fresh strawberries",
+    price=5.99,
+    category="Dessert",
+    food_image="https://images.unsplash.com/photo-1578985545062-69928b1d9587"
+)
+
+dessert3 = Food(
+    restaurant=dairy_queen_restaurant,
+    food_id="9",
+    name="Mango Sticky Rice",
+    description="Traditional Thai dessert with sticky rice, coconut milk, and ripe mango",
+    price=3.99,
+    category="Dessert",
+    food_image="https://takestwoeggs.com/wp-content/uploads/2021/07/Thai-Mango-Sticky-Rice-Takestwoeggs-Process-Final-sq.jpg"
+)
+
+dessert4 = Food(
+    restaurant=dairy_queen_restaurant,
+    food_id="10",
+    name="Matcha Ice Cream",
+    description="Green tea flavored ice cream, smooth and refreshing",
+    price=3.49,
+    category="Dessert",
+    food_image="https://sudachirecipes.com/wp-content/uploads/2022/08/matcha-ice-cream-thumbnail.jpg"
+)
+
+dessert5 = Food(
+    restaurant=dairy_queen_restaurant,
+    food_id="11",
+    name="Tiramisu",
+    description="Classic Italian dessert with layers of mascarpone and coffee-soaked ladyfingers",
+    price=6.49,
+    category="Dessert",
+    food_image="https://natashaskitchen.com/wp-content/uploads/2019/11/Tiramisu-Cake-5.jpg"
+)
+
+dessert6 = Food(
+    restaurant=mc_donald_restaurant,
+    food_id="12",
+    name="Caramel Pudding",
+    description="Soft and silky caramel custard pudding",
+    price=3.79,
+    category="Dessert",
+    food_image="https://cookmorphosis.com/wp-content/uploads/2020/12/ItalianTiramisu-2.jpg"
+)
+
+dessert7 = Food(
+    restaurant=mc_donald_restaurant,
+    food_id="13",
+    name="Churros with Chocolate Dip",
+    description="Crispy Spanish fried dough sticks with rich chocolate sauce",
+    price=4.29,
+    category="Dessert",
+    food_image="https://easyweeknightrecipes.com/wp-content/uploads/2021/03/Churros16.jpg"
+)
+
+dessert8 = Food(
+    restaurant=mc_donald_restaurant,
+    food_id="14",
+    name="Bubble Milk Tea",
+    description="Refreshing milk tea with chewy tapioca pearls",
+    price=4.99,
+    category="Dessert",
+    food_image="https://www.snixykitchen.com/wp-content/uploads/2014/01/CaramelPudding-4.jpg"
+)
+
+dessert9 = Food(
+    restaurant=mc_donald_restaurant,
+    food_id="15",
+    name="Chocolate Lava Cake",
+    description="Warm chocolate cake with a gooey molten center",
+    price=5.49,
+    category="Dessert",
+    food_image="https://www.yourhomebasedmom.com/wp-content/uploads/2020/02/chocoalte-lava-cake-for-two.jpg"
+)
+
+dessert10 = Food(
+    restaurant=mc_donald_restaurant,
+    food_id="16",
+    name="Macarons",
+    description="French-style almond cookies with a creamy filling",
+    price=6.99,
+    category="Dessert",
+    food_image="https://www.jordanwinery.com/wp-content/uploads/2020/04/French-Macaron-Cookie-Recipe-WebHero-6435.jpg"
+)
+
+
+
 mcd_food1 = Food(
     restaurant=mc_donald_restaurant,
     food_id="5",
@@ -735,6 +788,17 @@ kfc_restaurant.add_food(kfc_food2)
 
 dairy_queen_restaurant.add_food(dq_food1)
 dairy_queen_restaurant.add_food(dq_food2)
+dairy_queen_restaurant.add_food(dessert1)
+dairy_queen_restaurant.add_food(dessert2)
+dairy_queen_restaurant.add_food(dessert3)
+dairy_queen_restaurant.add_food(dessert4)
+dairy_queen_restaurant.add_food(dessert5)
+dairy_queen_restaurant.add_food(dessert6)
+dairy_queen_restaurant.add_food(dessert7)
+dairy_queen_restaurant.add_food(dessert8)
+dairy_queen_restaurant.add_food(dessert9)
+dairy_queen_restaurant.add_food(dessert10)
+
 
 mc_donald_restaurant.add_food(mcd_food1)
 mc_donald_restaurant.add_food(mcd_food2)
@@ -934,7 +998,6 @@ kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
 # Create a cart for the user
 cart = Cart(
     restaurant=kfc_restaurant,
-    user=user
 )
 
 # Add food to the cart
@@ -974,4 +1037,3 @@ location = Location(
 
 # Add the location to the user's locations
 user.add_location(location)
-
