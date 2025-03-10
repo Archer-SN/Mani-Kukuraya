@@ -33,6 +33,7 @@ def view_order(cart_id: dict):
     )
     cart = user.get_carts()[0]
     cart_items = cart.get_foods()
+    restaurant = cart.get_restaurant()
     order_summary_items = [
         P(f"{item.get_quantity()}x {item.get_name()}", B(f"{item.calculate_price()} บาท"))
         for item in cart_items
@@ -64,10 +65,26 @@ def view_order(cart_id: dict):
         cls="grid-item"
     )
 
+    available_promotions = [
+        Card(
+            Img(src=promotion.get_image(), cls="avatar"),
+            Div(
+                Span("Just for you", cls="badge"),
+                Hgroup(
+                    H3(promotion.get_name()),
+                    P(f"#Code {promotion.get_promotion_code()}"),
+                )
+            ),
+            A("Use Now", hx_post="/promotion", cls="contrast button"),
+            cls="grid"
+        )
+        for promotion in cart.get_user().get_promotions_by_restaurant(restaurant)
+    ]
+
     offers = Card(
         H4("Offers"),
         P("ใช้ส่วนลดหรือใส่รหัสโปรโมชั่น"),
-        Div(id="offers-list", hx_get="/promotion", hx_trigger="load"),  # Fetch offers dynamically
+        *available_promotions,
         cls="grid-item"
     )
 

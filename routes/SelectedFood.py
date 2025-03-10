@@ -118,7 +118,7 @@ def add_to_cart(food_id: str, choices: list[str], comment: str, value: str, rest
         for choice_id in choices:
             choice = controller.get_choice_by_id(choice_id)
             selected_food.add_choice(choice)
-        cart = Cart(restaurant)
+        cart = Cart(restaurant, user)
         user.add_cart(cart)
     cart.add_to_cart(selected_food)
     return Response(headers={"HX-Redirect": f"/restaurant/{restaurant_id}"})

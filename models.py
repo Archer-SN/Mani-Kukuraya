@@ -40,7 +40,6 @@ class Controller:
     def get_categories(self):
         categories = []
         for food in self.__foods:
-            print("nigga")
             if food.get_category() not in categories:
                 categories.append(food.get_category())
         return categories
@@ -104,7 +103,6 @@ class Controller:
                         return choice
         return None
 
-
 class User:
     def __init__(self, user_id: str, name, username, password):
         self.__user_id = user_id
@@ -132,6 +130,7 @@ class User:
     
     def get_promotions(self):
         return self.__promotions
+
 
     def add_location(self, new_location):
         self.__locations.append(new_location)
@@ -206,6 +205,13 @@ class User:
         if restaurant_id in self.favorite_restaurants:
             self.favorite_restaurants.remove(restaurant_id)
 
+    def get_promotions_by_restaurant(self, restaurant):
+        available_promotions = []
+        for promotion in self.__promotions:
+            if promotion.get_restaurant() == restaurant:
+                available_promotions.append(promotion)
+        return available_promotions
+
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
         self.__name = name
@@ -220,6 +226,9 @@ class Promotion:
 
     def get_promotion_code(self):
         return self.__promotion_code
+    
+    def get_restaurant(self):
+        return self.__restaurant
 
 class Location:
     def __init__(self, full_name="", phone_number="", address="",street="",unit="", extra_information="") :
@@ -437,9 +446,10 @@ class SelectedFood:
 
 
 class Cart:
-    def __init__(self, restaurant : Restaurant):
+    def __init__(self, restaurant : Restaurant, user: User):
         self.__cart_id = uuid.uuid4().hex
         self.__restaurant = restaurant
+        self.__user = user
         self.__selected_foods = []
         self.__status = 'open'
 
@@ -463,6 +473,9 @@ class Cart:
 
     def get_cart_id(self):
         return self.__cart_id
+    
+    def get_user(self):
+        return self.__user
 
 class Payment:
     def __init__(self, amount: float, currency="THB"):
@@ -851,6 +864,7 @@ kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
 # Create a cart for the user
 cart = Cart(
     restaurant=kfc_restaurant,
+    user=user
 )
 
 # Add food to the cart
