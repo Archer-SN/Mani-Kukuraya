@@ -8,7 +8,5 @@ def update_delivery(order_id:str, delivery: str):
     print(order_id)
     print("UserOrder:" + order_id)
     order = controller.get_order_by_id(order_id)
-    for delivery_option in Order.delivery_options:
-        if delivery_option.get_name() == delivery:
-            order.select_delivery_option(delivery_option)
-            return  Div(P("Selected: " + str(delivery_option)), id="delivery-summary"),  # Display selection dynamically
+    order.select_delivery_option(delivery)
+    return  Div(P("Selected: " + str(delivery_option)), id="delivery-summary"),  # Display selection dynamically

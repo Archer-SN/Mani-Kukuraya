@@ -49,7 +49,7 @@ def view_order(cart_id: str):
     )
     total_cost = Card(
         H4("รวมทั้งหมด"),
-        P(B(cart.calculate_price(), " บาท"), hx_post="order/price", hx_vals={'order_id', order.get_order_id()}, hx_swap="innerHTML", hx_trigger="load", style="font-size:1.5rem; color:#FF6240;"),
+        P(B(cart.calculate_price(), " บาท"), hx_post="order/price", hx_vals={'order_id': order.get_order_id()}, hx_swap="innerHTML", hx_trigger="every 1s", style="font-size:1.5rem; color:#FF6240;"),
         cls="grid-item"
     )
 
@@ -122,7 +122,7 @@ def view_order(cart_id: str):
 @app.post("/order/price")
 def get_price(order_id: str):
     order = controller.get_order_by_id(order_id)
-    return B(cart.calculate_price(), " บาท")
+    return B(order.calculate_price(), " บาท")
 
 
 @app.post("/order")

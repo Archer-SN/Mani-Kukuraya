@@ -109,6 +109,12 @@ class Controller:
     def get_orders(self):
         return self.__orders
 
+    def create_order(self, user, cart, location):
+        order = Order(user, cart, location)
+        self.__orders.append(order)
+        return order
+
+
 class User:
     def __init__(self, user_id: str, name, username, password):
         self.__user_id = user_id
@@ -226,10 +232,11 @@ class User:
 
 
 class Promotion:
-    def __init__(self, name, restaurant, promotion_code):
+    def __init__(self, name, restaurant, promotion_code, discount):
         self.__name = name
         self.__restaurant = restaurant
         self.__promotion_code = promotion_code
+        self.__discount = discount
 
     def get_name(self):
         return self.__name
@@ -242,6 +249,9 @@ class Promotion:
     
     def get_restaurant(self):
         return self.__restaurant
+
+    def get_discount(self):
+        return self.__discount
 
 class Location:
     def __init__(self, full_name="", phone_number="", address="",street="",unit="", extra_information="") :
@@ -566,14 +576,20 @@ class Order:
     def select_payment(self, new_payment):
         self.__payment = new_payment
 
-    def select_delivery_option(self, delivery_num):
-        self.__delivery_option = new_delivery_option
+    def select_delivery_option(self, delivery_name):
+        for delivery_option in self.delivery_options:
+            if delivery_option.get_name() == delivery_name:   
+                self.__delivery_option = delivery_option
 
     def get_delivery_option(self):
         return self.__delivery_option
 
     def calculate_price(self):
-        return self.__cart.calculate_price() + self.__delivery_option.get_price()
+        total_price = self.__cart.calculate_price() + self.__delivery_option.get_price()
+        if (self.__selected_promotion):
+            total_price += self.__selected_promotion.get_price() 
+        print(total_price)
+        return total_price
 
     def get_order_id(self):
         return self.__order_id
@@ -602,6 +618,7 @@ kfc_promotion = Promotion(
     name="KFC Discount",
     restaurant=kfc_restaurant,
     promotion_code="KFC2023",
+    discount=10
 )
 
 dairy_queen_restaurant = Restaurant(
@@ -617,6 +634,7 @@ dq_promotion = Promotion(
     name="Dairy Queen Discount",
     restaurant=dairy_queen_restaurant,
     promotion_code="DQ2023",
+    discount=10
 )
 
 mc_donald_restaurant = Restaurant(
@@ -631,6 +649,7 @@ mcd_promotion = Promotion(
     name="McDonald's Discount",
     restaurant=mc_donald_restaurant,
     promotion_code="MCD2023",
+    discount=10
 )
 
 
