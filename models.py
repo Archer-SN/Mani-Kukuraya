@@ -117,7 +117,7 @@ class Controller:
 
         
         
-def search_result(self, word):
+    def search_result(self, word):
         show_result =[]
 
         all_elements = [food for food in self.foods] + \
@@ -660,6 +660,7 @@ kfc_food2 = Food(
 )
 
 kfc_food3 = Food(
+    restaurant=kfc_restaurant,
     food_id="20",
     name="Pork Burgur",
     description="Delicious chicken burger",

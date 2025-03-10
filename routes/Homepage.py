@@ -145,7 +145,7 @@ def ShowHomepage():
                 P("Some quick example text to build on the card title and make up the bulk of the card's content.", className="card-text"),
                 Button(
                     "ดูสินค้า",
-                    onclick="window.location.href='/review'",
+                    onclick=f"window.location.href='/restaurant/{restaurant.get_restaurant_id()}'",
                     className="btn btn-primary"
                 ),
                 className="card-body"
