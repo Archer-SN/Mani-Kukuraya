@@ -1,14 +1,15 @@
 from datetime import datetime 
 from fasthtml.common import *
 import uuid
+import random
+import difflib
 
 class Controller:
     def __init__(self, users, restaurants, foods):
         self.__users = users
         self.__restaurants = restaurants
-        self.__catagories = [["This is test","https://example.com/image2.jpg"]]
         self.__foods = foods
-        self.__recommended_food = [["อาหารไม่สะอาด","https://static.thairath.co.th/media/B6FtNKtgSqRqbnNsbKFRA9Hw1ddaiN8vczDH5awGUi4JQ7XTjwF2YTlnGfAZTGUAcQDXv.webp"],["อาหารสะอาด","https://hdmall.co.th/blog/wp-content/uploads/2024/03/11-%E0%B8%AD%E0%B8%B2%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%AA%E0%B8%B8%E0%B8%82%E0%B8%A0%E0%B8%B2%E0%B8%9E-%E0%B8%AD%E0%B8%A2%E0%B8%B2%E0%B8%81%E0%B8%81%E0%B8%B4%E0%B8%99%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%AA%E0%B8%B8%E0%B8%82%E0%B8%A0%E0%B8%B2%E0%B8%9E-%E0%B9%80%E0%B8%A3%E0%B8%B4%E0%B9%88%E0%B8%A1%E0%B8%95%E0%B9%89%E0%B8%99%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%AD%E0%B8%B0%E0%B9%84%E0%B8%A3%E0%B8%94%E0%B8%B5.jpg.webp"]]
+        self.__recommended_food = []
 
     def add_restaurant(self, restaurant):
         self.__restaurants.append(restaurant)
@@ -31,8 +32,9 @@ class Controller:
     
     def get_restaurant_by_id(self, restaurant_id):
         for restaurant in self.__restaurants:
-            if restaurant.get_restaurant_id() == str(restaurant_id):
+            if restaurant.get_restaurant_id() == restaurant_id:
                 return restaurant
+<<<<<<< HEAD
 
     @classmethod
     def get_user(cls, auth):
@@ -41,12 +43,90 @@ class Controller:
                 return user
         return None
 
+=======
+    
+>>>>>>> refs/remotes/origin/master
     def find_food(self):
         pass
-    def get_catagories(self):
-        return self.__catagories
+
+    def get_categories(self):
+        categories = []
+        for food in self.__foods:
+            print("nigga")
+            if food.get_category() not in categories:
+                categories.append(food.get_category())
+        return categories
+    def get_restaurant_home(self):
+        restaurant_range = []
+        recommended = []
+        for i in range(10):
+            randomed = random.choice(range(len(self.__restaurants)))
+            if randomed in restaurant_range:
+                continue
+            else:
+                restaurant_range.append(randomed)
+
+        for k in restaurant_range:
+            recommended.append(self.__restaurants[k])
+        return recommended
+
+    def get_restaurants(self):
+        return self.__restaurants
+
+    def dataforhomepage(self):
+        cat = self.get_categories()
+        rec = self.get_recommended_food()
+        res = self.get_restaurant_home()
+        pro = self.get_user_by_id("1").get_promotions()
+        datalist = [cat,rec,res,pro]
+        return datalist
+    
+    def get_restaurant_home(self):
+        restaurant_range = []
+        recommended = []
+        for i in range(10):
+            randomed = random.choice(range(len(self.__restaurants)))
+            if randomed in restaurant_range:
+                continue
+            else:
+                restaurant_range.append(randomed)
+
+        for k in restaurant_range:
+            recommended.append(self.__restaurants[k])
+        return recommended
+
     def get_recommended_food(self):
-        return self.__recommended_food
+        food_range = []
+        recommended = []
+        for i in range(4):
+            randomed = random.choice(range(len(self.__foods)))
+            if randomed in food_range:
+                continue
+            else:
+                food_range.append(randomed)
+
+        for k in food_range:
+            recommended.append(self.__foods[k])
+        return recommended
+    
+    def search_result(self, word):
+        show_result =[]
+
+        all_elements = [food for food in self.__foods] + \
+                    [restaurant for restaurant in self.__restaurants]
+
+        similar_names = difflib.get_close_matches(word, [name.get_name() for name in all_elements], n=3, cutoff=0.3)
+
+
+        for result in range(len(similar_names)):
+            for elements_object in all_elements:
+                if similar_names[result] == elements_object.get_name():
+                    show_result.append(elements_object)
+                else:
+                    continue
+        return show_result
+
+        
         
 def search_result(self, word):
         show_result =[]
@@ -65,19 +145,41 @@ def search_result(self, word):
                     continue
         return show_result 
 
-    
+
+    def get_choice_by_id(self, choice_id):
+        for food in self.__foods:
+            for option in food.get_food_options():
+                for choice in option.get_choices():
+                    if choice.get_id() == choice_id:
+                        return choice
+        return None
+
+
 class User:
+<<<<<<< HEAD
     def __init__(self, user_id: str, name: str, username, password, carts=[], locations=[], user_order_history=[], promotions=[], reviews=[], favorites=[]):
+=======
+    def __init__(self, user_id: str, name, username, password):
+>>>>>>> refs/remotes/origin/master
         self.__user_id = user_id
         self.__name = name
         self.__username = username
         self.__password = password
+<<<<<<< HEAD
         self.__carts = carts
         self.__locations = locations
         self.__user_order_history = user_order_history
         self.__promotions = promotions
         self.__reviews = reviews
         self.__favorites = favorites
+=======
+        self.__carts = []
+        self.__locations = []
+        self.__user_order_history = []
+        self.__promotions = []
+        self.__reviews = []
+        self.__favorites = []
+>>>>>>> refs/remotes/origin/master
         self.__current_order = None
         self.favorite_restaurants = []
 
@@ -95,6 +197,9 @@ class User:
     
     def get_promotions(self):
         return self.__promotions
+    
+    def add_review(self,review):
+        return self.__reviews.append(review)
 
     def add_location(self, new_location):
         self.__locations.append(new_location)
@@ -131,6 +236,12 @@ class User:
             if location.id == location_id:
                 return location
     
+    def get_cart_by_restaurant_id(self, restaurant_id):
+        for cart in self.__carts:
+            if cart.get_restaurant().get_restaurant_id() == restaurant_id:
+                return cart
+        return None
+
     @classmethod
     def get_current_user(cls):
         return cls.onlyuser
@@ -169,6 +280,12 @@ class User:
     def remove_favorite(self, restaurant_id):
         if restaurant_id in self.favorite_restaurants:
             self.favorite_restaurants.remove(restaurant_id)
+
+    def show_review(self):
+        for review in self.__reviews:
+            comment = review._Review__comment
+            rating = review._Review__stars
+            print(f"Comment: {comment}, Rating: {rating}")
 
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
@@ -223,15 +340,13 @@ class Location:
     def extra_information(self):  
         return self.__extra_information
     
-    def edit_location(self,full_name, phone, address,street, unit, extra_info) :
+    def edit_location(self, full_name, phone_number, address, street, unit, extra_information):
         self.__full_name = full_name
-        self.__phone_number = phone
+        self.__phone_number = phone_number
         self.__address = address
-        self.__street = street 
+        self.__street = street
         self.__unit = unit
-        self.__extra_information = extra_info
-
-
+        self.__extra_information = extra_information
 
 class UserOrder:
     def __init__(self, status, restaurant, foods):
@@ -241,25 +356,28 @@ class UserOrder:
         self.__foods = foods
 
 class Review:
-    def __init__(self, score, user, comment, stars):
-        self.__score = score
+    def __init__(self, user, comment, stars):
         self.__user = user
         self.__comment = comment
         self.__stars = stars
 
 class Restaurant:
+<<<<<<< HEAD
     def __init__(self, name, menu, score, reviews, restaurant_image, description="", restaurant_id=uuid.uuid4().hex):
         self.__restaurant_id = restaurant_id
+=======
+    def __init__(self, name, menu,description, score, reviews, restaurant_image):
+        self.__restaurant_id = uuid.uuid4().hex
+>>>>>>> refs/remotes/origin/master
         self.__name = name
         self.__menu = menu
         self.__description = description
         self.__score = score
         self.__reviews = reviews
         self.__restaurant_image = restaurant_image
-        self.__description = description
 
     def get_restaurant_id(self):
-        return str(self.__restaurant_id)
+        return self.__restaurant_id
 
     def get_name(self):
         return self.__name
@@ -275,57 +393,66 @@ class Restaurant:
 
     def get_restaurant_image(self):
         return self.__restaurant_image
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            name=data["name"],
-            menu=data.get("menu", []),
-            description=data.get("description", ""),
-            score=data.get("score", 0),
-            reviews=data.get("reviews", []),
-            restaurant_image=data.get("image", "")
-        )
-
-    @staticmethod
-    def find_restaurant_id_by_name(restaurant_name):
-        for restaurant in Restaurant._instances:
-            if restaurant.get_name() == restaurant_name:
-                return restaurant.get_restaurant_id()
-        return None
-
-
-    def get_food(self, food_name):
-        for food in self.__menu:
-            if food.get_name() == food_name:
-                return food
+    def add_food(self, food):
+        self.__menu.append(food)
 
     def get_image(self):
         return self.__restaurant_image
 
+    def add_review(self,user,review,stars):
+        comment = Review(user,review,stars)
+        self.reviews.append(comment)
+        return "Success"
+
     def get_description(self):
         return self.__description
-    
+
+class FoodOption:
+    def __init__(self, option_name, choices, max_selection):
+        self.__option_id = uuid.uuid4().hex
+        self.__option_name = option_name
+        self.__choices = choices
+        self.__max_selection = max_selection
+
+    def get_id(self):
+        return self.__option_id
+
+    def add_choice(self, choice):
+        self.__choices.append(choice)
+
+    def get_choices(self):
+        return self.__choices
+
     def get_name(self):
-        return self.__name
+        return self.__option_name
 
-    def get_score(self):
-        return self.__score
 
-    def get_menu(self):
-        return self.__menu
+class OptionChoice:
+    def __init__(self, option, choice, choices_value, price):
+        self.__choice_id = uuid.uuid4().hex
+        self.__option = option
+        self.__choice = choice
+        self.__choices_value = choices_value
 
-    def add_food(self, food):
-        self.__menu.append(food)
+    def get_id(self):
+        return self.__choice_id
+
+    def get_name(self):
+        return self.__choice
+
+    def get_option(self):
+        return self.__option 
 
 class Food:
-    def __init__(self, food_id, name, description, price, category, food_image):
+    def __init__(self, restaurant, name, description, price, category, food_image, food_id=uuid.uuid4().hex):
+        self.__restaurant = restaurant
         self.__food_id = food_id
         self.__name = name    
         self.__description = description 
         self.__price = price     
         self.__category = category
         self.__food_image = food_image
+        self.__food_options = []
     
     def get_name(self):
         return self.__name
@@ -338,40 +465,41 @@ class Food:
 
     def get_image(self):
         return self.__food_image
+    
+    def get_category(self):
+        return self.__category
 
-class FoodOption:
-    def __init__(self, option_name, choices, max_selection):
-        self.__option_name = option_name
-        self.__choices = choices
-        self.__max_selection = max_selection
+    def get_food_id(self):
+        return self.__food_id
+    
+    def get_food_options(self):
+        return self.__food_options
 
-    def add_choice(self, choice):
-        self.__choices.append(choice)
+    def add_option(self, option):
+        self.__food_options.append(option)
 
-
-class OptionChoice:
-    def __init__(self, option, choice, choices_value, price):
-        self.__option = option
-        self.__choice = choice
-        self.__choices_value = choices_value
-        self.__price = price
-
+    def get_restaurant(self):
+        return self.__restaurant
 
 class SelectedFoodOption():
-    def __init__(self, option, selected_choices=[]):
+    def __init__(self, option):
         self.__option = option
-        self.__selected_choices = selected_choices
+        self.__selected_choices = []
 
-    def select_choice(self):
-        pass
+    def select_choice(self, choice):
+        self.__selected_choices.append(choice)
 
+    def get_option(self):
+        return self.__option
+
+    def get_selected_choices(self):
+        return self.__selected_choices
 
 class SelectedFood:
-    def __init__(self, selected_food_id, food, option, choice, quantity):
+    def __init__(self, food, quantity, selected_food_id=uuid.uuid4().hex,):
         self.__selected_food_id = selected_food_id
         self.__food = food
-        self.__option = option
-        self.__choice = choice
+        self.__selected_options = [SelectedFoodOption(option) for option in food.get_food_options()]
         self.__quantity = quantity
 
     def get_quantity(self):
@@ -382,15 +510,28 @@ class SelectedFood:
 
     def calculate_price(self):
         total_price = self.__food.get_price()
-
-
         return total_price * self.__quantity
 
+    def add_choice(self, choice):
+        for selected_option in self.__selected_options:
+            option = selected_option.get_option()
+            if choice in option.get_choices():
+                selected_option.select_choice(choice)
+    
+    def get_selected_options(self):
+        return self.__selected_options
+
+
 class Cart:
+<<<<<<< HEAD
     def __init__(self, cart_id, restaurant : Restaurant, selected_foods):
         self.__cart_id = cart_id
+=======
+    def __init__(self, restaurant : Restaurant):
+        self.__cart_id = uuid.uuid4().hex
+>>>>>>> refs/remotes/origin/master
         self.__restaurant = restaurant
-        self.__selected_foods = selected_foods
+        self.__selected_foods = []
         self.__status = 'open'
 
     def get_foods(self):
@@ -402,14 +543,14 @@ class Cart:
     def delete_from_cart(self, food):
         self.__selected_foods.remove(food)
 
-    def get_cart_items(self):
-        return self.__selected_foods
-
     def calculate_price(self):
         total_price = 0
         for selected_food in self.__selected_foods:
             total_price += selected_food.calculate_price()
         return total_price
+
+    def get_restaurant(self):
+        return self.__restaurant
 
 class Payment:
     def __init__(self, amount: float, currency="THB"):
@@ -466,26 +607,30 @@ class Order:
     def create_user_order(self):
         pass
 
+# Simulated Data
+
 user = User(
     user_id="1",
     name="Yokphon ",
     username="foshforce",
     password="password123",
+<<<<<<< HEAD
     carts=[],
     locations=[],
     user_order_history=[],
     promotions=[],
     reviews=[]
+=======
+>>>>>>> refs/remotes/origin/master
 )
 
 kfc_restaurant = Restaurant(
-    restaurant_id="1",
     name="KFC",
     menu=[],
     description="Fast-food chain known for its buckets of fried chicken, plus wings & sides.",
     score=4.5,
     reviews=[],
-    restaurant_image="https://images.unsplash.com/photo-1612170153139-6f881ff067e0?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D"
+    restaurant_image="www.images.unsplash.com/photo-1612170153139-6f881ff067e0?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D"
 )
 
 kfc_promotion = Promotion(
@@ -495,7 +640,6 @@ kfc_promotion = Promotion(
 )
 
 dairy_queen_restaurant = Restaurant(
-    restaurant_id="3",
     name="Dairy Queen",
     menu=[],
     description="Chain of soft-serve ice cream & fast-food restaurants.",
@@ -511,7 +655,6 @@ dq_promotion = Promotion(
 )
 
 mc_donald_restaurant = Restaurant(
-    restaurant_id="5",
     name="McDonald's",
     menu=[],
     description="Fast food chain known for its burgers, fries & shakes.",
@@ -519,7 +662,6 @@ mc_donald_restaurant = Restaurant(
     reviews=[],
     restaurant_image="https://www.shutterstock.com/image-photo/ayutthayathailand-march-7-2018-view-260nw-1181606473.jpg"
 )
-
 mcd_promotion = Promotion(
     name="McDonald's Discount",
     restaurant=mc_donald_restaurant,
@@ -539,23 +681,24 @@ controller = Controller(
     foods=[]
 )
 
-# Create foods for each restaurant
 kfc_food1 = Food(
+    restaurant=kfc_restaurant,
     food_id="1",
     name="Fried Chicken",
     description="Crispy fried chicken",
     price=5.99,
     category="Main Course",
-    food_image="https://example.com/fried_chicken.jpg"
+    food_image="https://www.allrecipes.com/thmb/4GEksBrJ9OsiB2ZcoQQv5xW1n_0=/0x512/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/AR-89268-triple-dipped-fried-chicken-beauty-4x3-3961ac838ddd41958e7cb9f49376cd68.jpg"
 )
 
 kfc_food2 = Food(
+    restaurant=kfc_restaurant,
     food_id="2",
     name="Chicken Burger",
     description="Delicious chicken burger",
     price=4.99,
     category="Main Course",
-    food_image="https://example.com/chicken_burger.jpg"
+    food_image="https://www.chicken.ca/wp-content/uploads/2022/11/Chicken-Burgers-1180x580.jpg"
 )
 
 kfc_food3 = Food(
@@ -568,39 +711,43 @@ kfc_food3 = Food(
 )
 
 dq_food1 = Food(
+    restaurant=dairy_queen_restaurant,
     food_id="3",
     name="Blizzard",
     description="Ice cream with mix-ins",
     price=3.99,
     category="Dessert",
-    food_image="https://example.com/blizzard.jpg"
+    food_image="https://upload.wikimedia.org/wikipedia/commons/a/ae/StrawberrySundae.jpg"
 )
 
 dq_food2 = Food(
+    restaurant=dairy_queen_restaurant,
     food_id="4",
     name="Sundae",
     description="Ice cream sundae",
     price=2.99,
     category="Dessert",
-    food_image="https://example.com/sundae.jpg"
+    food_image="https://s3-ap-southeast-1.amazonaws.com/cdn.dairyqueenthailand.com/images/1670569171.png"
 )
 
 mcd_food1 = Food(
+    restaurant=mc_donald_restaurant,
     food_id="5",
     name="Big Mac",
     description="Classic Big Mac burger",
     price=5.49,
     category="Main Course",
-    food_image="https://example.com/big_mac.jpg"
+    food_image="https://theeburgerdude.com/wp-content/uploads/2021/01/Big-Mac-2048x2048.jpg"
 )
 
 mcd_food2 = Food(
+    restaurant=mc_donald_restaurant,
     food_id="6",
     name="French Fries",
     description="Crispy french fries",
     price=2.49,
     category="Side",
-    food_image="https://example.com/french_fries.jpg"
+    food_image="https://cdn.britannica.com/34/206334-050-7637EB66/French-fries.jpg"
 )
 
 # Add foods to each restaurant
@@ -675,52 +822,165 @@ dq_food_choice6 = OptionChoice(
 )
 
 # Add choices to options
-dq_option_toppings._FoodOption__choices.extend([dq_food_choice1, dq_food_choice2, dq_food_choice3])
-dq_option_size._FoodOption__choices.extend([dq_food_choice4, dq_food_choice5, dq_food_choice6])
+dq_option_toppings.add_choice(dq_food_choice1)
+dq_option_toppings.add_choice(dq_food_choice2)
+dq_option_toppings.add_choice(dq_food_choice3)
+
+dq_option_size.add_choice(dq_food_choice4)
+dq_option_size.add_choice(dq_food_choice5)
+dq_option_size.add_choice(dq_food_choice6)
 
 # Add options to Dairy Queen foods
-dq_food1_options = [
-    SelectedFoodOption(option=dq_option_toppings, selected_choices=[dq_food_choice1, dq_food_choice3]),
-    SelectedFoodOption(option=dq_option_size, selected_choices=[dq_food_choice5])
-]
+dq_food1.add_option(dq_option_toppings)
+dq_food1.add_option(dq_option_size)
 
-dq_food2_options = [
-    SelectedFoodOption(option=dq_option_toppings, selected_choices=[dq_food_choice2]),
-    SelectedFoodOption(option=dq_option_size, selected_choices=[dq_food_choice4])
-]
+dq_food2.add_option(dq_option_toppings)
+dq_food2.add_option(dq_option_size)
 
-# Add selected food options to Dairy Queen foods
-dq_food1.selected_options = dq_food1_options
-dq_food2.selected_options = dq_food2_options
+# Create food options for KFC foods
+kfc_option_sides = FoodOption(
+    option_name="Sides",
+    choices=[],
+    max_selection=2
+)
+
+kfc_option_drinks = FoodOption(
+    option_name="Drinks",
+    choices=[],
+    max_selection=1
+)
+
+# Create food choices for KFC foods
+kfc_food_choice1 = OptionChoice(
+    option=kfc_option_sides,
+    choice="Fries",
+    choices_value="Fries",
+    price=1.5
+)
+
+kfc_food_choice2 = OptionChoice(
+    option=kfc_option_sides,
+    choice="Coleslaw",
+    choices_value="Coleslaw",
+    price=1.0
+)
+
+kfc_food_choice3 = OptionChoice(
+    option=kfc_option_drinks,
+    choice="Coke",
+    choices_value="Coke",
+    price=1.0
+)
+
+kfc_food_choice4 = OptionChoice(
+    option=kfc_option_drinks,
+    choice="Pepsi",
+    choices_value="Pepsi",
+    price=1.0
+)
+
+# Add choices to options
+kfc_option_sides.add_choice(kfc_food_choice1)
+kfc_option_sides.add_choice(kfc_food_choice2)
+
+kfc_option_drinks.add_choice(kfc_food_choice3)
+kfc_option_drinks.add_choice(kfc_food_choice4)
+
+# Add options to KFC foods
+kfc_food1.add_option(kfc_option_sides)
+kfc_food1.add_option(kfc_option_drinks)
+
+kfc_food2.add_option(kfc_option_sides)
+kfc_food2.add_option(kfc_option_drinks)
+
+# Create food options for McDonald's foods
+mcd_option_sides = FoodOption(
+    option_name="Sides",
+    choices=[],
+    max_selection=2
+)
+
+mcd_option_drinks = FoodOption(
+    option_name="Drinks",
+    choices=[],
+    max_selection=1
+)
+
+# Create food choices for McDonald's foods
+mcd_food_choice1 = OptionChoice(
+    option=mcd_option_sides,
+    choice="Fries",
+    choices_value="Fries",
+    price=1.5
+)
+
+mcd_food_choice2 = OptionChoice(
+    option=mcd_option_sides,
+    choice="Salad",
+    choices_value="Salad",
+    price=2.0
+)
+
+mcd_food_choice3 = OptionChoice(
+    option=mcd_option_drinks,
+    choice="Coke",
+    choices_value="Coke",
+    price=1.0
+)
+
+mcd_food_choice4 = OptionChoice(
+    option=mcd_option_drinks,
+    choice="Sprite",
+    choices_value="Sprite",
+    price=1.0
+)
+
+# Add choices to options
+mcd_option_sides.add_choice(mcd_food_choice1)
+mcd_option_sides.add_choice(mcd_food_choice2)
+
+mcd_option_drinks.add_choice(mcd_food_choice3)
+mcd_option_drinks.add_choice(mcd_food_choice4)
+
+# Add options to McDonald's foods
+mcd_food1.add_option(mcd_option_sides)
+mcd_food1.add_option(mcd_option_drinks)
+
+mcd_food2.add_option(mcd_option_sides)
+mcd_food2.add_option(mcd_option_drinks)
 
 # Get KFC restaurant from the controller
 kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
-print(f"Retrieved restaurant: {kfc_restaurant_from_controller.get_name()}")
 
 # Create a cart for the user
 cart = Cart(
-    cart_id=uuid.uuid4(),
     restaurant=kfc_restaurant,
-    selected_foods=[],
 )
 
 # Add food to the cart
-# selected_food = SelectedFood(
-#     selected_food_id=uuid.uuid4(),
-#     food=kfc_food1,
-#     option=None,
-#     choice=None,
-#     quantity=2
-# )
+selected_food = SelectedFood(
+    selected_food_id=uuid.uuid4(),
+    food=kfc_food1,
+    quantity=2
+)
 
-# cart.add_to_cart(selected_food)
+cart.add_to_cart(selected_food)
 
 # Add the cart to the user's carts
-user.add_cart(cart)
+user._User__carts.append(cart)
+
 # Print the cart details
 print(f"User {user.get_user_id()} has the following items in their cart:")
 for food in cart.get_foods():
     print(f"- {food._SelectedFood__food._Food__name} (Quantity: {food._SelectedFood__quantity})")
+
+# Add all foods to the controller
+controller.add_food(kfc_food1)
+controller.add_food(kfc_food2)
+controller.add_food(dq_food1)
+controller.add_food(dq_food2)
+controller.add_food(mcd_food1)
+controller.add_food(mcd_food2)
 
 # Create a location for the user
 location = Location(
@@ -733,9 +993,13 @@ location = Location(
 )
 
 # Add the location to the user's locations
+<<<<<<< HEAD
 user.add_location(location)
 
 # Print the user's locations
 print(f"User {user.get_user_id()} has the following locations:")
 for loc in user.get_locations():
     print(f"- {loc.full_name}, {loc.address}, {loc.street}, {loc.unit}, {loc.extra_information}")
+=======
+user.add_location(location)
+>>>>>>> refs/remotes/origin/master
