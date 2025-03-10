@@ -5,7 +5,7 @@ from lucide_fasthtml import Lucide
 
 
 @app.get("/order")
-def view_order(cart_id: str):
+def view_order(cart_id: dict):
     print(cart_id)
     loc = user.get_locations()[0]
     location = Card(
@@ -32,7 +32,7 @@ def view_order(cart_id: str):
         cls="grid-item"
     )
     cart = user.get_carts()[0]
-    cart_items = cart.get_cart_items()
+    cart_items = cart.get_foods()
     order_summary_items = [
         P(f"{item.get_quantity()}x {item.get_name()}", B(f"{item.calculate_price()} บาท"))
         for item in cart_items

@@ -11,28 +11,23 @@ cart_items = [
 @app.get("/cart")
 def get():
     
-    # for cart in user.get_carts():
-    #     for food in cart.get_foods():
-    #         print(food.get_name())
-    #         for option in food.get_selected_options():
-    #             for choice in  option.get_selected_choices():
-    #                 print(choice.get_name())
-    # return user.get_carts()
-    # สร้างรายการของสินค้าจากตะกร้า
     items = []
     for cart in user.get_carts():
         restaurant = cart.get_restaurant()
         items.append(
-            Div(
-                Div(
-                    Img(src=f'{restaurant.get_restaurant_image()}', alt=f"{restaurant.get_name()}", style="width: 100px; height: 70px;"),
-                    style="flex: 0 0 auto; margin-right: 15px;"
+            A(
+                Card(
+                    Div(
+                        Img(src=f'{restaurant.get_restaurant_image()}', alt=f"{restaurant.get_name()}", style="width: 100px; height: 70px;"),
+                        style="flex: 0 0 auto; margin-right: 15px;"
+                    ),
+                    Div(f"{len(cart.get_foods())} items"),
+                    Div(f"คะแนน: {restaurant.get_score()} | ระยะทาง: 100 km"),
+                    style="display: flex;  flex-direction: column; align-items: center; margin-bottom: 15px; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;",
+                    cls="hover-effect"
                 ),
-                Div(f"{len(cart.get_foods())} items"),
-                Div(f"คะแนน: {restaurant.get_score()} | ระยะทาง: 100 km"),
-                hx_get="/order",
-                hx_vals={'cart_id': cart.get_cart_id()},
-                style="display: flex;  flex-direction: column; align-items: center; margin-bottom: 15px;"
+                Input(id="cart-id", name="cart_id", type="hidden", value=f"{cart.get_cart_id()}"),
+                href=f"/order?cart_id={cart.get_cart_id()}",
             )
         )
 
