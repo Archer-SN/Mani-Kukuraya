@@ -372,6 +372,7 @@ class OptionChoice:
         self.__option = option
         self.__choice = choice
         self.__choices_value = choices_value
+        self.__price = price
 
     def get_id(self):
         return self.__choice_id
@@ -381,6 +382,9 @@ class OptionChoice:
 
     def get_option(self):
         return self.__option 
+
+    def get_price(self):
+        return self.__price
 
 class Food:
     def __init__(self, restaurant, name, description, price, category, food_image, food_id=uuid.uuid4().hex):
@@ -449,7 +453,10 @@ class SelectedFood:
 
     def calculate_price(self):
         total_price = self.__food.get_price()
-        return total_price * self.__quantity
+        for selected_option in self.__selected_options:
+            for choice in selected_option.get_selected_choices():
+                total_price += choice.get_price()
+        return total_price * self.__quantity 
 
     def add_choice(self, choice):
         for selected_option in self.__selected_options:
@@ -974,4 +981,5 @@ location = Location(
 
 # Add the location to the user's locations
 user.add_location(location)
+
 
