@@ -49,7 +49,7 @@ def view_promotion():
                                 P(f"#Code {promotion.get_promotion_code()}"),
                             )
                         ),
-                        A("Use Now", hx_post="/promotion", cls="contrast button"),
+                          A("Use Now", hx_post="/promotion", hx_target="#offer", hx_vals={'promotion_code': promotion.get_promotion_code(), 'order_id': ""}, hx_swap="innerHTML", cls="contrast button"),
                         cls="grid"
                     ),
                     cls="card"
@@ -63,6 +63,12 @@ def view_promotion():
 def use_promotion(promotion_code: str, order_id: str):
     promotion = user.get_promotion(promotion_code)
     order = controller.get_order_by_id(order_id)
+    if (order == None):
+        cart = user.get_cart_by_cart_id(cart_id)
+        if (cart == None):
+            cart = Cart(promotion.get_restaurant(), user)
+        loc = user.get_locations()[0]
+        order = controller.create_order(user, cart, loc)
     order.select_promotion(promotion)
     return order
 
