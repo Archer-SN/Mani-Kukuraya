@@ -6,6 +6,7 @@ from lucide_fasthtml import Lucide
 @app.get("/restaurant/{id:str}")
 def restaurant_view(id: str):
     restaurant = controller.get_restaurant_by_id(id)
+    # restaurant = kfc_restaurant
     # Container to hold all food items
     food_list = []
 
@@ -46,10 +47,8 @@ def restaurant_view(id: str):
                 P(f"Price: {food.get_price()} บาท"),
                 style="display: inline-block; vertical-align: top;",
             ),
-            Button("+", 
-                hx_redirect="/log_input",
-                hx_post="/log_input",  # Send data to the backend using HTMX
-                hx_params=f"food_name={food.get_name()}&restaurant_name={food.get_name()}",  # Send food name and restaurant name
+            A("+", 
+                href=f"/selectedFood/{food.get_food_id()}",
                 style="padding: 10px; font-size: 17px; background-color: #4CAF50; color: white; border: none; margin-left: auto; margin-right: 130px; border-radius: 5px;"),
             style="display: flex; align-items: center; margin-bottom: 15px; justify-content: space-between;",  # Align "+" button to the right
             cls="food-item-card"
