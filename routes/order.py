@@ -6,7 +6,11 @@ from lucide_fasthtml import Lucide
 
 @app.get("/order")
 def view_order(cart_id: dict):
-    print(cart_id)
+    # Note that cart_id is the same as order_id
+    order = controller.get_order_by_id(cart_id)
+    cart = user.get_cart_by_cart_id(cart_id)
+    if (order == None):
+        order = Order(user, )
     loc = user.get_locations()[0]
     location = Card(
         f"- {loc.full_name}, {loc.address}, {loc.street}, {loc.unit}, {loc.extra_information}",
@@ -31,7 +35,6 @@ def view_order(cart_id: dict):
         Div(P("Selected: Saver (35 นาที - ฟรี)"), id="delivery-summary"),  # Display selection dynamically
         cls="grid-item"
     )
-    cart = user.get_carts()[0]
     cart_items = cart.get_foods()
     restaurant = cart.get_restaurant()
     order_summary_items = [
@@ -75,7 +78,7 @@ def view_order(cart_id: dict):
                     P(f"#Code {promotion.get_promotion_code()}"),
                 )
             ),
-            A("Use Now", hx_post="/promotion", cls="contrast button"),
+            A("Use Now", hx_post="/promotion", hx_target="#offer", hx_vals={'promotion_id'} hx_swap="innerHTML", cls="contrast button"),
             cls="grid"
         )
         for promotion in cart.get_user().get_promotions_by_restaurant(restaurant)
@@ -85,6 +88,7 @@ def view_order(cart_id: dict):
         H4("Offers"),
         P("ใช้ส่วนลดหรือใส่รหัสโปรโมชั่น"),
         *available_promotions,
+        id="offer",
         cls="grid-item"
     )
 
