@@ -39,7 +39,7 @@ def ShowHomepage():
     
     # Promotion element
 
-    numbers_promotion = len(dataforhomepage[3])
+    numbers_promotion = 35
 
     promotion_element = Card(
         H3("โปรโมชั่น", style="text-align:left;"),
@@ -53,30 +53,14 @@ def ShowHomepage():
     )
 
     # Search bar
-    search_bar_element = Nav(
-        Div(
-            Form(
-                Input(
-                    type="search",
-                    placeholder="Search",
-                    name="query",
-                    aria_label="Search",
-                    className="form-control me-2"
-                ),
-                Button(
-                    "Search",
-                    type="submit",
-                    className="btn btn-outline-success",
-                ),
-                className="d-flex",
-                role="search",
-                action="/search",
-                method="get"
-            ),
-            className="container-fluid",
-            style="position: absolute; top: 15px; right: 17px; width: 25%;"
-        ),
-        className="navbar bg-body-tertiary"
+    search_bar = Input(type="text", name="query", placeholder="ค้นหาอาหาร", style="width: 80%; height: 100%; display: inline-block; margin-right:10px;")
+    search_button = Button("ค้นหา", type="submit", style="width: 30%; height: 100%; display: inline-block;")
+    search_bar_element = Form(
+        search_bar,
+        search_button,
+        action="/search",
+        method="get",
+        style="position: absolute; top: 20px; right: 20px; width: 300px; height: 40px; display: flex;"
     )
 
     
@@ -108,53 +92,37 @@ def ShowHomepage():
     # Recommended food
     recommended_food = dataforhomepage[1]
     recommended_food_element = [
-        Div(
-            Img(
-                src=food.get_image(),
-                className="card-img-top",
-                alt=food.get_name(),
-                style="border-radius: 15px;"
-            ),
-            Div(
-                H5(food.get_name(), className="card-title"),
-                P("Some quick example text to build on the card title and make up the bulk of the card's content.", className="card-text"),
-                Button(
-                    "ดูสินค้า",
-                    onclick="window.location.href='/review'",
-                    className="btn btn-primary"
-                ),
-                className="card-body"
-            ),
-            className="card",
-            style="width: 18rem; margin: 10px;"
-        )
-        for food in recommended_food
-    ]
-    # recommended restaurant
+    Div(
+        Img(
+            src=food.get_image(), 
+            style="width:320px; height:200px; object-fit:cover; display:block; margin-bottom: 5px;"
+        ),
+        A(
+            f"{food.get_name()}",
+            href=f"/",
+            style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
+        ),
+        style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
+    )
+    for food in recommended_food
+]
+    #recommended restaurant
     recommended_restaurant = dataforhomepage[2]
     recommended_restaurant_element = [
-        Div(
-            Img(
-                src=restaurant.get_image(),
-                className="card-img-top",
-                alt=restaurant.get_name(),
-                style="border-radius: 15px;"
-            ),
-            Div(
-                H5(restaurant.get_name(), className="card-title"),
-                P("Some quick example text to build on the card title and make up the bulk of the card's content.", className="card-text"),
-                Button(
-                    "ดูสินค้า",
-                    onclick=f"window.location.href='/restaurant/{restaurant.get_restaurant_id()}'",
-                    className="btn btn-primary"
-                ),
-                className="card-body"
-            ),
-            className="card",
-            style="width: 18rem; margin: 10px;"
-        )
-        for restaurant in recommended_restaurant
-    ]
+    Div(
+        Img(
+            src=restaurant.get_image(),
+            style="width:300px; height:200px; object-fit:cover; display:block; margin-bottom: 5px;"
+        ),
+        A(  
+            f"{restaurant.get_name()}",
+            href = f"/restaurant/{restaurant.get_restaurant_id()}",
+            style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
+        ),
+        style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
+    )
+    for restaurant in recommended_restaurant
+]
 
 
 
@@ -183,6 +151,7 @@ def ShowHomepage():
             ),
             style="margin-top:100px;"
         ),
+
         Div(
             H2("ร้านอาหารแนะนำ", style="width: 100%; text-align: left; margin-bottom: 20px;"),  # Custom style for H2
             Div(
@@ -190,21 +159,21 @@ def ShowHomepage():
                 style="display:flex;flex-direction:row;justify-content:flex-start;"
             ),
             style="margin-top:100px;"
-        ),
+        )
 
-        style="text-align:center;"
+        # style="text-align:center;"
     )
 
 @app.get("/search")
 def SearchResults(query: str):
     # Implement your search logic here
-    search_results = controller.search_result(query)
+    search_results = controller.search_food(query)
+    
     # Display search results
     search_results_elements = [
-        A(
-            P(result.get_name(), style="text-align:center;"),
-            Img(src=result.get_image(), style="width:70%;height:50%;"),
-            href="/review",
+        Div(
+            P(result["name"], style="text-align:center;"),
+            Img(src=result["image"], style="width:100%;height:50%;"),
             style="text-align:center; margin: 10px;"
         )
         for result in search_results
@@ -214,7 +183,7 @@ def SearchResults(query: str):
         H1(f"ผลการค้นหาสำหรับ '{query}'"),
         Div(
             *search_results_elements,
-            style="display:flex;flex-wrap:wrap;flex-direction:row;justify-content:space-around;margin-top:20px;"
+            style="display:flex;flex-wrap:wrap;justify-content:space-around;margin-top:20px;"
         ),
         style="text-align:center;"
     )
