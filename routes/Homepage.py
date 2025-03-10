@@ -80,11 +80,11 @@ def ShowHomepage():
     # Navbar with links to different pages
     navbar = Div(
         Div(
-            Button("Favorites", href=f"/favorite/{member.get_favorites()}", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
+            Button("Favorites", href=f"/favorite", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
             style="margin: 10px;"
         ),
         Div(
-            Button("Promotions", href=f"/promotion/{member.get_promotions()}", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
+            Button("Promotions", href=f"/promotion", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
             style="margin: 10px;"
         ),
         Div(
@@ -137,12 +137,13 @@ def ShowHomepage():
             style="width:300px; height:200px; object-fit:cover; display:block; margin-bottom: 5px;"
         ),
         P(f"{restaurant.get_name()}"),
-        Button(  
+        A(Button(  
             "ดูร้านค้า",
-            href = f"/restaurant/{restaurant.get_restaurant_id()}",
             cls="btn flash-slide flash-slide--red",
-            style="display:block; text-decoration:none; color:#ffffff; text-align:center; font-size:16px; margin-top: 5px;"
+            style="display:block; text-decoration:none; color:#ffffff; text-align:center; font-size:16px; margin-top: 5px;",
         ),
+                    href = f"/restaurant/{restaurant.get_restaurant_id()}",
+),
         style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
     )
     for restaurant in recommended_restaurant

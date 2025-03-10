@@ -78,7 +78,7 @@ def view_order(cart_id: str):
                     P(f"#Code {promotion.get_promotion_code()}"),
                 )
             ),
-            A("Use Now", hx_post="/promotion", hx_target="#offer", hx_vals={'promotion_code': promotion.get_promotion_code(), 'order_id': order.get_order_id()}, hx_swap="innerHTML", cls="contrast button"),
+            A("Use Now", href=f"/restaurant/{promotion.get_restaurant()}", hx_post="/promotion", hx_target="#offer", hx_vals={'promotion_code': promotion.get_promotion_code(), 'order_id': order.get_order_id()}, hx_swap="innerHTML", cls="contrast button"),
             cls="grid"
         )
         for promotion in cart.get_user().get_promotions_by_restaurant(restaurant)
