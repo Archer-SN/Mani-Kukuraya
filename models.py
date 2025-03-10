@@ -205,13 +205,13 @@ class User:
 
     def get_carts(self):
         return self.__carts
-    def add_favorite(self, restaurant_id):
-        if restaurant_id not in self.favorite_restaurants:
-            self.favorite_restaurants.append(restaurant_id)
+    def add_favorite(self, restaurant):
+        if restaurant not in self.favorite_restaurants:
+            self.favorite_restaurants.append(restaurant)
 
-    def remove_favorite(self, restaurant_id):
-        if restaurant_id in self.favorite_restaurants:
-            self.favorite_restaurants.remove(restaurant_id)
+    def remove_favorite(self, restaurant):
+        if restaurant in self.favorite_restaurants:
+            self.favorite_restaurants.remove(restaurant)
 
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
