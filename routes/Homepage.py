@@ -29,11 +29,11 @@ def ShowHomepage():
         A(
             Button(
                 f"{category}",
-                cls="btn btn-layered-3d btn-layered-3d--purple",
                 style="display:block; text-align:center; margin:10px; width:200px; height:70px; line-height:30px;"
             ),
-            href=f"/category/{category.lower()}",
-            style="text-decoration:none;"
+            href=f"/category",
+            style="text-decoration:none;",
+            cls="btn btn-layered-3d btn-layered-3d--purple",
         )
         for category in categories
 ]
@@ -88,7 +88,11 @@ def ShowHomepage():
             style="margin: 10px;"
         ),
         Div(
-            Button("Carts", href=f"/cart", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
+            A(
+                Button("Carts", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
+                style="text-decoration:none;",
+                href=f"/cart",
+            ),
             style="margin: 10px;"
         ),     
         style="display:flex; flex-direction:row; justify-content:center; gap: 20px; margin-top: 10px;"
@@ -118,11 +122,13 @@ def ShowHomepage():
                 href=f"/",
                 style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
             ),
-            Button(
-                "สั่งซื้อ",
-                href=f"/order/{food.get_food_id()}",
-                cls="btn flash-slide flash-slide--blue",
-                style="display:block; text-decoration:none; color:#ffffff; text-align:center; font-size:16px; margin-top: 5px;"
+            A(
+                Button(
+                    "สั่งซื้อ",
+                    cls="btn flash-slide flash-slide--blue",
+                    style="display:block; text-decoration:none; color:#ffffff; text-align:center; font-size:16px; margin-top: 5px;"
+                ),
+                href=f"/selectedFood/{food.get_food_id()}",
             ),
             style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
         )
@@ -137,13 +143,14 @@ def ShowHomepage():
             style="width:300px; height:200px; object-fit:cover; display:block; margin-bottom: 5px;"
         ),
         P(f"{restaurant.get_name()}"),
-        A(Button(  
+        A(
+            Button(  
             "ดูร้านค้า",
             cls="btn flash-slide flash-slide--red",
-            style="display:block; text-decoration:none; color:#ffffff; text-align:center; font-size:16px; margin-top: 5px;",
+            style="display:block; text-decoration:none; color:#ffffff; text-align:center; font-size:16px; margin-top: 5px;"
+            ),
+            href = f"/restaurant/{restaurant.get_restaurant_id()}",
         ),
-                    href = f"/restaurant/{restaurant.get_restaurant_id()}",
-),
         style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
     )
     for restaurant in recommended_restaurant
