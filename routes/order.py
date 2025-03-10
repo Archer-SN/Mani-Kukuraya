@@ -25,7 +25,7 @@ def view_order(cart_id: str):
         P("ระยะห่างประมาณ: 2.1 กม."),
         Div(
             *[
-                Label(Input(type="radio", name="delivery", hx_vals={'order_id': order.get_order_id(), 'delivery': delivery_option.get_name()}, 
+                Label(Input(type="radio", id="delivery", name="delivery", hx_vals={'order_id': order.get_order_id(), 'delivery': delivery_option.get_name()}, 
                         hx_post="/update-delivery", hx_target="#delivery-summary"), 
                   delivery_option)
                   for delivery_option in Order.delivery_options
@@ -49,7 +49,7 @@ def view_order(cart_id: str):
     )
     total_cost = Card(
         H4("รวมทั้งหมด"),
-        P(B(cart.calculate_price(), " บาท"), hx_post="order/price", hx_vals={'order_id': order.get_order_id()}, hx_swap="innerHTML", hx_trigger="every 1s", style="font-size:1.5rem; color:#FF6240;"),
+        P(B(cart.calculate_price(), " บาท"), hx_post="order/price", hx_vals={'order_id': order.get_order_id()}, hx_trigger="every 1s", hx_swap="innerHTML", style="font-size:1.5rem; color:#FF6240;"),
         cls="grid-item"
     )
 
@@ -78,7 +78,7 @@ def view_order(cart_id: str):
                     P(f"#Code {promotion.get_promotion_code()}"),
                 )
             ),
-            A("Use Now", hx_post="/promotion", hx_target="#offer", hx_vals={'promotion_code': promotion.get_promotion_code()}, hx_swap="innerHTML", cls="contrast button"),
+            A("Use Now", hx_post="/promotion", hx_target="#offer", hx_vals={'promotion_code': promotion.get_promotion_code(), 'order_id': order.get_order_id()}, hx_swap="innerHTML", cls="contrast button"),
             cls="grid"
         )
         for promotion in cart.get_user().get_promotions_by_restaurant(restaurant)
@@ -122,6 +122,7 @@ def view_order(cart_id: str):
 @app.post("/order/price")
 def get_price(order_id: str):
     order = controller.get_order_by_id(order_id)
+    print(controller.get_orders())
     return B(order.calculate_price(), " บาท")
 
 

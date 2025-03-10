@@ -577,9 +577,12 @@ class Order:
         self.__payment = new_payment
 
     def select_delivery_option(self, delivery_name):
+        self.__delivery_option = self.get_delivery_option_by_name(delivery_name)
+
+    def get_delivery_option_by_name(self, delivery_name):
         for delivery_option in self.delivery_options:
             if delivery_option.get_name() == delivery_name:   
-                self.__delivery_option = delivery_option
+                return delivery_option
 
     def get_delivery_option(self):
         return self.__delivery_option
@@ -587,13 +590,14 @@ class Order:
     def calculate_price(self):
         total_price = self.__cart.calculate_price() + self.__delivery_option.get_price()
         if (self.__selected_promotion):
-            total_price += self.__selected_promotion.get_price() 
-        print(total_price)
-        return total_price
+            total_price -= self.__selected_promotion.get_discount() 
+        return round(max(0, total_price), 2)
 
     def get_order_id(self):
         return self.__order_id
 
+    def select_promotion(self, promotion):
+        self.__selected_promotion = promotion
 
 
 # Simulated Data
