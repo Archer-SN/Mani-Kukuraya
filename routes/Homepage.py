@@ -129,7 +129,7 @@ def ShowHomepage():
                 ),
                 href=f"/selectedFood/{food.get_food_id()}",
             ),
-            style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
+            style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);"
         )
         for food in recommended_food
     ]
@@ -150,7 +150,7 @@ def ShowHomepage():
             ),
             href = f"/restaurant/{restaurant.get_restaurant_id()}",
         ),
-        style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center;"
+        style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"
     )
     for restaurant in recommended_restaurant
 ]
@@ -192,7 +192,7 @@ def ShowHomepage():
             style="margin-top:100px;"
             ),
         ),
-            style='background-image: url("https://img.freepik.com/free-photo/sunset-silhouettes-trees-mountains-generative-ai_169016-29371.jpg?t=st=1741606590~exp=1741610190~hmac=ed02424dae918e0a06718dd3987c1c9d2f47b921de4fb0af1d9402b1c131612e&w=2000");'
+            style='background-color: #fdf3ec;'
     )
 
 @app.get("/search")
