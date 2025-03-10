@@ -117,7 +117,6 @@ class User:
         self.__promotions = []
         self.__reviews = []
         self.__favorites = []
-        self.__current_order = None
 
     def set_username(self, new_username):
         self.__username = new_username
@@ -189,12 +188,6 @@ class User:
 
     def get_locations(self):
         return self.__locations
-
-    def get_current_order(self):
-        return self.__current_order
-
-    def set_current_order(self, new_order):
-        self.__current_order = new_order
 
 
     def send_recentorder(self):
@@ -466,6 +459,9 @@ class Cart:
     def get_restaurant(self):
         return self.__restaurant
 
+    def get_cart_id(self):
+        return self.__cart_id
+
 class Payment:
     def __init__(self, amount: float, currency="THB"):
         self.__amount = amount
@@ -499,6 +495,7 @@ class DeliveryOption:
 
 class Order:
     def __init__(self, user: User, cart: Cart, location: Location, deliveryoption: DeliveryOption, payment_method: Payment, selected_promotion: Promotion):
+        self.__order_id = cart.get_cart_id()
         self.__user = user
         self.__cart = cart
         self.__location = location

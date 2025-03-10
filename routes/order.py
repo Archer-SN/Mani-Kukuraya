@@ -5,7 +5,8 @@ from lucide_fasthtml import Lucide
 
 
 @app.get("/order")
-def view_order():
+def view_order(cart_id: str):
+    print(cart_id)
     loc = user.get_locations()[0]
     location = Card(
         f"- {loc.full_name}, {loc.address}, {loc.street}, {loc.unit}, {loc.extra_information}",
