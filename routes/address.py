@@ -3,8 +3,10 @@ from models import *
 from fasthtml.common import *
 
 @app.get("/address")
-def address_view():
+def address_view(user_id: str) :
     form = Form(
+        Input(id="user_id", name="user_id", type="hidden", value=user_id),
+
         Label("ชื่อ-นามสกุล"),
         Input(id="full_name", name="full_name", required=True, placeholder="กรอกชื่อ-นามสกุล",hx_target="#full_name", hx_trigger="blur"),
 
@@ -31,20 +33,25 @@ def address_view():
 
 
     return Titled(
-        "เพิ่มที่อยู่ใหม่",
+        "แก้ไขที่อยู่",
         Div(
-            A("⬅ กลับ", href ="/profile", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+            A("⬅ กลับ", href=f"/locations?user_id={user_id}", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
             style="position: absolute; top: 10px; left: 10px;"
-    
         ),
         form
     )
 
 @app.post("/submit-address")
-def submit_address(full_name: str, phone: str, location: str, street: str, unit: str = "", extra_info: str = ""):
-    print(f"ข้อมูลที่ได้รับ: {full_name}, {phone}, {location}, {street}, {unit}, {extra_info}")  
+def submit_address(user_id: str, full_name: str, phone: str, location: str, street: str, unit: str = "", extra_info: str = ""):
+    user = controller.get_user_by_id(user_id)
+
+    if not user:
+        return Span("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")
+
 
     if not full_name or not phone or not location or not street:
         return Span("กรุณากรอกข้อมูลให้ครบถ้วน", cls="error")
+
     user.add_location(Location(full_name, phone, location, street, unit, extra_info))
-    return Response(headers={"HX-Redirect": "/locations"})
+
+    return Response(headers={"HX-Redirect": f"/locations?user_id={user_id}"})

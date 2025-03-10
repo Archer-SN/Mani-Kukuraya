@@ -40,7 +40,6 @@ class Controller:
     def get_categories(self):
         categories = []
         for food in self.__foods:
-            print("nigga")
             if food.get_category() not in categories:
                 categories.append(food.get_category())
         return categories
@@ -61,12 +60,14 @@ class Controller:
     def get_restaurants(self):
         return self.__restaurants
 
-    def dataforhomepage(self):
+    def dataforhomepage(self, user_id):
         cat = self.get_categories()
         rec = self.get_recommended_food()
         res = self.get_restaurant_home()
-        datalist = [cat,rec,res]
-        return datalist
+        pro = self.get_user_by_id(user_id).get_promotions() 
+        profile = self.get_user_by_id(user_id) 
+        return [cat, rec, res, pro, profile]
+
     
     def get_restaurant_home(self):
         restaurant_range = []
@@ -103,6 +104,7 @@ class Controller:
                     if choice.get_id() == choice_id:
                         return choice
         return None
+    
 
 
 class User:
@@ -151,21 +153,11 @@ class User:
     def use_promotion(self, promotion):
         self.__promotions.remove(promotion)
 
-    def add_location(self, location):
-        if isinstance(location, Location): 
-            self.__locations.append(location) 
-            return "Add Location Success"
-        return "Error: Object only"
-        
     def get_locations(self):
         return  self.__locations
     
     def get_location_by_id(self, location_id):
         for location in self.__locations:
-            print("1")
-            print(location.id)
-            print("2")
-            print(location_id)
             if location.id == location_id:
                 return location
     
@@ -174,10 +166,6 @@ class User:
             if cart.get_restaurant().get_restaurant_id() == restaurant_id:
                 return cart
         return None
-
-    @classmethod
-    def get_current_user(cls):
-        return cls.onlyuser
     
     @property
     def name(self):
@@ -210,6 +198,10 @@ class User:
 
     def remove_favorite(self, restaurant):
         self.__favorites.remove(restaurant)
+
+    def get_promotions(self) :
+        return self.__promotions
+
 
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
