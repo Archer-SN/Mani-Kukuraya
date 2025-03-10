@@ -34,18 +34,7 @@ class Controller:
         for restaurant in self.__restaurants:
             if restaurant.get_restaurant_id() == restaurant_id:
                 return restaurant
-<<<<<<< HEAD
-
-    @classmethod
-    def get_user(cls, auth):
-        for user in cls._users:
-            if user.get_user_id() == auth:
-                return user
-        return None
-
-=======
     
->>>>>>> refs/remotes/origin/master
     def find_food(self):
         pass
 
@@ -156,30 +145,17 @@ def search_result(self, word):
 
 
 class User:
-<<<<<<< HEAD
-    def __init__(self, user_id: str, name: str, username, password, carts=[], locations=[], user_order_history=[], promotions=[], reviews=[], favorites=[]):
-=======
     def __init__(self, user_id: str, name, username, password):
->>>>>>> refs/remotes/origin/master
         self.__user_id = user_id
         self.__name = name
         self.__username = username
         self.__password = password
-<<<<<<< HEAD
-        self.__carts = carts
-        self.__locations = locations
-        self.__user_order_history = user_order_history
-        self.__promotions = promotions
-        self.__reviews = reviews
-        self.__favorites = favorites
-=======
         self.__carts = []
         self.__locations = []
         self.__user_order_history = []
         self.__promotions = []
         self.__reviews = []
         self.__favorites = []
->>>>>>> refs/remotes/origin/master
         self.__current_order = None
         self.favorite_restaurants = []
 
@@ -362,13 +338,8 @@ class Review:
         self.__stars = stars
 
 class Restaurant:
-<<<<<<< HEAD
     def __init__(self, name, menu, score, reviews, restaurant_image, description="", restaurant_id=uuid.uuid4().hex):
         self.__restaurant_id = restaurant_id
-=======
-    def __init__(self, name, menu,description, score, reviews, restaurant_image):
-        self.__restaurant_id = uuid.uuid4().hex
->>>>>>> refs/remotes/origin/master
         self.__name = name
         self.__menu = menu
         self.__description = description
@@ -523,13 +494,8 @@ class SelectedFood:
 
 
 class Cart:
-<<<<<<< HEAD
-    def __init__(self, cart_id, restaurant : Restaurant, selected_foods):
-        self.__cart_id = cart_id
-=======
     def __init__(self, restaurant : Restaurant):
         self.__cart_id = uuid.uuid4().hex
->>>>>>> refs/remotes/origin/master
         self.__restaurant = restaurant
         self.__selected_foods = []
         self.__status = 'open'
@@ -614,14 +580,6 @@ user = User(
     name="Yokphon ",
     username="foshforce",
     password="password123",
-<<<<<<< HEAD
-    carts=[],
-    locations=[],
-    user_order_history=[],
-    promotions=[],
-    reviews=[]
-=======
->>>>>>> refs/remotes/origin/master
 )
 
 kfc_restaurant = Restaurant(
@@ -993,13 +951,4 @@ location = Location(
 )
 
 # Add the location to the user's locations
-<<<<<<< HEAD
 user.add_location(location)
-
-# Print the user's locations
-print(f"User {user.get_user_id()} has the following locations:")
-for loc in user.get_locations():
-    print(f"- {loc.full_name}, {loc.address}, {loc.street}, {loc.unit}, {loc.extra_information}")
-=======
-user.add_location(location)
->>>>>>> refs/remotes/origin/master
