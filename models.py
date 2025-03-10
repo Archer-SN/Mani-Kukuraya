@@ -2,6 +2,7 @@ from datetime import datetime
 from fasthtml.common import *
 import uuid
 import random
+import difflib
 
 class Controller:
     def __init__(self, users, restaurants, foods):
@@ -65,7 +66,8 @@ class Controller:
         cat = self.get_categories()
         rec = self.get_recommended_food()
         res = self.get_restaurant_home()
-        datalist = [cat,rec,res]
+        pro = self.get_user_by_id("1").get_promotions()
+        datalist = [cat,rec,res,pro]
         return datalist
     
     def get_restaurant_home(self):
@@ -95,6 +97,27 @@ class Controller:
         for k in food_range:
             recommended.append(self.__foods[k])
         return recommended
+    
+    def search_result(self, word):
+        show_result =[]
+
+        all_elements = [food for food in self.__foods] + \
+                    [restaurant for restaurant in self.__restaurants]
+
+        similar_names = difflib.get_close_matches(word, [name.get_name() for name in all_elements], n=3, cutoff=0.3)
+
+
+        for result in range(len(similar_names)):
+            for elements_object in all_elements:
+                if similar_names[result] == elements_object.get_name():
+                    show_result.append(elements_object)
+                else:
+                    continue
+        return show_result
+
+        
+        
+
 
 
 class User:
@@ -125,6 +148,9 @@ class User:
     
     def get_promotions(self):
         return self.__promotions
+    
+    def add_review(self,review):
+        return self.__reviews.append(review)
 
     def add_location(self, new_location):
         self.__locations.append(new_location)
@@ -197,6 +223,12 @@ class User:
     def remove_favorite(self, restaurant):
         self.__favorites.remove(restaurant)
 
+    def show_review(self):
+        for review in self.__reviews:
+            comment = review._Review__comment
+            rating = review._Review__stars
+            print(f"Comment: {comment}, Rating: {rating}")
+
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
         self.__name = name
@@ -266,7 +298,7 @@ class UserOrder:
         self.__foods = foods
 
 class Review:
-    def init(self, user, comment, stars):
+    def __init__(self, user, comment, stars):
         self.__user = user
         self.__comment = comment
         self.__stars = stars
