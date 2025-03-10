@@ -192,7 +192,7 @@ def ShowHomepage():
             style="margin-top:100px;"
             ),
         ),
-            style='background-color: #fdf3ec;'
+            style='background-color: #ffffff;'
     )
 
 @app.get("/search")
