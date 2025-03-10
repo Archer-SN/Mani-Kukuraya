@@ -12,6 +12,7 @@ class Controller:
         self.__restaurants = restaurants
         self.__foods = foods
         self.__recommended_food = []
+        self.__orders = []
 
     def add_restaurant(self, restaurant):
         self.__restaurants.append(restaurant)
@@ -36,9 +37,6 @@ class Controller:
         for restaurant in self.__restaurants:
             if restaurant.get_restaurant_id() == restaurant_id:
                 return restaurant
-    
-    def find_food(self):
-        pass
 
     def get_categories(self):
         categories = []
@@ -63,13 +61,11 @@ class Controller:
     def get_restaurants(self):
         return self.__restaurants
 
-    def dataforhomepage(self,user_id="1"):
+    def dataforhomepage(self):
         cat = self.get_categories()
         rec = self.get_recommended_food()
         res = self.get_restaurant_home()
-        pro = self.get_promotions()
-        profile = self.get_user_by_id(user_id)
-        datalist = [cat,rec,res,pro,profile]
+        datalist = [cat,rec,res]
         return datalist
     
     def get_restaurant_home(self):
@@ -107,34 +103,14 @@ class Controller:
                     if choice.get_id() == choice_id:
                         return choice
         return None
-    
-    def search_result(self, word):
-        show_result =[]
 
-        all_elements = [food for food in self.__foods] + \
-                    [restaurant for restaurant in self.__restaurants]
-
-        similar_names = difflib.get_close_matches(word, [name.get_name() for name in all_elements], n=3, cutoff=0.3)
-
-
-        for result in range(len(similar_names)):
-            for elements_object in all_elements:
-                if similar_names[result] == elements_object.get_name():
-                    show_result.append(elements_object)
-                else:
-                    continue
-        return show_result 
-    
-    def get_promotions(self):
-        user = self.get_user_by_id("1")
-        return user.number_promotions()
-
-
-    def create_order(self, user, cart, location):
-        order = Order(user, cart, location)
-        self.__orders.append(order)
-        return order
-
+    def get_order_by_id(self, order_id):
+        for order in self.__orders:
+            if order.get_order_id() == order_id:
+                return order
+        return None
+    def get_orders(self):
+        return self.__orders
 
     def create_order(self, user, cart, location):
         order = Order(user, cart, location)
@@ -154,16 +130,12 @@ class User:
         self.__promotions = []
         self.__reviews = []
         self.__favorites = []
-        self.__current_order = None
 
     def set_username(self, new_username):
         self.__username = new_username
 
     def set_name(self, new_name) :
         self.__name = new_name
-    
-    def get_favorites(self):
-        return self.__favorites
 
     def set_password(self, new_password: int):
         self.__password = new_password
@@ -171,11 +143,9 @@ class User:
     def get_user_id(self):
         return self.__user_id
     
-    def get_cart(self):
-        return self.__carts
-    
     def get_promotions(self):
         return self.__promotions
+
 
     def add_location(self, new_location):
         self.__locations.append(new_location)
@@ -190,9 +160,6 @@ class User:
         for promotion in self.__promotions:
             if promotion.get_promotion_code() == promotion_code:
                 return promotion
-            
-    def number_promotions(self):
-        return self.__promotions
 
     def use_promotion(self, promotion):
         self.__promotions.remove(promotion)
@@ -221,7 +188,12 @@ class User:
                 return cart
         return None
 
-
+    def get_cart_by_cart_id(self, cart_id):
+        for cart in self.__carts:
+            if cart.get_cart_id() == cart_id:
+                return cart
+        return None
+  
     @classmethod
     def get_current_user(cls):
         return cls.onlyuser
@@ -236,12 +208,6 @@ class User:
 
     def get_locations(self):
         return self.__locations
-
-    def get_current_order(self):
-        return self.__current_order
-
-    def set_current_order(self, new_order):
-        self.__current_order = new_order
 
 
     def send_recentorder(self):
@@ -283,9 +249,9 @@ class Promotion:
 
     def get_promotion_code(self):
         return self.__promotion_code
-
-    def get_discount(self):
-        return self.__discount
+    
+    def get_restaurant(self):
+        return self.__restaurant
 
     def get_discount(self):
         return self.__discount
@@ -335,13 +301,6 @@ class Location:
         self.__street = street
         self.__unit = unit
         self.__extra_information = extra_information
-
-class UserOrder:
-    def __init__(self, status, restaurant, foods):
-        self.__id = uuid.uuid4()
-        self.__status = status
-        self.__restaurant = restaurant
-        self.__foods = foods
 
 class Review:
     def init(self, user, comment, stars):
@@ -416,7 +375,6 @@ class OptionChoice:
         self.__option = option
         self.__choice = choice
         self.__choices_value = choices_value
-        self.__price = price
 
     def get_id(self):
         return self.__choice_id
@@ -426,9 +384,6 @@ class OptionChoice:
 
     def get_option(self):
         return self.__option 
-
-    def get_price(self):
-        return self.__price
 
 class Food:
     def __init__(self, restaurant, name, description, price, category, food_image, food_id=uuid.uuid4().hex):
@@ -497,10 +452,7 @@ class SelectedFood:
 
     def calculate_price(self):
         total_price = self.__food.get_price()
-        for selected_option in self.__selected_options:
-            for choice in selected_option.get_selected_choices():
-                total_price += choice.get_price()
-        return total_price * self.__quantity 
+        return total_price * self.__quantity
 
     def add_choice(self, choice):
         for selected_option in self.__selected_options:
@@ -540,6 +492,9 @@ class Cart:
 
     def get_cart_id(self):
         return self.__cart_id
+    
+    def get_user(self):
+        return self.__user
 
 class Payment:
     def __init__(self, amount: float, currency="THB"):
@@ -571,6 +526,15 @@ class DeliveryOption:
         self.__name = name
         self.__estimate_time = estimate_time
         self.__price = price
+    
+    def __str__(self):
+        return self.__name + " < " + str(self.__estimate_time) + " " + str(self.__price) + " บาท"
+
+    def get_price(self):
+        return self.__price
+
+    def get_name(self):
+        return self.__name
 
 class Order:
     # Create delivery options
@@ -603,9 +567,11 @@ class Order:
         self.__user = user
         self.__cart = cart
         self.__location = location
-        self.__deliveryoption = deliveryoption
-        self.__payment_method = payment_method
-        self.__selected_promotion = selected_promotion
+        self.__delivery_option = self.standard_delivery
+        self.__payment_method = None
+        self.__selected_promotion = None
+        # Not delivered
+        self.__status = False
 
     def select_location(self, new_location):
         self.__location = new_location
@@ -621,6 +587,9 @@ class Order:
             if delivery_option.get_name() == delivery_name:   
                 return delivery_option
 
+    def get_delivery_option(self):
+        return self.__delivery_option
+
     def calculate_price(self):
         total_price = self.__cart.calculate_price() + self.__delivery_option.get_price()
         if (self.__selected_promotion):
@@ -632,7 +601,6 @@ class Order:
 
     def select_promotion(self, promotion):
         self.__selected_promotion = promotion
-
 
 # Simulated Data
 
