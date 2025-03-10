@@ -3,7 +3,12 @@ from models import *
 from fasthtml.common import *
 from lucide_fasthtml import Lucide
 
-@app.post()
-def update_delivery():
-    order.delivery = ""
-    pass
+@app.post("/update-delivery")
+def update_delivery(order_id:str, delivery: str):
+    print(order_id)
+    print("UserOrder:" + order_id)
+    order = controller.get_order_by_id(order_id)
+    for delivery_option in Order.delivery_options:
+        if delivery_option.get_name() == delivery:
+            order.select_delivery_option(delivery_option)
+            return  Div(P("Selected: " + str(delivery_option)), id="delivery-summary"),  # Display selection dynamically

@@ -13,5 +13,5 @@ from . import favorite
 from . import account_management
 from . import location
 from . import Homepage
-
+from . import delivery
 

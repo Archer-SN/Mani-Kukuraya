@@ -46,7 +46,7 @@ def get(id: str):
                 hx_include="#counter-value"  # Include hidden input data
             ),
 
-            Span("0", id="counter", style="margin: 0 10px; font-size: 1.5rem;"),  # Displays the number
+            Span("1", id="counter", style="margin: 0 10px; font-size: 1.5rem;"),  # Displays the number
             
             Button("+", 
                 hx_post="/update-quantity",  
@@ -67,7 +67,7 @@ def get(id: str):
                     counter.innerText = parseInt(counter.innerText) + 1;
                     counterInput.value = parseInt(counterInput.value) + 1;
                 } else {
-                    if (counterInput.value > 0) {
+                    if (counterInput.value > 1) {
                         counter.innerText = parseInt(counter.innerText) - 1;
                         counterInput.value = parseInt(counterInput.value) - 1;
                     }
@@ -100,8 +100,8 @@ def get(id: str):
 
 @app.post("/update-quantity")
 def update_quantity(value: int):
-    if (value < 0):
-        value = 0
+    if (value < 1):
+        value = 1
     return Span(value, id="counter", style="margin: 0 10px; font-size: 1.5rem;")  # Displays the number
 
 # If you want to check the request, just use request: dict
@@ -118,7 +118,7 @@ def add_to_cart(food_id: str, choices: list[str], comment: str, value: str, rest
         for choice_id in choices:
             choice = controller.get_choice_by_id(choice_id)
             selected_food.add_choice(choice)
-        cart = Cart(restaurant)
+        cart = Cart(restaurant, user)
         user.add_cart(cart)
     cart.add_to_cart(selected_food)
     return Response(headers={"HX-Redirect": f"/restaurant/{restaurant_id}"})

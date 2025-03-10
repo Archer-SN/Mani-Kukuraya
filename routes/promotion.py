@@ -60,8 +60,7 @@ def view_promotion():
     )
 
 @app.post("/promotion")
-def use_promotion():
-    if user.get_current_order() != None:
-        return Redirect("/order")
+def use_promotion(promotion_code: str):
+    
     return Redirect("/restaurant/")
 

@@ -9,6 +9,7 @@ class Controller:
         self.__restaurants = restaurants
         self.__foods = foods
         self.__recommended_food = []
+        self.__orders = []
 
     def add_restaurant(self, restaurant):
         self.__restaurants.append(restaurant)
@@ -33,9 +34,6 @@ class Controller:
         for restaurant in self.__restaurants:
             if restaurant.get_restaurant_id() == restaurant_id:
                 return restaurant
-    
-    def find_food(self):
-        pass
 
     def get_categories(self):
         categories = []
@@ -104,8 +102,38 @@ class Controller:
                     if choice.get_id() == choice_id:
                         return choice
         return None
-    
 
+    def get_order_by_id(self, order_id):
+        for order in self.__orders:
+            if order.get_order_id() == order_id:
+                return order
+        return None
+    def get_orders(self):
+        return self.__orders
+
+    def get_order_by_id(self, order_id):
+        for order in self.__orders:
+            if order.get_order_id() == order_id:
+                return order
+        return None
+    def get_orders(self):
+        return self.__orders
+
+    def get_order_by_id(self, order_id):
+        for order in self.__orders:
+            if order.get_order_id() == order_id:
+                return order
+        return None
+    def get_orders(self):
+        return self.__orders
+
+    def get_order_by_id(self, order_id):
+        for order in self.__orders:
+            if order.get_order_id() == order_id:
+                return order
+        return None
+    def get_orders(self):
+        return self.__orders
 
 class User:
     def __init__(self, user_id: str, name, username, password):
@@ -119,7 +147,6 @@ class User:
         self.__promotions = []
         self.__reviews = []
         self.__favorites = []
-        self.__current_order = None
 
     def set_username(self, new_username):
         self.__username = new_username
@@ -135,6 +162,7 @@ class User:
     
     def get_promotions(self):
         return self.__promotions
+
 
     def add_location(self, new_location):
         self.__locations.append(new_location)
@@ -166,6 +194,16 @@ class User:
             if cart.get_restaurant().get_restaurant_id() == restaurant_id:
                 return cart
         return None
+
+    def get_cart_by_cart_id(self, cart_id):
+        for cart in self.__carts:
+            if cart.get_cart_id() == cart_id:
+                return cart
+        return None
+  
+    @classmethod
+    def get_current_user(cls):
+        return cls.onlyuser
     
     @property
     def name(self):
@@ -178,12 +216,6 @@ class User:
     def get_locations(self):
         return self.__locations
 
-    def get_current_order(self):
-        return self.__current_order
-
-    def set_current_order(self, new_order):
-        self.__current_order = new_order
-
 
     def send_recentorder(self):
         return self.__user_order_history
@@ -193,11 +225,24 @@ class User:
 
     def get_carts(self):
         return self.__carts
-    def add_favorite(self, restaurant):
-        self.__favorites.append(restaurant)
+    def add_favorite(self, restaurant_id):
+        if restaurant_id not in self.favorite_restaurants:
+            self.favorite_restaurants.append(restaurant_id)
 
-    def remove_favorite(self, restaurant):
-        self.__favorites.remove(restaurant)
+    def remove_favorite(self, restaurant_id):
+        if restaurant_id in self.favorite_restaurants:
+            self.favorite_restaurants.remove(restaurant_id)
+
+    def get_promotions_by_restaurant(self, restaurant):
+        available_promotions = []
+        for promotion in self.__promotions:
+            if promotion.get_restaurant() == restaurant:
+                available_promotions.append(promotion)
+        return available_promotions
+
+    def get_promotions(self) :
+        return self.__promotions
+
 
     def get_promotions(self) :
         return self.__promotions
@@ -217,6 +262,9 @@ class Promotion:
 
     def get_promotion_code(self):
         return self.__promotion_code
+    
+    def get_restaurant(self):
+        return self.__restaurant
 
 class Location:
     def __init__(self, full_name="", phone_number="", address="",street="",unit="", extra_information="") :
@@ -263,13 +311,6 @@ class Location:
         self.__street = street
         self.__unit = unit
         self.__extra_information = extra_information
-
-class UserOrder:
-    def __init__(self, status, restaurant, foods):
-        self.__id = uuid.uuid4()
-        self.__status = status
-        self.__restaurant = restaurant
-        self.__foods = foods
 
 class Review:
     def init(self, user, comment, stars):
@@ -434,9 +475,10 @@ class SelectedFood:
 
 
 class Cart:
-    def __init__(self, restaurant : Restaurant):
+    def __init__(self, restaurant : Restaurant, user: User):
         self.__cart_id = uuid.uuid4().hex
         self.__restaurant = restaurant
+        self.__user = user
         self.__selected_foods = []
         self.__status = 'open'
 
@@ -457,6 +499,12 @@ class Cart:
 
     def get_restaurant(self):
         return self.__restaurant
+
+    def get_cart_id(self):
+        return self.__cart_id
+    
+    def get_user(self):
+        return self.__user
 
 class Payment:
     def __init__(self, amount: float, currency="THB"):
@@ -488,15 +536,52 @@ class DeliveryOption:
         self.__name = name
         self.__estimate_time = estimate_time
         self.__price = price
+    
+    def __str__(self):
+        return self.__name + " < " + str(self.__estimate_time) + " " + str(self.__price) + " บาท"
+
+    def get_price(self):
+        return self.__price
+
+    def get_name(self):
+        return self.__name
 
 class Order:
-    def __init__(self, user: User, cart: Cart, location: Location, deliveryoption: DeliveryOption, payment_method: Payment, selected_promotion: Promotion):
+    # Create delivery options
+    priority_delivery = DeliveryOption(
+        name="Priority",
+        estimate_time="25 นาที",
+        price=32
+    )
+
+    standard_delivery = DeliveryOption(
+        name="Standard",
+        estimate_time="25 นาที",
+        price=32
+    )
+
+    saver_delivery = DeliveryOption(
+        name="Saver",
+        estimate_time="35 นาที",
+        price=0
+    )
+
+    delivery_options = [
+        priority_delivery,
+        standard_delivery,
+        saver_delivery
+    ]
+
+    def __init__(self, user: User, cart: Cart, location: Location):
+        self.__order_id = cart.get_cart_id()
         self.__user = user
         self.__cart = cart
         self.__location = location
-        self.__deliveryoption = deliveryoption
-        self.__payment_method = payment_method
-        self.__selected_promotion = selected_promotion
+        self.__delivery_option = self.standard_delivery
+        self.__payment_method = None
+        self.__selected_promotion = None
+        # Not delivered
+        self.__status = False
 
     def select_location(self, new_location):
         self.__location = new_location
@@ -504,14 +589,19 @@ class Order:
     def select_payment(self, new_payment):
         self.__payment = new_payment
 
-    def select_delivery_option(self, new_delivery_option):
+    def select_delivery_option(self, delivery_num):
         self.__delivery_option = new_delivery_option
 
-    def calculate_price(self):
-        self.__cart.calculate_price()
+    def get_delivery_option(self):
+        return self.__delivery_option
 
-    def create_user_order(self):
-        pass
+    def calculate_price(self):
+        return self.__cart.calculate_price() + self.__delivery_option.get_price()
+
+    def get_order_id(self):
+        return self.__order_id
+
+
 
 # Simulated Data
 
@@ -844,6 +934,7 @@ kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
 # Create a cart for the user
 cart = Cart(
     restaurant=kfc_restaurant,
+    user=user
 )
 
 # Add food to the cart
@@ -883,3 +974,4 @@ location = Location(
 
 # Add the location to the user's locations
 user.add_location(location)
+
