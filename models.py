@@ -538,7 +538,7 @@ class Order:
     priority_delivery = DeliveryOption(
         name="Priority",
         estimate_time="25 นาที",
-        price=32
+        price=50
     )
 
     standard_delivery = DeliveryOption(
