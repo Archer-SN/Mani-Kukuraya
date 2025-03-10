@@ -2,26 +2,26 @@ from app import *
 from models import *
 from fasthtml.common import *
 
-@app.get("/category/{category_name}")
-def show_category(category_name: str):
-    # ดึงอาหารทั้งหมดจากร้านอาหารทุกแห่งที่ตรงกับ category
-    category_foods = [
+@app.get("/side-dish")
+def show_side_dish():
+    # ดึงอาหารที่เป็น Side Dish ทั้งหมด
+    side_dishes = [
         food for restaurant in controller.get_restaurants()
         for food in restaurant.get_menu()
-        if food.get_category().lower() == category_name.lower()
+        if food.get_category().lower() == "side"
     ]
 
-    if not category_foods:
+    if not side_dishes:
         return Main(
             Container(
-                H1(f"หมวดหมู่: {category_name.capitalize()}"),
-                P("ยังไม่มีอาหารในหมวดนี้", style="text-align:center; font-size:18px; color:gray;"),
+                H1("Side Dish Menu 🍟"),
+                P("ยังไม่มีเมนูเครื่องเคียง", style="text-align:center; font-size:18px; color:gray;"),
                 style="text-align:center; padding:20px;"
             )
         )
 
-    # สร้างรายการอาหารของหมวดหมู่ที่เลือก
-    category_food_elements = [
+    # สร้างรายการเครื่องเคียง
+    side_dish_elements = [
         Div(
             Img(
                 src=food.get_image(),
@@ -43,18 +43,18 @@ def show_category(category_name: str):
                 "สั่งซื้อ",
                 href=f"/order/{food.get_food_id()}",
                 cls="btn flash-slide flash-slide--blue",
-                style="width:90%; padding:10px; margin-top:auto; text-align:center; font-weight:bold; font-size:16px;border: none; background-color: #ff5722; color: white;"
+                style="width:90%; padding:10px; margin-top:auto; text-align:center; font-weight:bold; font-size:16px;"
             ),
             style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:15px; border:1px solid #ddd; border-radius:10px; background:#fff; box-shadow:0 4px 6px rgba(0,0,0,0.1); min-height:350px;"
         )
-        for food in category_foods
+        for food in side_dishes
     ]
 
     return Main(
         Container(
-            H1(f"หมวดหมู่: {category_name.capitalize()} 🍽️", style="text-align:center; margin-bottom:20px;"),
+            H1("Side Dish Menu 🍟", style="text-align:center; margin-bottom:20px;"),
             Div(
-                *category_food_elements,
+                *side_dish_elements,
                 style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:20px; justify-content:center; align-items:stretch; margin-top:20px;"
             ),
             style="padding:30px; max-width:1200px; margin:auto;"

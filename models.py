@@ -685,6 +685,25 @@ mcd_promotion = Promotion(
 )
 
 
+tokyo_sushi_bar = Restaurant(
+    name="Tokyo Sushi Bar",
+    menu=[],
+    description="Authentic Japanese sushi and sashimi with fresh ingredients.",
+    score=4.8,
+    reviews=[],
+    restaurant_image="https://tse3.mm.bing.net/th?id=OIP.7gVZmLcz9XkjKvUpBagcYgHaE7&pid=Api"
+)
+
+texas_steakhouse = Restaurant(
+    name="Texas Steakhouse",
+    menu=[],
+    description="Premium quality steaks and classic American barbecue.",
+    score=4.7,
+    reviews=[],
+    restaurant_image="https://tse1.mm.bing.net/th?id=OIP.lx4-5D6QaCGN8upAqr8BUwHaDp&pid=Api"
+)
+
+
 
 user.add_promotion(dq_promotion)
 user.add_promotion(mcd_promotion)
@@ -855,10 +874,150 @@ mcd_food2 = Food(
     name="French Fries",
     description="Crispy french fries",
     price=2.49,
-    category="Side",
+    category="Main Course",
     food_image="https://cdn.britannica.com/34/206334-050-7637EB66/French-fries.jpg"
 )
 
+side_dish1 = Food(
+    restaurant=kfc_restaurant,
+    food_id="17",
+    name="French Fries",
+    description="Crispy golden fries with a sprinkle of salt",
+    price=2.99,
+    category="Side",
+    food_image="https://images.unsplash.com/photo-1582552922301-8a1b4d5f5ae1"
+)
+
+side_dish2 = Food(
+    restaurant=kfc_restaurant,
+    food_id="18",
+    name="Onion Rings",
+    description="Crispy battered onion rings with a side of dipping sauce",
+    price=3.49,
+    category="Side",
+    food_image="https://images.unsplash.com/photo-1628601104170-c9d12a1a07d2"
+)
+
+side_dish3 = Food(
+    restaurant=mc_donald_restaurant,
+    food_id="19",
+    name="Mashed Potatoes",
+    description="Smooth and buttery mashed potatoes with gravy",
+    price=2.79,
+    category="Side",
+    food_image="https://images.unsplash.com/photo-1633356127583-ea05b7b1b5a6"
+)
+
+side_dish4 = Food(
+    restaurant=mc_donald_restaurant,
+    food_id="20",
+    name="Coleslaw",
+    description="Fresh and tangy coleslaw with creamy dressing",
+    price=2.49,
+    category="Side",
+    food_image="https://images.unsplash.com/photo-1604283165347-b32c4069aeb5"
+)
+
+side_dish5 = Food(
+    restaurant=dairy_queen_restaurant,
+    food_id="21",
+    name="Garlic Bread",
+    description="Crispy garlic buttered bread, perfect for pairing",
+    price=3.99,
+    category="Side",
+    food_image="https://images.unsplash.com/photo-1579826615927-619f56a6ff10"
+)
+
+side_dish6 = Food(
+    restaurant=dairy_queen_restaurant,
+    food_id="22",
+    name="Mozzarella Sticks",
+    description="Deep-fried mozzarella cheese sticks with marinara sauce",
+    price=4.29,
+    category="Side",
+    food_image="https://images.unsplash.com/photo-1627308595308-719ba336def4"
+)
+
+side_dish7 = Food(
+    restaurant=kfc_restaurant,
+    food_id="23",
+    name="Corn on the Cob",
+    description="Steamed corn with butter and seasoning",
+    price=3.29,
+    category="Side",
+    food_image="https://images.unsplash.com/photo-1600914847155-397afc3183f4"
+)
+
+side_dish8 = Food(
+    restaurant=mc_donald_restaurant,
+    food_id="24",
+    name="Baked Beans",
+    description="Slow-cooked beans in a sweet and tangy sauce",
+    price=2.99,
+    category="Side",
+    food_image="https://images.unsplash.com/photo-1586190848861-99aa4a171e90"
+)
+
+side_dish9 = Food(
+    restaurant=dairy_queen_restaurant,
+    food_id="25",
+    name="Sweet Potato Fries",
+    description="Crispy and lightly salted sweet potato fries",
+    price=3.79,
+    category="Side",
+    food_image="https://images.unsplash.com/photo-1597393355206-9cba3a26f4cd"
+)
+
+side_dish10 = Food(
+    restaurant=kfc_restaurant,
+    food_id="26",
+    name="Mac & Cheese",
+    description="Creamy and cheesy macaroni, a classic favorite",
+    price=4.99,
+    category="Side",
+    food_image="https://images.unsplash.com/photo-1630628810905-5c0691e3fe72"
+)
+
+sushi_foods = [
+    Food(tokyo_sushi_bar, "Salmon Nigiri", "Fresh salmon over sushi rice", 5.99, "Main Course", "https://media.istockphoto.com/id/492317534/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%8B%E0%B8%B9%E0%B8%8A%E0%B8%B4%E0%B9%81%E0%B8%8B%E0%B8%A5%E0%B8%A1%E0%B8%AD%E0%B8%99.jpg?s=612x612&w=0&k=20&c=wij5X2QAKQlD1ND0xxid1vb_ExRDfBkwDkwrTM9ev1s="),
+    Food(tokyo_sushi_bar, "Tuna Sashimi", "Sliced raw tuna with soy sauce", 6.99, "Main Course", "https://media.istockphoto.com/id/645670842/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%9B%E0%B8%A5%E0%B8%B2%E0%B8%97%E0%B8%B9%E0%B8%99%E0%B9%88%E0%B8%B2%E0%B8%8B%E0%B8%B2%E0%B8%8A%E0%B8%B4%E0%B8%A1%E0%B8%B4%E0%B8%9B%E0%B8%A5%E0%B8%B2%E0%B8%94%E0%B8%B4%E0%B8%9A%E0%B9%83%E0%B8%99%E0%B8%AA%E0%B9%84%E0%B8%95%E0%B8%A5%E0%B9%8C%E0%B8%8D%E0%B8%B5%E0%B9%88%E0%B8%9B%E0%B8%B8%E0%B9%88%E0%B8%99%E0%B8%94%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B9%80%E0%B8%94%E0%B8%B4%E0%B8%A1.jpg?s=612x612&w=0&k=20&c=JtVFc0_SAZ6KePXrB-WV_FO_zj0bilg7tb06jDCm2FQ="),
+    Food(tokyo_sushi_bar, "Dragon Roll", "Shrimp tempura, avocado, and eel sauce", 7.99, "Main Course", "https://media.istockphoto.com/id/506104054/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%A1%E0%B9%89%E0%B8%A7%E0%B8%99%E0%B8%8B%E0%B8%B9%E0%B8%8A%E0%B8%B4%E0%B8%A1%E0%B8%B1%E0%B8%87%E0%B8%81%E0%B8%A3%E0%B8%AA%E0%B8%B5%E0%B9%80%E0%B8%82%E0%B8%B5%E0%B8%A2%E0%B8%A7%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B8%9B%E0%B8%A5%E0%B8%B2%E0%B9%84%E0%B8%AB%E0%B8%A5-%E0%B8%AD%E0%B8%B0%E0%B9%82%E0%B8%A7%E0%B8%84%E0%B8%B2%E0%B9%82%E0%B8%94-%E0%B9%81%E0%B8%95%E0%B8%87%E0%B8%81%E0%B8%A7%E0%B8%B2-%E0%B8%A7%E0%B8%B2%E0%B8%8B%E0%B8%B2%E0%B8%9A%E0%B8%B4%E0%B9%81%E0%B8%A5%E0%B8%B0.jpg?s=612x612&w=0&k=20&c=iHESmE7TeybFRzhG6z0Wm0kQgHUhwA4fw8yRtHIYw6I="),
+    Food(tokyo_sushi_bar, "Spicy Tuna Roll", "Tuna, spicy mayo, cucumber", 6.49, "Main Course", "https://media.istockphoto.com/id/495774976/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%AA%E0%B9%84%E0%B8%9B%E0%B8%8B%E0%B8%B5%E0%B9%88%E0%B8%97%E0%B8%B9%E0%B8%99%E0%B9%88%E0%B8%B2%E0%B9%82%E0%B8%A3%E0%B8%A5.jpg?s=612x612&w=0&k=20&c=Ks09lxQka6H6eE-EikyDUabjT3e3NTMrMo_GL1Q-mUM="),
+    Food(tokyo_sushi_bar, "California Roll", "Crab, avocado, cucumber", 5.99, "Main Course", "https://media.istockphoto.com/id/115547349/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B9%81%E0%B8%84%E0%B8%A5%E0%B8%B4%E0%B8%9F%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B9%80%E0%B8%99%E0%B8%B5%E0%B8%A2%E0%B9%82%E0%B8%A3%E0%B8%A5.jpg?s=612x612&w=0&k=20&c=kwohQi26I6ZT_Y25albhWgXiRJ7nESPO9d24jyLCORA="),
+    Food(tokyo_sushi_bar, "Miso Soup", "Traditional Japanese soup with tofu and seaweed", 2.99, "Side", "https://media.istockphoto.com/id/155341533/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%8B%E0%B8%B8%E0%B8%9B%E0%B8%A1%E0%B8%B4%E0%B9%82%E0%B8%8B%E0%B8%B0.jpg?s=612x612&w=0&k=20&c=jQaumJaNXyvhhkaM3y9LRBymGkEgJjT11Ks2eFWYjd8="),
+    Food(tokyo_sushi_bar, "Edamame", "Steamed soybeans with sea salt", 3.49, "Side", "https://media.istockphoto.com/id/175722505/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%AA%E0%B8%B5%E0%B9%80%E0%B8%82%E0%B8%B5%E0%B8%A2%E0%B8%A7%E0%B8%AD%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B8%B5%E0%B8%A2%E0%B9%8C-edamame-%E0%B8%81%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%81%E0%B8%A5%E0%B8%B7%E0%B8%AD%E0%B8%97%E0%B8%B0%E0%B9%80%E0%B8%A5.jpg?s=612x612&w=0&k=20&c=okihU8evE6J2mXfDjv8sv8LL6k1IaPqWENn4XALUqqs="),
+    Food(tokyo_sushi_bar, "Gyoza", "Pan-fried Japanese dumplings", 4.99, "Side", "https://media.istockphoto.com/id/1301888183/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B9%80%E0%B8%81%E0%B8%B5%E0%B9%8A%E0%B8%A2%E0%B8%A7%E0%B8%A2%E0%B9%88%E0%B8%B2%E0%B8%87.jpg?s=612x612&w=0&k=20&c=3gBmvVpxi_owbwff2IqnZbAojfH4z_W0xbCPLggj7_s="),
+    Food(tokyo_sushi_bar, "Green Tea Ice Cream", "Matcha-flavored ice cream", 4.49, "Dessert", "https://media.istockphoto.com/id/1936927810/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/ice-cream-scoop-of-japanese-matcha-green-tea-on-wooden-table.jpg?s=612x612&w=0&k=20&c=V2_qqmz28sL-9APjIgq3JeSjDbXAs87NNqBj9FXdMxY="),
+    Food(tokyo_sushi_bar, "Mochi", "Sweet rice cake with various fillings", 3.99, "Dessert", "https://media.istockphoto.com/id/1158085114/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B9%84%E0%B8%AD%E0%B8%A8%E0%B8%81%E0%B8%A3%E0%B8%B5%E0%B8%A1%E0%B8%8D%E0%B8%B5%E0%B9%88%E0%B8%9B%E0%B8%B8%E0%B9%88%E0%B8%99%E0%B8%AB%E0%B8%A5%E0%B8%B2%E0%B8%A2%E0%B8%AA%E0%B8%B5%E0%B9%82%E0%B8%A1%E0%B8%88%E0%B8%B4%E0%B9%83%E0%B8%99%E0%B9%81%E0%B8%9B%E0%B9%89%E0%B8%87%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%A7%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%94%E0%B8%AD%E0%B8%81%E0%B8%A1%E0%B8%B0%E0%B8%A5%E0%B8%B4%E0%B8%9A%E0%B8%99%E0%B8%9E%E0%B8%B7%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%B5%E0%B8%9F%E0%B9%89%E0%B8%B2%E0%B8%84%E0%B8%AD%E0%B8%99%E0%B8%81%E0%B8%A3%E0%B8%B5%E0%B8%95-%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%8D%E0%B8%B5%E0%B9%88%E0%B8%9B%E0%B8%B8%E0%B9%88%E0%B8%99%E0%B9%81%E0%B8%9A%E0%B8%9A%E0%B8%94%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B9%80%E0%B8%94.jpg?s=612x612&w=0&k=20&c=F04jG2wXV5oDDntCxglE6Mn20OBvtdhWTudDVGxtBT8="),
+    Food(tokyo_sushi_bar, "Tempura Shrimp", "Lightly battered deep-fried shrimp", 6.99, "Main Course", "https://media.istockphoto.com/id/1214520832/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B9%80%E0%B8%97%E0%B8%A1%E0%B8%9B%E0%B8%B8%E0%B8%A3%E0%B8%B0.jpg?s=612x612&w=0&k=20&c=apk7loqRt3cn-siOmRLPdJKbaHnerZexTxIV-OLGkGc="),
+    Food(tokyo_sushi_bar, "Tonkotsu Ramen", "Pork bone broth ramen with chashu", 9.99, "Main Course", "https://media.istockphoto.com/id/1144176036/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%9A%E0%B8%B0%E0%B8%AB%E0%B8%A1%E0%B8%B5%E0%B9%88%E0%B8%A3%E0%B8%B2%E0%B9%80%E0%B8%A1%E0%B9%87%E0%B8%87%E0%B8%8D%E0%B8%B5%E0%B9%88%E0%B8%9B%E0%B8%B8%E0%B9%88%E0%B8%99.jpg?s=612x612&w=0&k=20&c=QvmnwaBOmcpqtVFi-KYil3e2CSF7vCVQ4X9sUbvdtP4="),
+    Food(tokyo_sushi_bar, "Chicken Teriyaki", "Grilled chicken glazed with teriyaki sauce", 8.99, "Main Course", "https://media.istockphoto.com/id/1348103225/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B9%84%E0%B8%81%E0%B9%88%E0%B9%80%E0%B8%97%E0%B8%AD%E0%B8%A3%E0%B8%B4%E0%B8%A2%E0%B8%B2%E0%B8%81%E0%B8%B4%E0%B9%80%E0%B8%AD%E0%B9%80%E0%B8%8A%E0%B8%B5%E0%B8%A2%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%AA%E0%B8%B8%E0%B8%82%E0%B8%A0%E0%B8%B2%E0%B8%9E.jpg?s=612x612&w=0&k=20&c=f3NrNg_84R0_XJCK6PwKjomPMfBqayFuz6n4faDhGoI="),
+    Food(tokyo_sushi_bar, "Sashimi Platter", "Assorted fresh sashimi", 12.99, "Main Course", "https://media.istockphoto.com/id/1225608498/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%8B%E0%B8%B2%E0%B8%8A%E0%B8%B4%E0%B8%A1%E0%B8%B4%E0%B8%AB%E0%B8%A3%E0%B8%B9%E0%B8%AB%E0%B8%A3%E0%B8%B2.jpg?s=612x612&w=0&k=20&c=-m6hgSZ9ML6F3Y1urgmZwkr5YXGg5JgUzMlGizrdFlY="),
+    Food(tokyo_sushi_bar, "Takoyaki", "Japanese octopus balls with sweet sauce", 5.49, "Side", "https://media.istockphoto.com/id/622003890/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%97%E0%B8%B2%E0%B9%82%E0%B8%81%E0%B8%B0%E0%B8%A2%E0%B8%B2%E0%B8%81%E0%B8%B4.jpg?s=612x612&w=0&k=20&c=MbuCP2gtay-Drbkm8TwGlXGlifkTde4v2nBVRnuet_Y="),
+    Food(tokyo_sushi_bar, "Yakitori", "Grilled chicken skewers", 6.49, "Main Course", "https://media.istockphoto.com/id/1171255420/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%AD%E0%B8%B2%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B8%8D%E0%B8%B5%E0%B9%88%E0%B8%9B%E0%B8%B8%E0%B9%88%E0%B8%99.jpg?s=612x612&w=0&k=20&c=4MiKZcQxFPAzUhA9oo6KL9UxrD5jmjfdmRWqwNdqT7w="),
+    Food(tokyo_sushi_bar, "Dorayaki", "Japanese pancake with red bean filling", 4.99, "Dessert", "https://media.istockphoto.com/id/1389397740/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B9%82%E0%B8%94%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B8%B2%E0%B8%81%E0%B8%B4.jpg?s=612x612&w=0&k=20&c=1td6qVo-ol-LKeFJnWkxZdir35Nc70rwTBgKcqKkmuQ="),
+    Food(tokyo_sushi_bar, "Japanese Cheesecake", "Fluffy and light cheesecake", 5.99, "Dessert", "https://media.istockphoto.com/id/1224722546/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%8A%E0%B8%B5%E0%B8%AA%E0%B9%80%E0%B8%84%E0%B9%89%E0%B8%81%E0%B8%9C%E0%B9%89%E0%B8%B2%E0%B8%9D%E0%B9%89%E0%B8%B2%E0%B8%A2%E0%B8%8D%E0%B8%B5%E0%B9%88%E0%B8%9B%E0%B8%B8%E0%B9%88%E0%B8%99-jiggly-%E0%B8%9A%E0%B8%99%E0%B8%88%E0%B8%B2%E0%B8%99.jpg?s=612x612&w=0&k=20&c=KMyWUFDYhNqLGKvVx3m9BIUUZR1dNRu8_p28DMjm7xw="),
+]
+
+steakhouse_foods = [
+    Food(texas_steakhouse, "T-Bone Steak", "Perfectly grilled T-Bone steak", 15.99, "Main Course", "https://cdn.pixabay.com/photo/2019/10/23/13/58/food-4571699_1280.jpg"),
+    Food(texas_steakhouse, "BBQ Ribs", "Slow-cooked ribs with smoky BBQ sauce", 14.99, "Main Course", "https://cdn.pixabay.com/photo/2017/06/05/18/46/pork-ribs-2374889_1280.jpg"),
+    Food(texas_steakhouse, "Baked Potato", "Oven-baked potato with sour cream", 4.99, "Side", "https://cdn.pixabay.com/photo/2019/03/18/15/27/rotten-4063353_1280.jpg"),
+    Food(texas_steakhouse, "Caesar Salad", "Fresh romaine lettuce with parmesan and croutons", 6.99, "Side", "https://cdn.pixabay.com/photo/2023/07/18/19/19/spring-rolls-8135469_1280.jpg"),
+    Food(texas_steakhouse, "Brownie Sundae", "Warm brownie with vanilla ice cream", 6.49, "Dessert", "https://media.istockphoto.com/id/1199942388/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%8A%E0%B8%B4%E0%B9%89%E0%B8%99%E0%B9%80%E0%B8%84%E0%B9%89%E0%B8%81%E0%B8%8A%E0%B9%87%E0%B8%AD%E0%B8%84%E0%B9%82%E0%B8%81%E0%B9%81%E0%B8%A5%E0%B8%95%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%81%E0%B8%A3%E0%B8%AD%E0%B8%87%E0%B8%9A%E0%B8%99%E0%B8%9E%E0%B8%B7%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%B5%E0%B8%82%E0%B8%B2%E0%B8%A7-%E0%B8%A1%E0%B8%B8%E0%B8%A1%E0%B8%A1%E0%B8%AD%E0%B8%87%E0%B8%94%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%9A%E0%B8%99.jpg?s=612x612&w=is&k=20&c=8Td7qnfEwj6eqhvlfLXehTvlZ8PD3hF4HQI2NgfJbAQ="),
+    Food(texas_steakhouse, "Apple Pie", "Classic American apple pie", 5.99, "Dessert", "https://media.istockphoto.com/id/450752471/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%9E%E0%B8%B2%E0%B8%A2%E0%B9%81%E0%B8%AD%E0%B8%9B%E0%B9%80%E0%B8%9B%E0%B8%B4%E0%B9%89%E0%B8%A5%E0%B8%AD%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B9%81%E0%B8%81%E0%B8%99%E0%B8%B4%E0%B8%84%E0%B9%82%E0%B8%AE%E0%B8%A1%E0%B9%80%E0%B8%A1%E0%B8%94.jpg?s=612x612&w=0&k=20&c=hMrEDZS4r67NwMrroX4rpF1Zftq6TC0i4gYD_BVgdj4="),
+]
+
+
+for food in sushi_foods:
+    tokyo_sushi_bar.add_food(food)
+
+for food in steakhouse_foods:
+    texas_steakhouse.add_food(food)
+
+# 📌 เพิ่มร้านค้าเข้าไปใน Controller
+controller.add_restaurant(tokyo_sushi_bar)
+controller.add_restaurant(texas_steakhouse)
 # Add foods to each restaurant
 kfc_restaurant.add_food(kfc_food1)
 kfc_restaurant.add_food(kfc_food2)
@@ -875,6 +1034,16 @@ dairy_queen_restaurant.add_food(dessert7)
 dairy_queen_restaurant.add_food(dessert8)
 dairy_queen_restaurant.add_food(dessert9)
 dairy_queen_restaurant.add_food(dessert10)
+controller.add_food(side_dish1)
+controller.add_food(side_dish2)
+controller.add_food(side_dish3)
+controller.add_food(side_dish4)
+controller.add_food(side_dish5)
+controller.add_food(side_dish6)
+controller.add_food(side_dish7)
+controller.add_food(side_dish8)
+controller.add_food(side_dish9)
+controller.add_food(side_dish10)
 
 
 mc_donald_restaurant.add_food(mcd_food1)
