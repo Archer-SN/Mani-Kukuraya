@@ -60,7 +60,7 @@ def view_promotion():
     )
 
 @app.post("/promotion")
-def use_promotion():
+def use_promotion(promotion_code: str):
     
     return Redirect("/restaurant/")
 

@@ -10,7 +10,6 @@ class Controller:
         self.__foods = foods
         self.__recommended_food = []
         self.__orders = []
-        self.__delivery_options = []
 
     def add_restaurant(self, restaurant):
         self.__restaurants.append(restaurant)
@@ -107,6 +106,8 @@ class Controller:
             if order.get_order_id() == order_id:
                 return order
         return None
+    def get_orders(self):
+        return self.__orders
 
 class User:
     def __init__(self, user_id: str, name, username, password):
@@ -222,6 +223,7 @@ class User:
             if promotion.get_restaurant() == restaurant:
                 available_promotions.append(promotion)
         return available_promotions
+
 
 class Promotion:
     def __init__(self, name, restaurant, promotion_code):
@@ -511,16 +513,50 @@ class DeliveryOption:
         self.__name = name
         self.__estimate_time = estimate_time
         self.__price = price
+    
+    def __str__(self):
+        return self.__name + " < " + str(self.__estimate_time) + " " + str(self.__price) + " บาท"
+
+    def get_price(self):
+        return self.__price
+
+    def get_name(self):
+        return self.__name
 
 class Order:
-    def __init__(self, user: User, cart: Cart, location: Location, deliveryoption: DeliveryOption, payment_method: Payment, selected_promotion: Promotion):
+    # Create delivery options
+    priority_delivery = DeliveryOption(
+        name="Priority",
+        estimate_time="25 นาที",
+        price=32
+    )
+
+    standard_delivery = DeliveryOption(
+        name="Standard",
+        estimate_time="25 นาที",
+        price=32
+    )
+
+    saver_delivery = DeliveryOption(
+        name="Saver",
+        estimate_time="35 นาที",
+        price=0
+    )
+
+    delivery_options = [
+        priority_delivery,
+        standard_delivery,
+        saver_delivery
+    ]
+
+    def __init__(self, user: User, cart: Cart, location: Location):
         self.__order_id = cart.get_cart_id()
         self.__user = user
         self.__cart = cart
         self.__location = location
-        self.__deliveryoption = deliveryoption
-        self.__payment_method = payment_method
-        self.__selected_promotion = selected_promotion
+        self.__delivery_option = self.standard_delivery
+        self.__payment_method = None
+        self.__selected_promotion = None
         # Not delivered
         self.__status = False
 
@@ -530,11 +566,14 @@ class Order:
     def select_payment(self, new_payment):
         self.__payment = new_payment
 
-    def select_delivery_option(self, new_delivery_option):
+    def select_delivery_option(self, delivery_num):
         self.__delivery_option = new_delivery_option
 
+    def get_delivery_option(self):
+        return self.__delivery_option
+
     def calculate_price(self):
-        self.__cart.calculate_price()
+        return self.__cart.calculate_price() + self.__delivery_option.get_price()
 
     def get_order_id(self):
         return self.__order_id
@@ -913,21 +952,3 @@ location = Location(
 # Add the location to the user's locations
 user.add_location(location)
 
-# Create delivery options
-priority_delivery = DeliveryOption(
-    name="Priority",
-    estimate_time="25 นาที",
-    price=32
-)
-
-standard_delivery = DeliveryOption(
-    name="Standard",
-    estimate_time="25 นาที",
-    price=32
-)
-
-saver_delivery = DeliveryOption(
-    name="Saver",
-    estimate_time="35 นาที",
-    price=0
-)
