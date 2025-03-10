@@ -1,3 +1,5 @@
+
+
 from datetime import datetime 
 from fasthtml.common import *
 import uuid
@@ -511,9 +513,10 @@ class SelectedFood:
 
 
 class Cart:
-    def __init__(self, restaurant : Restaurant):
+    def __init__(self, restaurant : Restaurant, user: User):
         self.__cart_id = uuid.uuid4().hex
         self.__restaurant = restaurant
+        self.__user = user
         self.__selected_foods = []
         self.__status = 'open'
 
@@ -534,6 +537,9 @@ class Cart:
 
     def get_restaurant(self):
         return self.__restaurant
+
+    def get_cart_id(self):
+        return self.__cart_id
 
 class Payment:
     def __init__(self, amount: float, currency="THB"):
@@ -1075,6 +1081,7 @@ kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
 # Create a cart for the user
 cart = Cart(
     restaurant=kfc_restaurant,
+    user=user
 )
 
 # Add food to the cart
