@@ -13,6 +13,13 @@ def restaurant_view(id: str):
     # ตรวจสอบว่าร้านนี้อยู่ในรายการโปรดหรือไม่
     is_favorite = id in favorite_restaurants
 
+    # ปุ่มกลับไปหน้า Home (ซ้ายบน)
+    home_button = A(
+        Img(src="/static/arrow.jpeg", alt="Home",  # 🔹 แก้ไขตรงนี้
+            style="width: 40px; height: 40px; position: absolute; top: 10px; left: 10px; cursor: pointer;"),
+        href="/home"
+    )
+
     # ปุ่มหัวใจ (Favorite Button)
     img_button = A(
         Lucide("heart", 24, color="red" if is_favorite else "black"),
@@ -26,12 +33,6 @@ def restaurant_view(id: str):
 
     # Container to hold all food items
     food_list = []
-
-    Div(
-        A("⬅ กลับ", href =f"/home", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
-        style="position: absolute; top: 10px; left: 10px;"
-    
-    ),
 
     # Add main food item card at the top (with border for "ไข่ขนป้า")
     main_food_card = Div(
@@ -95,6 +96,7 @@ def restaurant_view(id: str):
 
     # Combine all parts into one container
     page_content = Container(
+        home_button,  # 🔹 เพิ่มปุ่ม Home ที่มุมซ้ายบน
         main_food_card,  # การ์ดหลักของร้านอาหาร
         img_button,  # ปุ่มหัวใจ Favorite
         for_you_section,  # ส่วน For You
