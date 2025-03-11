@@ -4,70 +4,86 @@ from fasthtml.common import *
 
 # ✅ เก็บรีวิวที่ผู้ใช้ส่งมา
 reviews = []
-rating_state = 0
 
-@app.get("/review")
-def collect_review():
-    picture_part = Div(
-        Img(
-            src="https://cdn.mos.cms.futurecdn.net/7NZogGkgY8PJiBEmBURazh-600-80.png.webp"
+@app.post("/review")
+
+def collect_review(restaurant_id: str):
+    """ หน้าสำหรับเขียนรีวิวและแสดงความคิดเห็นที่มีอยู่แล้ว """
+    restaurant = controller.get_restaurant_by_id(restaurant_id)
+    return Container(
+        H1("Review Page"),
+        Card(
+            Img(
+                src=f"{restaurant.get_image()}",
+                alt="Food Image",
+                style="width: 200px; height: auto; border-radius: 8px; display: block; margin: 0 auto;"
+            ),
+            style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); padding: 20px; text-align: center;"
+        ),
+        # ✅ แสดงรายการรีวิว
+        Div(
+            *[P(f"💬 {review['comment']} - ⭐ {'★' * review['rating']}") for review in reviews],
+            id="review-list",
+            style="margin-top: 20px; padding: 10px; border-top: 1px solid #ddd;"
+        ),
+        # ✅ ฟอร์มสำหรับเพิ่มความคิดเห็นใหม่
+        Form(
+            Input(type="hidden", id="", name="restaurant_id", value=restaurant.get_restaurant_id()),  # ซ่อนค่า rating
+            Label(
+                "Comment:",
+                Input(
+                    type="text", 
+                    id="comment",
+                    name="comment", 
+                    required=True,
+                    placeholder="Type your comment here...",
+                    style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-top: 5px;"
+                )
+            ),
+            # ⭐ สร้างการเลือกดาว 1-5 ด้วยตัวอักษร ★
+            Label(
+                "Rating:",
+                Div(
+                    *[Span(
+                        "★", 
+                        id=f"star-{i}",
+                        style=f"font-size: 30px; cursor: pointer; margin: 0 5px;", 
+                        onclick=f"document.getElementById('rating').value = {i}; highlightStars({i})"
+                    ) for i in range(1, 6)],
+                    style="margin-top: 5px; display: flex; justify-content: center;"
+                )
+            ),
+            Input(type="hidden", id="rating", name="rating", required=True),  # ซ่อนค่า rating
+            Button(
+                "Submit", 
+                type="submit",
+                hx_post="/submitreview", 
+                hx_target="#review-list",  # ✅ อัปเดตส่วนที่แสดงความคิดเห็น
+                hx_swap="beforeend",  # ✅ เพิ่มความคิดเห็นใหม่ด้านล่าง
+                onclick="setTimeout(() => window.location.href = '/home', 500);",  # ✅ เปลี่ยนหน้าไปที่ /home หลังส่งข้อมูล
+                style="margin-top: 10px; padding: 10px 20px; border: none; background-color: orange; color: white; cursor: pointer;"
+            ),
+            style="margin-top: 20px;"
+        ),
+        Script(
+            """
+            function highlightStars(selected) {
+                for (let i = 1; i <= 5; i++) {
+                    let star = document.getElementById('star-' + i);
+                    if (i <= selected) {
+                        star.style.color = 'gold';  // Highlight selected stars with gold color
+                    } else {
+                        star.style.color = 'gray';  // Dim unselected stars
+                    }
+                }
+            }
+            """
         )
     )
 
-    review_form = Form(
-        hx_post="/submit_review",
-        hx_target="this",
-        hx_swap="none",
-        _children=[
-            # ⭐ ส่วนดาวกดเลือก
-            Div(
-                *[
-                    Button("★",
-                        _style=(
-                            "font-size: 40px; background: none; border: none; "
-                            "cursor: pointer; color: #ccc; outline: none; box-shadow: none;"
-                        ),
-                        id=f"star-{i}"
-                    )
-                    for i in range(1, 6)
-                ],
-                id="star-container",
-                _style="display: flex; gap: 10px; margin-bottom: 10px;"
-            ),
-
-            # ⭐ ช่องเก็บคะแนนที่เลือก
-            Input(type="hidden", name="rating", id="rating_input"),
-
-            # 💬 ฟอร์มความคิดเห็น
-            Label("ความคิดเห็นของคุณ"),
-            Textarea(
-                name="comment",
-                placeholder="พิมพ์ความคิดเห็นของคุณที่นี่...",
-                _style="width: 300px; height: 100px; margin-bottom: 10px;"
-            ),
-
-            # ✅ ปุ่มส่งรีวิว
-            Button("ส่งรีวิว", type="submit")
-        ]
-    )
-
-    return Main(
-        H1("Review", style="margin-left:40px;"),
-        picture_part,
-        review_form,
-
-        # ⭐ Script ควบคุมดาว
-        Script("""
-            document.addEventListener('DOMContentLoaded', () => {
-                const stars = document.querySelectorAll('#star-container button');
-                stars.forEach((star, index) => {
-                    star.addEventListener('click', () => {
-                        document.getElementById('rating_input').value = index + 1;
-                        stars.forEach((s, i) => {
-                            s.style.color = i <= index ? '#FFD700' : '#ccc';
-                        });
-                    });
-                });
-            });
-        """)
-    )
+@app.post("/submitreview")
+def submit_review(restaurant_id: str, comment: str, rating: int):
+    restaurant = controller.get_restaurant_by_id(restaurant_id)
+    """ บันทึกรีวิวและส่งกลับไปแสดงในหน้าเว็บ """
+    restaurant.add_review(user,comment,rating)  # ✅ บันทึกความคิดเห็นใหม่พร้อมคะแนน
+    return P(f"💬 {comment} - ⭐ {'★' * rating}")  # ✅ ส่ง HTML กลับไปแสดงความคิดเห็นใหม่พร้อมคะแนน

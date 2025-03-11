@@ -321,7 +321,7 @@ class Location:
         self.__extra_information = extra_information
 
 class Review:
-    def init(self, user, comment, stars):
+    def __init__(self, user, comment, stars):
         self.__user = user
         self.__comment = comment
         self.__stars = stars
@@ -361,7 +361,7 @@ class Restaurant:
 
     def add_review(self,user,review,stars):
         comment = Review(user,review,stars)
-        self.reviews.append(comment)
+        self.__reviews.append(comment)
         return "Success"
 
     def get_description(self):

@@ -200,10 +200,18 @@ def confirm_order(order_id: str):
 
     return Container(
         Button(Lucide("cooking-pot"), style="border: none; background: none; font-size: 1.5rem;", onclick="window.history.back()"),
+        Button("Review", hx_post="/review", hx_vals={'restaurant_id': order.get_cart().get_restaurant().get_restaurant_id()}, hx_swap="outerHTML", hx_target="#main"),
+        
         tracking_section,
         location_section,
         order_summary,
         pricing_section,
+        Button(
+            "Go Home",
+            onclick="window.location.href='/home'",
+            cls="contrast button",
+            style="background-color:#FF6240; color:white; font-size:1.2rem; padding: 10px; width: 100%; margin-bottom: 10px;"
+        ),
         id="main"
     )
 
