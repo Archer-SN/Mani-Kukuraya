@@ -40,9 +40,14 @@ def ShowHomepage():
     
     # Promotion element
 
-    promotion_element =Button(
+    promotion_element =A(
+            Button(
                 f"โปรโมชั่นที่คุณมี {len(promotions)}",cls="btn flash-slide flash-slide--green",style="margin-top:40px",
             ),
+            href="/promotion",
+            style="text-decoration:none;"
+
+    )
         
     
 
