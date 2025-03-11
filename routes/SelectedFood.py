@@ -14,7 +14,8 @@ def get(id: str):
                 *[
                     Div(
                         Input(type="checkbox", name=f"choices", value=choice.get_id(), id=f"option_{option.get_id()}_{choice.get_id()}"),
-                        Label(choice.get_name(), for_=f"option_{option.get_id()}_{choice.get_id()}")
+                        Label(choice.get_name(), for_=f"option_{option.get_id()}_{choice.get_id()}"),
+                        Span(f"{choice.get_price()} บาท", style=""),
                     )
                     for choice in option.get_choices()
                 ]

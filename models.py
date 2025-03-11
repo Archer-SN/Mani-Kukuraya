@@ -409,7 +409,7 @@ class OptionChoice:
     def get_option(self):
         return self.__option 
     
-    def get_pirce(self):
+    def get_price(self):
         return self.__price
 
 class Food:
@@ -479,7 +479,7 @@ class SelectedFood:
 
     def calculate_price(self):
         total_price = self.__food.get_price()
-        return total_price * self.__quantity
+        return round(total_price * self.__quantity, 2)
 
     def add_choice(self, choice):
         for selected_option in self.__selected_options:
@@ -512,7 +512,7 @@ class Cart:
         total_price = 0
         for selected_food in self.__selected_foods:
             total_price += selected_food.calculate_price()
-        return total_price
+        return round(total_price, 2)
 
     def get_restaurant(self):
         return self.__restaurant
@@ -1244,3 +1244,14 @@ location = Location(
 # Add the location to the user's locations
 user.add_location(location)
 
+# Multiply all food prices by 35
+for food in controller.get_restaurants():
+    for item in food.get_menu():
+        item._Food__price *= 10
+
+# Multiply all choice prices by 10
+for food in controller.get_restaurants():
+    for item in food.get_menu():
+        for option in item.get_food_options():
+            for choice in option.get_choices():
+                choice._OptionChoice__price *= 10
