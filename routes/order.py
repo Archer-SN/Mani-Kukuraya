@@ -17,7 +17,10 @@ def view_order(cart_id: str):
         order = controller.create_order(user, cart, loc)
     location = Card(
         f"- {loc.full_name}, {loc.address}, {loc.street}, {loc.unit}, {loc.extra_information}",
-        cls="grid-item"
+        Button("Change location", hx_get="/user/location", hx_vals={'order_id': order.get_order_id()}, hx_target="#location-box", hx_swap="innerHTML"),
+        Div("",id="location-box"),
+        cls="grid-item",
+        id="location-card"
     )
 
     delivery_options = Card(

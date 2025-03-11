@@ -925,46 +925,6 @@ side_dish3 = Food(
     food_image="https://images.unsplash.com/photo-1633356127583-ea05b7b1b5a6"
 )
 
-side_dish4 = Food(
-    restaurant=mc_donald_restaurant,
-    food_id="20",
-    name="Coleslaw",
-    description="Fresh and tangy coleslaw with creamy dressing",
-    price=2.49,
-    category="Side",
-    food_image="https://images.unsplash.com/photo-1604283165347-b32c4069aeb5"
-)
-
-side_dish5 = Food(
-    restaurant=dairy_queen_restaurant,
-    food_id="21",
-    name="Garlic Bread",
-    description="Crispy garlic buttered bread, perfect for pairing",
-    price=3.99,
-    category="Side",
-    food_image="https://images.unsplash.com/photo-1579826615927-619f56a6ff10"
-)
-
-side_dish6 = Food(
-    restaurant=dairy_queen_restaurant,
-    food_id="22",
-    name="Mozzarella Sticks",
-    description="Deep-fried mozzarella cheese sticks with marinara sauce",
-    price=4.29,
-    category="Side",
-    food_image="https://images.unsplash.com/photo-1627308595308-719ba336def4"
-)
-
-side_dish7 = Food(
-    restaurant=kfc_restaurant,
-    food_id="23",
-    name="Corn on the Cob",
-    description="Steamed corn with butter and seasoning",
-    price=3.29,
-    category="Side",
-    food_image="https://images.unsplash.com/photo-1600914847155-397afc3183f4"
-)
-
 side_dish8 = Food(
     restaurant=mc_donald_restaurant,
     food_id="24",
@@ -975,15 +935,6 @@ side_dish8 = Food(
     food_image="https://images.unsplash.com/photo-1586190848861-99aa4a171e90"
 )
 
-side_dish9 = Food(
-    restaurant=dairy_queen_restaurant,
-    food_id="25",
-    name="Sweet Potato Fries",
-    description="Crispy and lightly salted sweet potato fries",
-    price=3.79,
-    category="Side",
-    food_image="https://images.unsplash.com/photo-1597393355206-9cba3a26f4cd"
-)
 
 side_dish10 = Food(
     restaurant=kfc_restaurant,
@@ -1056,12 +1007,7 @@ dairy_queen_restaurant.add_food(dessert10)
 controller.add_food(side_dish1)
 controller.add_food(side_dish2)
 controller.add_food(side_dish3)
-controller.add_food(side_dish4)
-controller.add_food(side_dish5)
-controller.add_food(side_dish6)
-controller.add_food(side_dish7)
 controller.add_food(side_dish8)
-controller.add_food(side_dish9)
 controller.add_food(side_dish10)
 
 
