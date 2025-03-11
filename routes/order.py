@@ -132,9 +132,15 @@ def get_price(order_id: str):
 @app.post("/order")
 def confirm_order(order_id: str):
     order = controller.get_order_by_id(order_id)
+    location = order.get_location()
     progress_bar = Div(
-        Div(style="background-color: #4CAF50; width: 30%; height: 10px; border-radius: 5px;"),
-        style="background-color: #E0E0E0; height: 10px; width: 100%; border-radius: 5px; margin-top: 10px;"
+        Div(id='pb', style='width:122%', cls='progress-bar'),
+        role='progressbar',
+        aria_valuemin='0',
+        aria_valuemax='100',
+        aria_valuenow='122',
+        aria_labelledby='pblabel',
+        cls='progress'
     )
 
     progress_images = Div(
@@ -155,8 +161,8 @@ def confirm_order(order_id: str):
     location_section = Card(
         Lucide("map-pin-house"),
         Div(
-            P(B("ตึก ECC ฉลองกรุง 1 เฟส 5"), style="margin: 0;"),
-            P("ฉลองกรุง แขวงลำปลาทิว เขตลาดกระบัง กรุงเทพมหานคร", cls="text-muted"),
+            P(B(location.full_name), style="margin: 0;"),
+            P(location.address + location.street, cls="text-muted"),
         ),
         Lucide("cooking-pot"),
         style="display: flex; align-items: center; justify-content: space-between; padding: 15px;"

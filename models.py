@@ -401,9 +401,9 @@ class OptionChoice:
         return self.__price
 
 class Food:
-    def __init__(self, restaurant, name, description, price, category, food_image, food_id=uuid.uuid4().hex):
+    def __init__(self, restaurant, name, description, price, category, food_image, food_id=None):
         self.__restaurant = restaurant
-        self.__food_id = food_id
+        self.__food_id = food_id or uuid.uuid4().hex
         self.__name = name    
         self.__description = description 
         self.__price = price     
@@ -453,8 +453,8 @@ class SelectedFoodOption():
         return self.__selected_choices
 
 class SelectedFood:
-    def __init__(self, food, quantity, selected_food_id=uuid.uuid4().hex,):
-        self.__selected_food_id = selected_food_id
+    def __init__(self, food, quantity, selected_food_id=None):
+        self.__selected_food_id = selected_food_id or uuid.uuid4().hex
         self.__food = food
         self.__selected_options = [SelectedFoodOption(option) for option in food.get_food_options()]
         self.__quantity = quantity
@@ -622,6 +622,9 @@ class Order:
     
     def get_selected_promotion(self):
         return self.__selected_promotion
+    
+    def get_location(self):
+        return self.__location
 
 # Simulated Data
 user = User(
