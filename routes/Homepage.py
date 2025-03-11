@@ -231,6 +231,20 @@ def SearchResults(query: str):
         for result in search_results
     ]
     
+    if not search_results_elements:
+        return Container(
+            H1(f"ไม่พบ '{query}'", style="margin-bottom: 20px;"),
+            A(
+                Button(
+                    "Go Home",
+                    cls="btn flash-slide flash-slide--green",
+                    style="padding: 10px 20px; font-size: 16px;"
+                ),
+                href="/home"
+            ),
+            style="text-align:center; margin-top: 100px;"
+        )
+    
     return Container(
         H1(f"ผลการค้นหาสำหรับ '{query}'"),
         Div(
