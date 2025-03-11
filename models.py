@@ -130,7 +130,6 @@ class User:
         self.__promotions = []
         self.__reviews = []
         self.__favorites = set()
-        self.__current_order = None
 
     def set_username(self, new_username):
         self.__username = new_username

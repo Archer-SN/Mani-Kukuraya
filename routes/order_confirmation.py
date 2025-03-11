@@ -36,9 +36,18 @@ def view_order_confirmation():
         style="display: flex; align-items: center; justify-content: space-between; padding: 15px;"
     )
 
+    user_order = get_user_order()  # Assuming this function fetches the user's order details
+
+    order_items = []
+    for item in user_order.items:
+        order_items.append(Li(f"{item.quantity}x {item.name}", B(f" {item.price} บาท")))
+        if item.options:
+            options_list = Ul(*[Li(option) for option in item.options])
+            order_items.append(options_list)
+
     order_summary = Card(
-        H4("1x กระเพราหมูสับ", B(" 99 บาท")),
-        Ul(Li("ไข่ดาว"), Li("พิเศษ"), Li("เผ็ดมาก")),
+        H4("Order Summary"),
+        Ul(*order_items),
         P(A("แก้ไข", href="/edit-order", cls="text-danger")),
         style="padding: 15px;"
     )

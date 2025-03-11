@@ -41,7 +41,7 @@ def show_category(category_name: str):
             ),
             A(
                 "สั่งซื้อ",
-                href=f"/order/{food.get_food_id()}",
+                href=f"/selectedFood/{food.get_food_id()}",
                 cls="btn flash-slide flash-slide--blue",
                 style="width:90%; padding:10px; margin-top:auto; text-align:center; font-weight:bold; font-size:16px;border: none; background-color: #ff5722; color: white;"
             ),
