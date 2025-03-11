@@ -26,7 +26,7 @@ def view_order(cart_id: str):
         Div(
             *[
                 Label(Input(type="radio", id="delivery", name="delivery", hx_vals={'order_id': order.get_order_id(), 'delivery': delivery_option.get_name()}, 
-                        hx_post="/update-delivery", hx_target="#delivery-summary"), 
+                        hx_post="/update-delivery", hx_target="#delivery-summary", checked=order.get_delivery_option() == delivery_option, ),
                   delivery_option)
                   for delivery_option in Order.delivery_options
             ],
@@ -56,11 +56,11 @@ def view_order(cart_id: str):
     payment_methods = Card(
         H4("รายละเอียดการชำระเงิน"),
         Div(
-            Label(Input(type="radio", name="payment", value="qr", 
-                        hx_post="/update-payment", hx_target="#payment-summary"), 
+            Label(Input(type="radio", hx_vals={'order_id': order.get_order_id(), 'payment': 'qr'},
+                        hx_post="/update-payment", hx_target="#payment-summary", checked=isinstance(order.get_payment_method(), QRPayment)), 
                   Lucide("qr-code"), " สแกน QR Code"),
-            Label(Input(type="radio", name="payment", value="cash", checked=True, 
-                        hx_post="/update-payment", hx_target="#payment-summary"), 
+            Label(Input(type="radio", hx_vals={'order_id': order.get_order_id(), 'payment': 'cash'},
+                        hx_post="/update-payment", hx_target="#payment-summary", checked=isinstance(order.get_payment_method(), CashPayment)), 
                   Lucide("banknote"), " เงินสด"),
             cls="radio-group"
         ),
@@ -180,7 +180,6 @@ def confirm_order(order_id: str):
     order_summary = Card(
         H4("Order Summary"),
         Ul(*order_items),
-        P(A("แก้ไข", href="/edit-order", cls="text-danger")),
         style="padding: 15px;"
     )
 

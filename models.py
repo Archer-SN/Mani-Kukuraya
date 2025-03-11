@@ -528,7 +528,7 @@ class QRPayment(Payment):
         self.__reference_number = reference_number
 
     def pay(self):
-        pass
+        return True
 
 class CashPayment(Payment):
     def __init__(self, amount, currency, received_amount=0):
@@ -537,7 +537,7 @@ class CashPayment(Payment):
         self.__change = 0
 
     def pay(self):
-        pass
+        return True
 
 class DeliveryOption:
     def __init__(self, name, estimate_time, price):
@@ -595,7 +595,7 @@ class Order:
         self.__location = new_location
 
     def select_payment(self, new_payment):
-        self.__payment = new_payment
+        self.__payment_method = new_payment
 
     def select_delivery_option(self, delivery_name):
         self.__delivery_option = self.get_delivery_option_by_name(delivery_name)
@@ -628,6 +628,9 @@ class Order:
     
     def get_location(self):
         return self.__location
+    
+    def get_payment_method(self):
+        return self.__payment_method
 
 # Simulated Data
 user = User(

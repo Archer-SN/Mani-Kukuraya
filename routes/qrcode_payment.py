@@ -5,6 +5,18 @@ from fasthtml.common import *
 from fasthtml.common import *
 from app import app
 
+@app.post("/update-payment")
+def update_payment(order_id: str, payment: str):
+    order = controller.get_order_by_id(order_id)
+    if payment == "qr":
+        payment_method = QRPayment(order.calculate_price(), qr_code_data="/static/qrcode.png")
+        order.select_payment(payment_method)
+    elif payment == "cash":
+        payment_method = CashPayment(order.calculate_price(), "THB")
+        order.select_payment(payment_method)
+        
+
+
 @app.get("/payment")
 def payment_page():
     amount = 113

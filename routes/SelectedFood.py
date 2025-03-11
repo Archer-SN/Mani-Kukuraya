@@ -6,6 +6,24 @@ from fasthtml.common import *
 def get(id: str):
     food = controller.get_food_by_id(id)
 
+    options = None
+    if food.get_food_options():
+        options = [
+            Div(
+                H4(option.get_name()),
+                *[
+                    Div(
+                        Input(type="checkbox", name=f"choices", value=choice.get_id(), id=f"option_{option.get_id()}_{choice.get_id()}"),
+                        Label(choice.get_name(), for_=f"option_{option.get_id()}_{choice.get_id()}")
+                    )
+                    for choice in option.get_choices()
+                ]
+            )
+            for option in food.get_food_options()
+        ]
+    else:
+        options = [Input(type="hidden", name=f"choices", value="None")]
+
     form = Form(
         Input(id="food-id", name="food_id", type="hidden", value=f"{food.get_food_id()}"),
         # รูปภาพและรายละเอียดสินค้า
@@ -19,19 +37,8 @@ def get(id: str):
             style="display: flex; align-items: center; gap: 15px;"
         ),
         # ตัวเลือกเพิ่มเติมจาก foodOption และ foodOptionChoices
-        *[
-            Div(
-                H4(option.get_name()),
-                *[
-                    Div(
-                        Input(type="checkbox", name=f"choices", value=choice.get_id(), id=f"option_{option.get_id()}_{choice.get_id()}"),
-                        Label(choice.get_name(), for_=f"option_{option.get_id()}_{choice.get_id()}")
-                    )
-                    for choice in option.get_choices()
-                ]
-            )
-            for option in food.get_food_options()
-        ],
+
+        *options,
         # ความคิดเห็นเพิ่มเติม
         Fieldset(
             Legend("ความคิดเห็นถึงร้านค้า (Optional)"),
@@ -55,7 +62,7 @@ def get(id: str):
                 hx_include="#counter-value"  # Include hidden input data
             ),
 
-    Input(id="counter-value", name="value", type="hidden", value="0"),  # Stores the current value
+    Input(id="counter-value", name="value", type="hidden", value="1"),  # Stores the current value
     Input(id="restaurant-id", name="restaurant_id", type="hidden", value=f"{food.get_restaurant().get_restaurant_id()}"),
     Script("""
         document.querySelectorAll('button').forEach(button => {
@@ -92,7 +99,6 @@ def get(id: str):
         Div(
             A("⬅ กลับ", href =f"/restaurant/{food.get_restaurant().get_restaurant_id()}", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
             style="position: absolute; top: 10px; left: 10px;"
-    
         ),
         form
     )
