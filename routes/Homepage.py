@@ -16,7 +16,7 @@ def ShowHomepage():
     ),
     A(
         f"{user.name}",
-        href=f"/profile/{user.get_user_id()}",
+        href=f"/profile",
         style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
     ),
     

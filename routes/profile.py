@@ -3,14 +3,14 @@ from models import *
 from fasthtml.common import *
 
 @app.get("/profile")
-def profile(user_id: str):
-    user = controller.get_user_by_id(user_id)
+def profile():
+    user = controller.get_user_by_id("1")
 
     if not user:
         return Span("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")
 
     return Container(
-        A("⬅ กลับ", href=f"/home?user_id={user_id}", style="font-size: 24px; color: #333; text-decoration: none; position: absolute; top: 20px; left: 20px;"),
+        A("⬅ กลับ", href=f"/home", style="font-size: 24px; color: #333; text-decoration: none; position: absolute; top: 20px; left: 20px;"),
 
         Div(
             Img(
@@ -30,7 +30,7 @@ def profile(user_id: str):
                     P("รายการโปรด", style="font-size: 14px; margin-top: 5px; color: #444;"),
                     style="display: flex; flex-direction: column; align-items: center;"
                 ),
-                href=f"/favorite/{user_id}",
+                href=f"/favorite",
                 cls="profile-menu-item"
             ),
 
@@ -40,7 +40,7 @@ def profile(user_id: str):
                     P("จัดการบัญชี", style="font-size: 14px; margin-top: 5px; color: #444;"),
                     style="display: flex; flex-direction: column; align-items: center;"
                 ),
-                href=f"/account?user_id={user_id}",
+                href=f"/account",
                 cls="profile-menu-item"
             ),
 
@@ -50,7 +50,7 @@ def profile(user_id: str):
                     P("ที่อยู่ของฉัน", style="font-size: 14px; margin-top: 5px; color: #444;"),
                     style="display: flex; flex-direction: column; align-items: center;"
                 ),
-                href=f"/locations?user_id={user_id}",
+                href=f"/locations",
                 cls="profile-menu-item"
             ),
 

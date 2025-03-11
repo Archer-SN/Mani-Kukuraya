@@ -3,8 +3,8 @@ from models import *
 from fasthtml.common import *
 
 @app.get("/edit-address/{id}")
-def address_view(user_id: str, id: str):
-    user = controller.get_user_by_id(user_id)
+def address_view(id: str):
+    user = controller.get_user_by_id("1")
 
     if not user:
         return Div("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")
@@ -14,8 +14,6 @@ def address_view(user_id: str, id: str):
         return Div("ไม่พบข้อมูลที่อยู่", cls="error")
 
     form = Form(
-        Input(id="user_id", name="user_id", type="hidden", value=user_id),  # เพิ่ม user_id
-
         Label("ชื่อ-นามสกุล"),
         Input(id="full_name", name="full_name", required=True, value=location.full_name, placeholder="กรอกชื่อ-นามสกุล", hx_target="#full_name", hx_trigger="blur"),
 
@@ -44,7 +42,7 @@ def address_view(user_id: str, id: str):
     return Titled(
         "แก้ไขที่อยู่",
         Div(
-            A("⬅ กลับ", href=f"/locations?user_id={user_id}", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+            A("⬅ กลับ", href=f"/locations", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
             style="position: absolute; top: 10px; left: 10px;"
         ),
         form
@@ -54,9 +52,8 @@ def address_view(user_id: str, id: str):
 
 
 @app.post("/update-address/{id}")
-def submit_address(user_id: str, id: str, full_name: str, phone: str, address: str, street: str, unit: str = "", extra_info: str = ""):
-    user = controller.get_user_by_id(user_id)
-
+def submit_address(id: str, full_name: str, phone: str, address: str, street: str, unit: str = "", extra_info: str = ""):
+    user = controller.get_user_by_id("1")
     if not user:
         return Span("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")
 
@@ -66,4 +63,4 @@ def submit_address(user_id: str, id: str, full_name: str, phone: str, address: s
 
     location.edit_location(full_name.strip(), phone.strip(), address.strip(), street.strip(), unit.strip(), extra_info.strip())
 
-    return Response(headers={"HX-Redirect": f"/locations?user_id={user_id}"})
+    return Response(headers={"HX-Redirect": f"/locations"})

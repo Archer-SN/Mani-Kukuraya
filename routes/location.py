@@ -3,7 +3,7 @@ from models import *
 from fasthtml.common import *
 
 @app.get("/locations")
-def saved_locations_page(user_id: str):
+def saved_locations_page(user_id: str = "1"):
     user = controller.get_user_by_id(user_id)
         
     if not user:
@@ -19,7 +19,7 @@ def saved_locations_page(user_id: str):
 
         Div(
             Div(
-                A("⬅ กลับ", href=f"/profile?user_id={user_id}", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+                A("⬅ กลับ", href=f"/profile", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
                 style="position: absolute; top: 10px; left: 10px;"
             ),
             *[
@@ -40,7 +40,7 @@ def saved_locations_page(user_id: str):
 
                     Button("⋮", type="button", 
                             style="background: none; border: none; font-size: 20px; cursor: pointer; color: gray;",
-                            onclick=f"window.location.href='/edit-address/{location.id}?user_id={user_id}';"),
+                            onclick=f"window.location.href='/edit-address/{location.id}';"),
 
                     style="display: flex; align-items: center; gap: 10px; padding: 15px; border-bottom: 1px solid #ddd;"
                 )
@@ -49,7 +49,7 @@ def saved_locations_page(user_id: str):
         ),
 
         Div(
-            A("+", href=f"/address?user_id={user_id}", cls="button outline circle large"),
+            A("+", href=f"/address", cls="button outline circle large"),
             P("เพิ่มสถานที่ใหม่", cls="add-location-text"),
             cls="grid center"
         )

@@ -179,12 +179,6 @@ class User:
 
     def use_promotion(self, promotion):
         self.__promotions.remove(promotion)
-
-    def add_location(self, location):
-        if isinstance(location, Location): 
-            self.__locations.append(location) 
-            return "Add Location Success"
-        return "Error: Object only"
         
     def get_locations(self):
         return  self.__locations
@@ -877,7 +871,7 @@ side_dish1 = Food(
     description="Crispy golden fries with a sprinkle of salt",
     price=2.99,
     category="Side",
-    food_image="https://images.unsplash.com/photo-1582552922301-8a1b4d5f5ae1"
+    food_image="https://images.pexels.com/photos/115740/pexels-photo-115740.jpeg?auto=compress&cs=tinysrgb&w=600"
 )
 
 side_dish2 = Food(
@@ -887,7 +881,7 @@ side_dish2 = Food(
     description="Crispy battered onion rings with a side of dipping sauce",
     price=3.49,
     category="Side",
-    food_image="https://images.unsplash.com/photo-1628601104170-c9d12a1a07d2"
+    food_image="https://images.pexels.com/photos/31064139/pexels-photo-31064139/free-photo-of-gourmet-beef-dish-with-onion-rings-and-mushrooms.jpeg?auto=compress&cs=tinysrgb&w=600"
 )
 
 side_dish3 = Food(
