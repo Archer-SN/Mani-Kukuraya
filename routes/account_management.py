@@ -3,7 +3,7 @@ from models import *
 from fasthtml.common import *
 
 @app.get("/account")
-def account_management(user_id: str):
+def account_management(user_id: str = "1"):
     user = controller.get_user_by_id(user_id)
 
     if not user:
@@ -11,7 +11,7 @@ def account_management(user_id: str):
 
     return Container(
         Div(
-            A("⬅ กลับ", href=f"/profile?user_id={user_id}", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+            A("⬅ กลับ", href=f"/profile", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
             style="position: absolute; top: 10px; left: 10px;"
         ),
         H2("การจัดการบัญชี", style="margin-top: 20px;"),
