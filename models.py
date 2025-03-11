@@ -530,6 +530,9 @@ class QRPayment(Payment):
     def pay(self):
         return True
 
+    def get_qr_code_data(self):
+        return self.__qr_code_data
+
 class CashPayment(Payment):
     def __init__(self, amount, currency, received_amount=0):
         super().__init__(amount, currency)

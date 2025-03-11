@@ -17,32 +17,44 @@ def update_payment(order_id: str, payment: str):
         
 
 
-@app.get("/payment")
-def payment_page():
-    amount = 113
-    qr_code_url = "/static/qrcode.png"
-
-    return Titled(
-        "การชำระเงินสำหรับสั่งอาหาร",
-        Div(
-            AX("⬅ กลับ",href="/selectedFood", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
-            style="position: absolute; top: 10px; left: 10px;"
-        ),
-        Div(
-            H3(f"{amount} บาท", style="color: black;"),
-            Img(src=qr_code_url, style="width: 200px; height: 200px;"),
-            P("หมดอายุภายใน 10:00 นาที", style="color: gray; font-size: 14px;"),
-            P(
-                "ต้องการเปลี่ยนเป็นจ่ายด้วยเงินสด?",
-                style="color: #ff5722; font-weight: bold;"
+@app.post("/payment")
+def payment_page(order_id: str):
+    order = controller.get_order_by_id(order_id)
+    payment = order.get_payment_method()
+    if isinstance(payment, QRPayment):
+        return Titled(
+            "การชำระเงินสำหรับสั่งอาหาร",
+            Div(
+                AX("⬅ กลับ",href="/selectedFood", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+                style="position: absolute; top: 10px; left: 10px;"
             ),
-            Button("ยืนยันการชำระเงิน", type="submit",
-                   style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;",
-                   hx_post="/confirm-payment", hx_target="#payment-msg"),
-            Div(id="payment-msg")
-        ),
-        style="text-align: center; margin-top: 50px;"
-    )
+            Div(
+                H3(f"{order.calculate_price()} บาท", style="color: black;"),
+                Img(src=payment.get_qr_code_data(), style="width: 200px; height: 200px;"),
+                P("หมดอายุภายใน 10:00 นาที", style="color: gray; font-size: 14px;"),
+                Button("ยืนยันการชำระเงิน", type="submit",
+                    style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;",
+                    hx_post="/order", hx_target="#main", hx_swap="outerHTML"),
+            ),
+            style="text-align: center; margin-top: 50px;",
+            id="main"
+        )
+    else:
+        return Titled(
+            "การชำระเงินสำหรับสั่งอาหาร",
+            Div(
+                AX("⬅ กลับ",href="/selectedFood", style="text-decoration: none; font-size: 18px; color: black; display: inline-block;"),
+                style="position: absolute; top: 10px; left: 10px;"
+            ),
+            Div(
+                H3(f"{order.calculate_price()} บาท", style="color: black;"),        
+                Button("ยืนยันการชำระเงิน", type="submit",
+                    style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;",
+                    hx_post="/order", hx_target="#main", hx_swap="outerHTML"),
+            ),
+            style="text-align: center; margin-top: 50px;",
+            id="main"
+        )
 
 @app.post("/confirm-payment")
 def confirm_payment():

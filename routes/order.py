@@ -97,7 +97,7 @@ def view_order(cart_id: str):
             "สั่งซื้อ",
             cls="contrast button",
             style="background-color:#FF6240; color:white; font-size:1.2rem; padding: 10px; width: 100%;",
-            hx_post="/order",
+            hx_post="/payment",
             hx_target="#main",
             hx_vals={'order_id': cart_id},
             hx_swap="outerHTML"
