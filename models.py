@@ -46,6 +46,7 @@ class Controller:
         
     def get_food_by_id(self, food_id):
         for food in self.__foods:
+            print(food.get_food_id())
             if food.get_food_id() == food_id:
                 return food
     
@@ -161,7 +162,6 @@ class User:
     
     def get_promotions(self):
         return self.__promotions
-
 
     def add_location(self, new_location):
         self.__locations.append(new_location)
@@ -583,7 +583,7 @@ class Order:
         self.__payment_method = None
         self.__selected_promotion = None
         # Not delivered
-        self.__status = False
+        self.__status = "Not Delivered"
 
     def select_location(self, new_location):
         self.__location = new_location
@@ -615,7 +615,6 @@ class Order:
         self.__selected_promotion = promotion
 
 # Simulated Data
-
 user = User(
     user_id="1",
     name="Yokphon ",
@@ -997,9 +996,11 @@ steakhouse_foods = [
 
 for food in sushi_foods:
     tokyo_sushi_bar.add_food(food)
+    controller.add_food(food)
 
 for food in steakhouse_foods:
     texas_steakhouse.add_food(food)
+    controller.add_food(food)
 
 # 📌 เพิ่มร้านค้าเข้าไปใน Controller
 controller.add_restaurant(tokyo_sushi_bar)
@@ -1030,6 +1031,8 @@ controller.add_food(side_dish7)
 controller.add_food(side_dish8)
 controller.add_food(side_dish9)
 controller.add_food(side_dish10)
+
+
 
 
 mc_donald_restaurant.add_food(mcd_food1)
@@ -1270,5 +1273,4 @@ location = Location(
 
 # Add the location to the user's locations
 user.add_location(location)
-
 
