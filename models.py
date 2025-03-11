@@ -27,6 +27,22 @@ class Controller:
         for user in self.__users:
             if user.get_user_id() == user_id:
                 return user
+    def search_result(self, word):
+        show_result =[]
+
+        all_elements = [food for food in self.__foods] + \
+                    [restaurant for restaurant in self.__restaurants]
+
+        similar_names = difflib.get_close_matches(word, [name.get_name() for name in all_elements], n=3, cutoff=0.3)
+
+
+        for result in range(len(similar_names)):
+            for elements_object in all_elements:
+                if similar_names[result] == elements_object.get_name():
+                    show_result.append(elements_object)
+                else:
+                    continue
+        return show_result 
         
     def get_food_by_id(self, food_id):
         for food in self.__foods:
