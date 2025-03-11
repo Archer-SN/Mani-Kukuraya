@@ -6,13 +6,19 @@ sequenceDiagram
     participant User
     participant Order
 
-    Member->>+UI: select delivery option
-    UI->>+Controller: Post request to /update-delivery
+    Member->>+UI: Click change location
+    UI->>+Controller: update_user_location(order_id, location_id)
+    Controller->>+User: get_location_by_id(location_id)
+    loop location in Location
+        User->>+Location: get location
+        Location->>-User: return location
+    end
+    User-->>-Controller: return location
     loop order in Order
         Controller->>+Order: get_order_by_id(order_id)
-        Order-->>-Controller: return order
+        Order-->>-Controller: order
     end
-    Controller->>+Order: select_delivery_option(delivery_type)
+    Controller->>+Order: select_location(location)
     Order-->>-Controller: return None
-    Controller-->>-UI: return HTML element
-    UI-->>-Member: update page with the new element
+    Controller-->>-UI: return html element with new location
+    UI-->>+Member: render html element

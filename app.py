@@ -1,4 +1,6 @@
 from fasthtml.common import *
+from starlette.responses import RedirectResponse
+
 
 myHeaders = [
     Meta(charset='UTF-8'),
@@ -9,8 +11,16 @@ myHeaders = [
     Style(':root { --pico-font-size: 100%; }'),  # Default styles
 ]
 
+
+def before(req, sess):
+    print(sess)
+    if "auth" not in sess:
+        return RedirectResponse("/login")  # Redirect to login page
+
+bware = Beforeware(before, skip=["/login", "/static/.*"])  # Allow login & static files
+
 # Creating FastAPI App
-app = FastHTML(hdrs=myHeaders, debug=True, live=True)
+app = FastHTML(hdrs=myHeaders, live=True, before=bware)
 
 # Mounting the static folder for accessing the menu.css
 app.mount("/static", StaticFiles(directory="static"), name="static")

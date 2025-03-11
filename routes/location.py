@@ -87,7 +87,8 @@ def get_user_locations(order_id: str):
     
 
 @app.post("/user/location")
-def update_user_location(order_id:str, location_id: str):
+def update_user_location(order_id:str, location_id: str, sess=None):
+    user = controller.get_user_by_username(sess["auth"])
     location = user.get_location_by_id(location_id)
     order = controller.get_order_by_id(order_id)
     order.select_location(location)

@@ -3,8 +3,8 @@ from models import *
 from fasthtml.common import *
 
 @app.get("/account")
-def account_management(user_id: str = "1"):
-    user = controller.get_user_by_id(user_id)
+def account_management(user_id, sess):
+    user = controller.get_user_by_username(sess["auth"])
 
     if not user:
         return Span("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")
@@ -49,8 +49,8 @@ def account_management(user_id: str = "1"):
     )
 
 @app.post("/update-username")
-def update_username(user_id: str, new_username: str):
-    user = controller.get_user_by_id(user_id)
+def update_username(user_id: str, new_username: str, ses):
+    user = controller.get_user_by_username(sess["auth"])
     
     if not user:
         return Span("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")
@@ -63,8 +63,8 @@ def update_username(user_id: str, new_username: str):
     return P(new_username, id="username_display", style="font-size: 18px; margin-left: 25px;")
 
 @app.post("/update-password")
-def update_password(user_id: str, new_password: str):
-    user = controller.get_user_by_id(user_id)
+def update_password(user_id: str, new_password: str, sess):
+    user = controller.get_user_by_username(sess["auth"])
     
     if not user:
         return Span("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")

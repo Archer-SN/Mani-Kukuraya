@@ -82,7 +82,8 @@ def collect_review(restaurant_id: str):
     )
 
 @app.post("/submitreview")
-def submit_review(restaurant_id: str, comment: str, rating: int):
+def submit_review(restaurant_id: str, comment: str, rating: int, sess=None):
+    user = controller.get_user_by_username(sess["auth"])
     restaurant = controller.get_restaurant_by_id(restaurant_id)
     """ บันทึกรีวิวและส่งกลับไปแสดงในหน้าเว็บ """
     restaurant.add_review(user,comment,rating)  # ✅ บันทึกความคิดเห็นใหม่พร้อมคะแนน

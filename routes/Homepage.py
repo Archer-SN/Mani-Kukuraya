@@ -3,8 +3,8 @@ from models import *
 from fasthtml.common import *
 
 @app.get("/home")
-def ShowHomepage():
-    
+def ShowHomepage(sess=None):
+    user = controller.get_user_by_username(sess["auth"])
     dataforhomepage = controller.dataforhomepage()
     promotions = user.get_promotions()
     # Categories from the controller
@@ -173,7 +173,7 @@ def ShowHomepage():
         navbar,  # Add the navigation bar at the top
         user_profile,
         Div(
-            search_bar_element
+            search_bar_element,
         ),
         Div(
 

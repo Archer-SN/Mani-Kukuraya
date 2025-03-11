@@ -114,7 +114,8 @@ def update_quantity(value: int):
 
 @app.post("/add-to-cart")
 # def add_to_cart(req: dict):
-def add_to_cart(food_id: str, choices: list[str], comment: str, value: str, restaurant_id: str):
+def add_to_cart(food_id: str, choices: list[str], comment: str, value: str, restaurant_id: str, sess=None):
+    user = controller.get_user_by_username(sess["auth"])
     # print(req)
     food = controller.get_food_by_id(food_id)
     restaurant = controller.get_restaurant_by_id(restaurant_id)

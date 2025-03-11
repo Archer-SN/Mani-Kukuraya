@@ -3,7 +3,8 @@ from models import *  # ✅ นำเข้า User class จาก models.py
 from fasthtml.common import *
 
 @app.get("/favorite/{id:str}")
-def favorite_view(id: str):
+def favorite_view(id: str, sess=None):
+    user = controller.get_user_by_username(sess["auth"])
 
 
     # ✅ ดึงค่าร้านอาหารจาก `user.favorites` ใน models.py

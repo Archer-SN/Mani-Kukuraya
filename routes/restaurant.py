@@ -4,7 +4,8 @@ from fasthtml.common import *
 from lucide_fasthtml import Lucide
 
 @app.get("/restaurant/{id:str}")
-def restaurant_view(id: str):
+def restaurant_view(id: str, sess=None):
+    user = controller.get_user_by_username(sess["auth"])
     restaurant = controller.get_restaurant_by_id(id)
 
     # ตรวจสอบว่าร้านนี้อยู่ในรายการโปรดของ user1 หรือไม่
@@ -94,7 +95,8 @@ def restaurant_view(id: str):
     return page_content
 
 @app.post("/favorite/{id:str}")
-def add_favorite_restaurant(id: str):
+def add_favorite_restaurant(id: str, sess=None):
+    user = controller.get_user_by_username(sess["auth"])
     """เพิ่มร้านอาหารลงในรายการโปรดของ user1"""
     restaurant = controller.get_restaurant_by_id(id)
 
@@ -112,7 +114,8 @@ def add_favorite_restaurant(id: str):
     )
 
 @app.delete("/favorite/{id:str}")
-def remove_favorite_restaurant(id: str):
+def remove_favorite_restaurant(id: str, sess=None):
+    user = controller.get_user_by_username(sess["auth"])
     """ลบร้านอาหารออกจากรายการโปรดของ user1"""
     restaurant = controller.get_restaurant_by_id(id)
 
@@ -130,7 +133,8 @@ def remove_favorite_restaurant(id: str):
     )
 
 @app.get("/cart/count")
-def cart_count():
+def cart_count(sess=None):
+    user = controller.get_user_by_username(sess["auth"])
     return A(
         Div(
             Lucide("shopping-cart", 36, color="orange"),

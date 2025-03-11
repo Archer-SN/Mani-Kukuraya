@@ -3,8 +3,8 @@ from models import *
 from fasthtml.common import *
 
 @app.get("/edit-address/{id}")
-def address_view(id: str):
-    user = controller.get_user_by_id("1")
+def address_view(id: str, sess=None):
+    user = controller.get_user_by_username(sess["auth"])
 
     if not user:
         return Div("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")
@@ -52,8 +52,8 @@ def address_view(id: str):
 
 
 @app.post("/update-address/{id}")
-def submit_address(id: str, full_name: str, phone: str, address: str, street: str, unit: str = "", extra_info: str = ""):
-    user = controller.get_user_by_id("1")
+def submit_address(id: str, full_name: str, phone: str, address: str, street: str, unit: str = "", extra_info: str = "", sess=None):
+    user = controller.get_user_by_username(sess["auth"])
     if not user:
         return Span("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")
 

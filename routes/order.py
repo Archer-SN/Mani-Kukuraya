@@ -5,7 +5,8 @@ from lucide_fasthtml import Lucide
 
 
 @app.get("/order")
-def view_order(cart_id: str):
+def view_order(cart_id: str, sess=None):
+    user = controller.get_user_by_username(sess["auth"])
     print(cart_id)
     for cart in user.get_carts():
         print("User:" + cart.get_cart_id())

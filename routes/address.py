@@ -40,8 +40,8 @@ def address_view() :
     )
 
 @app.post("/submit-address")
-def submit_address(full_name: str, phone: str, location: str, street: str, unit: str = "", extra_info: str = ""):
-    user = controller.get_user_by_id("1")
+def submit_address(full_name: str, phone: str, location: str, street: str, unit: str = "", extra_info: str = "", sess=None):
+    user = controller.get_user_by_username(sess["auth"])
 
     if not user:
         return Span("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")

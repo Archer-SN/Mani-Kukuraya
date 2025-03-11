@@ -9,8 +9,8 @@ cart_items = [
 ]
 
 @app.get("/cart")
-def get():
-    
+def get(sess=None):
+    user = controller.get_user_by_username(sess["auth"])
     items = []
     for cart in user.get_carts():
         restaurant = cart.get_restaurant()

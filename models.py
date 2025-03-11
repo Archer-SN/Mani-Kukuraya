@@ -27,6 +27,12 @@ class Controller:
         for user in self.__users:
             if user.get_user_id() == user_id:
                 return user
+            
+    def get_user_by_username(self, username):
+        for user in self.__users:
+            if user.username == username:
+                return user
+
     def search_result(self, word):
         show_result =[]
 
@@ -206,14 +212,14 @@ class User:
             if cart.get_cart_id() == cart_id:
                 return cart
         return None
-  
-    @classmethod
-    def get_current_user(cls):
-        return cls.onlyuser
-    
+
     @property
     def name(self):
         return self.__name
+    
+    @property
+    def username(self):
+        return self.__username
     
     @property
     def password (self) :

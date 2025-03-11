@@ -3,8 +3,8 @@ from models import *
 from fasthtml.common import *
 
 @app.get("/profile")
-def profile():
-    user = controller.get_user_by_id("1")
+def profile(sess=None):
+    user = controller.get_user_by_username(sess["auth"])
 
     if not user:
         return Span("ไม่พบผู้ใช้ โปรดเข้าสู่ระบบ", cls="error")
@@ -70,5 +70,6 @@ def profile():
                 transform: translateY(-3px);
                 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             }
-        """)
+        """),
+        A(Button("Logout"), href="/logout"),
     )
