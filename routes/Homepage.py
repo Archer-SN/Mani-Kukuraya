@@ -209,9 +209,24 @@ def SearchResults(query: str):
     # Display search results
     search_results_elements = [
         Div(
-            P(result.get_name(), style="text-align:center;"),
-            Img(src=result.get_image(), style="width:100%;height:50%;"),
-            style="text-align:center; margin: 10px;"
+            Img(
+                src=result.get_image(), 
+                style="width:320px; height:200px; object-fit:cover; display:block; margin-bottom: 5px;"
+            ),
+            A(
+                f"{result.get_name()}",
+                href=f"/restaurant/{result.get_restaurant_id()}" if isinstance(result, Restaurant) else f"/selectedFood/{result.get_food_id()}" if isinstance(result, Food) else "#",
+                style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
+            ),
+            A(
+                Button(
+                    "ดูร้านค้า" if isinstance(result, Restaurant) else "สั่งซื้อ" if isinstance(result, Food) else "ไม่ทราบประเภท",
+                    cls="btn flash-slide flash-slide--red" if isinstance(result, Restaurant) else "btn flash-slide flash-slide--blue" if isinstance(result, Food) else "btn",
+                    style="display:block; text-decoration:none; color:#ffffff; text-align:center; font-size:16px; margin-top: 5px;"
+                ),
+                href=f"/restaurant/{result.get_restaurant_id()}" if isinstance(result, Restaurant) else f"/selectedFood/{result.get_food_id()}" if isinstance(result, Food) else "#",
+            ),
+            style="text-align:center; margin: 10px; display:flex; flex-direction:column; align-items:center; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);"
         )
         for result in search_results
     ]
