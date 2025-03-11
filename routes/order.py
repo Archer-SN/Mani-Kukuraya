@@ -98,7 +98,8 @@ def view_order(cart_id: str):
             cls="contrast button",
             style="background-color:#FF6240; color:white; font-size:1.2rem; padding: 10px; width: 100%;",
             hx_post="/order",
-            hx_target="#order-status"
+            hx_target="#order-status",
+            hx_vals={'order_id': cart_id}
         ),
         Div(id="order-status"),  # Display order confirmation dynamically
         cls="grid-item"
@@ -127,7 +128,7 @@ def get_price(order_id: str):
 
 
 @app.post("/order")
-def create_order():
+def confirm_order(order_id: str):
     
     return Redirect("/order_confirmation")
 

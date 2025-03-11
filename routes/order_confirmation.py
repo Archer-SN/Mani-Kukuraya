@@ -36,10 +36,8 @@ def view_order_confirmation():
         style="display: flex; align-items: center; justify-content: space-between; padding: 15px;"
     )
 
-    user_order = get_user_order()  # Assuming this function fetches the user's order details
-
     order_items = []
-    for item in user_order.items:
+    for item in user.items:
         order_items.append(Li(f"{item.quantity}x {item.name}", B(f" {item.price} บาท")))
         if item.options:
             options_list = Ul(*[Li(option) for option in item.options])
