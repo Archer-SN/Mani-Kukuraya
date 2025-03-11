@@ -191,6 +191,9 @@ class User:
             print(location_id)
             if location.id == location_id:
                 return location
+            
+    def get_foods_incart(self):
+        return len(self.__carts)
     
     def get_cart_by_restaurant_id(self, restaurant_id):
         for cart in self.__carts:

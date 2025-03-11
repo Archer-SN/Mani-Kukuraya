@@ -17,6 +17,23 @@ def restaurant_view(id: str):
         href="/home"
     )
 
+    # ปุ่มตะกร้าสินค้า (Cart Button)
+    cart_button = A(
+        Div(
+            Lucide("shopping-cart", 36, color="orange"),
+            Span(
+                str(user.get_foods_incart()),  # จำนวนสินค้าที่อยู่ในตะกร้า
+                style="position: absolute; top: -8px; right: -8px; background-color: red; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center; z-index: 1001;"
+            ),
+            style="position: relative; display: inline-block;"
+        ),
+        href="/cart",
+        hx_get="/cart/count",
+        hx_trigger="revealed, every 3s",
+        hx_target="this",
+        style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; cursor: pointer; background-color: white; padding: 10px; border-radius: 50%; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);"
+    )
+
     # ปุ่มหัวใจ (Favorite Button)
     img_button = A(
         Lucide("heart", 24, color="red" if is_favorite else "black"),
@@ -70,7 +87,8 @@ def restaurant_view(id: str):
         home_button, 
         main_food_card,  
         Div(*food_list, cls="food-list"),
-        img_button  
+        img_button,  
+        cart_button
     )
 
     return page_content
@@ -110,3 +128,17 @@ def remove_favorite_restaurant(id: str):
         hx_target="this",
         hx_swap="outerHTML"
     )
+
+@app.get("/cart/count")
+def cart_count():
+    return A(
+        Div(
+            Lucide("shopping-cart", 36, color="orange"),
+            Span(
+                str(user.get_foods_incart()),
+                style="position: absolute; top: -8px; right: -8px; background-color: red; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center; z-index: 1001;"
+            ),
+            style="position: relative; display: inline-block;"
+        ),
+        href="/cart",
+     )
