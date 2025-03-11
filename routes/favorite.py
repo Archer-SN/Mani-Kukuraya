@@ -14,7 +14,7 @@ def favorite_view(id: str):
     for restaurant in user.get_favorites():  # ✅ วนลูปเพื่อดึงข้อมูลร้านค้าที่ถูก Favorite
         restaurant_card = Div(
             Div(
-                Img(src=f"/static/{restaurant.get_image()}", alt="Restaurant Image", 
+                Img(src=f"{restaurant.get_image()}", alt="Restaurant Image", 
                     style="width: 200px; height: 150px; margin-right: 20px; border-radius: 10px;"),
                 style="flex-shrink: 0; display: inline-block;"
             ),

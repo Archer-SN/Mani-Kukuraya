@@ -6,8 +6,8 @@ from fasthtml.common import *
 def ShowHomepage():
     
     dataforhomepage = controller.dataforhomepage()
+    promotions = user.get_promotions()
     # Categories from the controller
-    member = dataforhomepage[4]
     user_profile = Div(
     Img(
         src="https://upload.wikimedia.org/wikipedia/en/c/c2/Peter_Griffin.png" if hasattr(user, "profile_picture") else "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&q=70&fm=webp",
@@ -15,8 +15,8 @@ def ShowHomepage():
         style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;"
     ),
     A(
-        f"{member.name}",
-        href=f"/profile/{member.get_user_id()}",
+        f"{user.name}",
+        href=f"/profile/{user.get_user_id()}",
         style="display:block; text-decoration:none; color:#ff6600; text-align:center; font-size:16px; margin-top: 5px;"
     ),
     
@@ -40,10 +40,8 @@ def ShowHomepage():
     
     # Promotion element
 
-    numbers_promotion = dataforhomepage[3]
-
     promotion_element =Button(
-                f"โปรโมชั่นที่คุณมี {len(numbers_promotion)}",cls="btn flash-slide flash-slide--green",style="margin-top:40px",
+                f"โปรโมชั่นที่คุณมี {len(promotions)}",cls="btn flash-slide flash-slide--green",style="margin-top:40px",
             ),
         
     
@@ -79,11 +77,19 @@ def ShowHomepage():
     # Navbar with links to different pages
     navbar = Div(
         Div(
-            Button("Favorites", href=f"/favorite", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
+            A(
+                Button("Favorite", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
+                style="text-decoration:none;",
+                href=f"/favorite",
+            ),
             style="margin: 10px;"
         ),
         Div(
-            Button("Promotions", href=f"/promotion", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
+            A(
+                Button("Promotions", cls="btn btn-moving-gradient btn-moving-gradient--blue"),
+                style="text-decoration:none;",
+                href=f"/promotion",
+            ),
             style="margin: 10px;"
         ),
         Div(
