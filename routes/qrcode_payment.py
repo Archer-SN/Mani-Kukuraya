@@ -34,7 +34,7 @@ def payment_page(order_id: str):
                 P("หมดอายุภายใน 10:00 นาที", style="color: gray; font-size: 14px;"),
                 Button("ยืนยันการชำระเงิน", type="submit",
                     style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;",
-                    hx_post="/order", hx_target="#main", hx_swap="outerHTML"),
+                    hx_post="/order", hx_target="#main", hx_swap="outerHTML", hx_vals={'order_id': order.get_order_id()}),
             ),
             style="text-align: center; margin-top: 50px;",
             id="main"
@@ -50,7 +50,7 @@ def payment_page(order_id: str):
                 H3(f"{order.calculate_price()} บาท", style="color: black;"),        
                 Button("ยืนยันการชำระเงิน", type="submit",
                     style="border: none; background-color: #ff5722; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px;",
-                    hx_post="/order", hx_target="#main", hx_swap="outerHTML"),
+                    hx_post="/order", hx_target="#main", hx_swap="outerHTML", hx_vals={"order_id": order.get_order_id()}),
             ),
             style="text-align: center; margin-top: 50px;",
             id="main"

@@ -247,6 +247,9 @@ class User:
             if promotion.get_restaurant() == restaurant:
                 available_promotions.append(promotion)
         return available_promotions
+    
+    def remove_cart(self, cart):
+        self.__carts.remove(cart)
 
 
 class Promotion:
@@ -634,6 +637,14 @@ class Order:
     
     def get_payment_method(self):
         return self.__payment_method
+    
+    def confirm_order_status(self):
+        self.__status = "Delivered"
+    
+    def get_user(self):
+        return self.__user
+
+
 
 # Simulated Data
 user = User(

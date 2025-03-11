@@ -132,6 +132,9 @@ def get_price(order_id: str):
 @app.post("/order")
 def confirm_order(order_id: str):
     order = controller.get_order_by_id(order_id)
+    order.confirm_order_status()
+    user = order.get_user()
+    user.remove_cart(order.get_cart())
     location = order.get_location()
     progress_bar = Div(
         Div(id='pb', style='width:122%', cls='progress-bar'),
