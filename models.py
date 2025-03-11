@@ -153,7 +153,7 @@ class User:
         self.__user_order_history = []
         self.__promotions = []
         self.__reviews = []
-        self.__favorites = []
+        self.__favorites = set()
         self.__current_order = None
 
     def set_username(self, new_username):
@@ -252,13 +252,15 @@ class User:
 
     def get_carts(self):
         return self.__carts
+        
     def add_favorite(self, restaurant):
-        if restaurant not in self.favorite_restaurants:
-            self.favorite_restaurants.append(restaurant)
+        self.__favorites.add(restaurant)
 
     def remove_favorite(self, restaurant):
-        if restaurant in self.favorite_restaurants:
-            self.favorite_restaurants.remove(restaurant)
+        self.__favorites.discard(restaurant)
+    
+    def get_favorites(self):
+        return list(self.__favorites)
 
     def get_promotions_by_restaurant(self, restaurant):
         available_promotions = []
@@ -649,7 +651,7 @@ kfc_restaurant = Restaurant(
     description="Fast-food chain known for its buckets of fried chicken, plus wings & sides.",
     score=4.5,
     reviews=[],
-    restaurant_image="www.images.unsplash.com/photo-1612170153139-6f881ff067e0?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D"
+    restaurant_image="https://www.centralworld.co.th/storage/stores/K/kfc.jpg"
 )
 
 kfc_promotion = Promotion(

@@ -1,17 +1,17 @@
 from app import *
-from models import *  # Ensure this correctly imports User and Restaurant
+from models import *  # ✅ นำเข้า User class จาก models.py
 from fasthtml.common import *
 
+@app.get("/favorite/{id:str}")
+def favorite_view(id: str):
 
-@app.get("/favorite/{user_id:str}")
-def favorite_view(user_id: str):
 
-    # ✅ ดึงค่าร้านอาหารจาก `user.favorite_restaurant`
-    favorite_restaurants = user.favorite_restaurants  # ✅ List ของ Object Restaurant
+    # ✅ ดึงค่าร้านอาหารจาก `user.favorites` ใน models.py
+    favorite_restaurants = user.get_favorites  # ✅ ใช้ list ที่อยู่ใน User class
 
     # ✅ สร้างรายการร้านค้าที่ถูก Favorite
     restaurant_list = []
-    for restaurant in favorite_restaurants:
+    for restaurant in user.get_favorites():  # ✅ วนลูปเพื่อดึงข้อมูลร้านค้าที่ถูก Favorite
         restaurant_card = Div(
             Div(
                 Img(src=f"/static/{restaurant.get_image()}", alt="Restaurant Image", 
@@ -22,7 +22,7 @@ def favorite_view(user_id: str):
                 H2(restaurant.get_name()),  # ✅ ชื่อร้าน
                 P(restaurant.get_description(), style="color: grey;"),  # ✅ คำอธิบาย
                 P(f"Rating: {restaurant.get_score()} ⭐", style="font-weight: bold;"),  # ✅ คะแนนร้าน
-                A("View Restaurant", href=f"/restaurant/{user_id}/{restaurant.get_id()}",
+                A("View Restaurant", href=f"/restaurant/{restaurant.get_restaurant_id()}",
                   style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none;"),
                 style="display: inline-block; vertical-align: top;"
             ),
@@ -41,7 +41,7 @@ def favorite_view(user_id: str):
         Div(back_button, style="flex: 0 0 auto;"),  
         Div(
             A("Home", href="/home", style="margin-right: 20px;"),
-            A("Favorites", href=f"/favorite/{user_id}", style="margin-right: 20px;"),
+            A("Favorites", href=f"/favorite/{id}", style="margin-right: 20px;"),
             A("Promotions", href="/promotion", style="margin-right: 20px;"),
             A("Carts", href="/cart", style="margin-right: 20px;"),
             style="display: flex; justify-content: center; align-items: center; flex-grow: 1;"
