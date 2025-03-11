@@ -98,8 +98,9 @@ def view_order(cart_id: str):
             cls="contrast button",
             style="background-color:#FF6240; color:white; font-size:1.2rem; padding: 10px; width: 100%;",
             hx_post="/order",
-            hx_target="#order-status",
-            hx_vals={'order_id': cart_id}
+            hx_target="#main",
+            hx_vals={'order_id': cart_id},
+            hx_swap="outerHTML"
         ),
         Div(id="order-status"),  # Display order confirmation dynamically
         cls="grid-item"
@@ -117,7 +118,8 @@ def view_order(cart_id: str):
             offers,
             summary,
             cls="order-grid"
-        )
+        ),
+        id="main"
     )
 
 @app.post("/order/price")
@@ -129,6 +131,71 @@ def get_price(order_id: str):
 
 @app.post("/order")
 def confirm_order(order_id: str):
-    
-    return Redirect("/order_confirmation")
+    order = controller.get_order_by_id(order_id)
+    progress_bar = Div(
+        Div(style="background-color: #4CAF50; width: 30%; height: 10px; border-radius: 5px;"),
+        style="background-color: #E0E0E0; height: 10px; width: 100%; border-radius: 5px; margin-top: 10px;"
+    )
+
+    progress_images = Div(
+        Img(src="/static/chef.png", style="position: absolute; left: 27%; top: -40px; width: 40px;"),
+        Img(src="/static/driver.png", style="position: absolute; left: 65%; top: -40px; width: 40px;"),
+        Img(src="/static/home.png", style="position: absolute; left: 93%; top: -40px; width: 40px;"),
+        style="position: relative; height: 40px; width: 100%;"
+    )
+
+    tracking_section = Card(
+        H2("Preparing your orders"),
+        P("Your order’s in the kitchen", cls="text-muted"),
+        progress_images,
+        progress_bar,
+        style="padding: 20px;"
+    )
+
+    location_section = Card(
+        Lucide("map-pin-house"),
+        Div(
+            P(B("ตึก ECC ฉลองกรุง 1 เฟส 5"), style="margin: 0;"),
+            P("ฉลองกรุง แขวงลำปลาทิว เขตลาดกระบัง กรุงเทพมหานคร", cls="text-muted"),
+        ),
+        Lucide("cooking-pot"),
+        style="display: flex; align-items: center; justify-content: space-between; padding: 15px;"
+    )
+
+    order_items = []
+    for item in order.get_cart().get_foods():
+        order_items.append(Li(f"{item.get_quantity()}x {item.get_name()}", B(f" {item.calculate_price()} บาท")))
+        for option in item.get_selected_options():
+            selected_choices = option.get_selected_choices()
+            if selected_choices:
+                choices = Ul(*[Li(choice.get_name()) for choice in selected_choices])
+                order_items.append(choices)
+
+    order_summary = Card(
+        H4("Order Summary"),
+        Ul(*order_items),
+        P(A("แก้ไข", href="/edit-order", cls="text-danger")),
+        style="padding: 15px;"
+    )
+
+    pricing_section = Card(
+        Table(
+            Tbody(
+                Tr(Td("Subtotal"), Td(B(order.get_cart().calculate_price()))),
+                Tr(Td("Delivery fee"), Td(B(order.get_delivery_option().get_price()))),
+                Tr(Td("Discount"), Td(B(order.get_selected_promotion().get_discount()))) if order.get_selected_promotion() != None else "",
+                Tr(Td(B("รวมทั้งหมด"), style="font-size: 1.2rem;"), Td(B(order.calculate_price()), style="font-size: 1.5rem; color: #FF6240;"))
+            )
+        ),
+        style="padding: 15px;"
+    )
+
+    return Container(
+        Button(Lucide("cooking-pot"), style="border: none; background: none; font-size: 1.5rem;", onclick="window.history.back()"),
+        tracking_section,
+        location_section,
+        order_summary,
+        pricing_section,
+        id="main"
+    )
 

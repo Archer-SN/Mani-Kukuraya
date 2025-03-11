@@ -382,11 +382,11 @@ class FoodOption:
 
 
 class OptionChoice:
-    def __init__(self, option, choice, choices_value, price):
+    def __init__(self, option, choice, price):
         self.__choice_id = uuid.uuid4().hex
         self.__option = option
         self.__choice = choice
-        self.__choices_value = choices_value
+        self.__price = price
 
     def get_id(self):
         return self.__choice_id
@@ -396,6 +396,9 @@ class OptionChoice:
 
     def get_option(self):
         return self.__option 
+    
+    def get_pirce(self):
+        return self.__price
 
 class Food:
     def __init__(self, restaurant, name, description, price, category, food_image, food_id=uuid.uuid4().hex):
@@ -613,6 +616,12 @@ class Order:
 
     def select_promotion(self, promotion):
         self.__selected_promotion = promotion
+
+    def get_cart(self):
+        return self.__cart
+    
+    def get_selected_promotion(self):
+        return self.__selected_promotion
 
 # Simulated Data
 user = User(
@@ -1055,49 +1064,43 @@ dq_option_size = FoodOption(
     choices=[],
     max_selection=1
 )
-
 # Create food choices for Dairy Queen ice cream
 dq_food_choice1 = OptionChoice(
     option=dq_option_toppings,
     choice="Chocolate Chips",
-    choices_value="Chocolate Chips",
     price=0.5
 )
 
 dq_food_choice2 = OptionChoice(
     option=dq_option_toppings,
     choice="Sprinkles",
-    choices_value="Sprinkles",
     price=0.5
 )
 
 dq_food_choice3 = OptionChoice(
     option=dq_option_toppings,
     choice="Oreo Crumbs",
-    choices_value="Oreo Crumbs",
     price=0.5
 )
 
 dq_food_choice4 = OptionChoice(
     option=dq_option_size,
     choice="Small",
-    choices_value="Small",
     price=0.0
 )
 
 dq_food_choice5 = OptionChoice(
     option=dq_option_size,
     choice="Medium",
-    choices_value="Medium",
     price=1.0
 )
 
 dq_food_choice6 = OptionChoice(
     option=dq_option_size,
     choice="Large",
-    choices_value="Large",
     price=1.5
 )
+
 
 # Add choices to options
 dq_option_toppings.add_choice(dq_food_choice1)
@@ -1127,35 +1130,31 @@ kfc_option_drinks = FoodOption(
     choices=[],
     max_selection=1
 )
-
 # Create food choices for KFC foods
 kfc_food_choice1 = OptionChoice(
     option=kfc_option_sides,
     choice="Fries",
-    choices_value="Fries",
     price=1.5
 )
 
 kfc_food_choice2 = OptionChoice(
     option=kfc_option_sides,
     choice="Coleslaw",
-    choices_value="Coleslaw",
     price=1.0
 )
 
 kfc_food_choice3 = OptionChoice(
     option=kfc_option_drinks,
     choice="Coke",
-    choices_value="Coke",
     price=1.0
 )
 
 kfc_food_choice4 = OptionChoice(
     option=kfc_option_drinks,
     choice="Pepsi",
-    choices_value="Pepsi",
     price=1.0
 )
+
 
 # Add choices to options
 kfc_option_sides.add_choice(kfc_food_choice1)
@@ -1170,7 +1169,6 @@ kfc_food1.add_option(kfc_option_drinks)
 
 kfc_food2.add_option(kfc_option_sides)
 kfc_food2.add_option(kfc_option_drinks)
-
 # Create food options for McDonald's foods
 mcd_option_sides = FoodOption(
     option_name="Sides",
@@ -1188,28 +1186,24 @@ mcd_option_drinks = FoodOption(
 mcd_food_choice1 = OptionChoice(
     option=mcd_option_sides,
     choice="Fries",
-    choices_value="Fries",
     price=1.5
 )
 
 mcd_food_choice2 = OptionChoice(
     option=mcd_option_sides,
     choice="Salad",
-    choices_value="Salad",
     price=2.0
 )
 
 mcd_food_choice3 = OptionChoice(
     option=mcd_option_drinks,
     choice="Coke",
-    choices_value="Coke",
     price=1.0
 )
 
 mcd_food_choice4 = OptionChoice(
     option=mcd_option_drinks,
     choice="Sprite",
-    choices_value="Sprite",
     price=1.0
 )
 
@@ -1226,6 +1220,7 @@ mcd_food1.add_option(mcd_option_drinks)
 
 mcd_food2.add_option(mcd_option_sides)
 mcd_food2.add_option(mcd_option_drinks)
+
 
 # Get KFC restaurant from the controller
 kfc_restaurant_from_controller = controller.get_restaurant_by_id(1)
