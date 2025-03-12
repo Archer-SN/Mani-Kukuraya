@@ -10,6 +10,10 @@ sequenceDiagram
 
     Member->>+UI: Use Promotion
     UI->>+Controller: Post request to /promotion
+    loop user in User
+        Controller->>+User: get_user_by_username(username)
+        User-->>-Controller: return user
+    end
     Controller->>+User: get_promotion(promotion_code)
     loop promotion in Promotion
         User->>+Promotion: get promotion from code

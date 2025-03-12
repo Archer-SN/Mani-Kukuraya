@@ -49,7 +49,7 @@ def account_management(user_id, sess):
     )
 
 @app.post("/update-username")
-def update_username(user_id: str, new_username: str, ses):
+def update_username(user_id: str, new_username: str, sess):
     user = controller.get_user_by_username(sess["auth"])
     
     if not user:

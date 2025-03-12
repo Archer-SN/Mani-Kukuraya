@@ -8,6 +8,10 @@ sequenceDiagram
 
     Member->>+UI: Click change location
     UI->>+Controller: update_user_location(order_id, location_id)
+    loop user in User
+        Controller->>+User: get_user_by_username(username)
+        User-->>-Controller: return user
+    end
     Controller->>+User: get_location_by_id(location_id)
     loop location in Location
         User->>+Location: get location

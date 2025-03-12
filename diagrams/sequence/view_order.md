@@ -10,6 +10,10 @@ sequenceDiagram
 
     Member->>+UI: View order page
     UI->>+Controller: Request order page from /order
+    loop user in User
+        Controller->>+User: get_user_by_username(username)
+        User-->>-Controller: return user
+    end
     loop for order in Order
         Controller->>+Order: get_order_by(id)
         Order-->>-Controller: return order
